@@ -1,16 +1,15 @@
 ---
 layout: post
-title: 블로그 ㅈㄴ 만들기 힘들다
+title: Junsu CV
 author: jjunsss
-date: 2022-03-22 14:23:00 +09:00
-categories: [first, second]
-tags: [first, exercise]
+date: 2022-03-22 18:50:00 +09:00
+categories: [experience]
+tags: [CV]
 render_with_liquid: false
 ---
 
-ㅈㄴ 힘들다  
-``` ㅈㄴ 힘들다 ```  
-**ㅈㄴ힘들다**  
-##ㅈㄴ 힘들다  
+My first Curriculum Vitae.
+Any questions related to CV are welcome.
+
 
 <a href = "/assets/storage/cv/Junsu_Kim_CV.pdf" download>Junsu CV</a>
