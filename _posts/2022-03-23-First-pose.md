@@ -13,5 +13,4 @@ render_with_liquid: false
 **ㅈㄴ힘들다**  
 ##ㅈㄴ 힘들다  
 
-[jjunsss_Curriculum_Vitae(CV)](assets\storage\cv\Junsu_Kim_CV.pdf)
-good?
+<a href = "assets\storage\cv\Junsu_Kim_CV.pdf" download>Junsu CV</a>
