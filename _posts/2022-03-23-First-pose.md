@@ -1,15 +1,14 @@
 ---
 layout: post
-title: 첫 포스팅의 작성연습
+title: 블로그 ㅈㄴ 만들기 힘들다
 author: jjunsss
-date: 2022-03-22 11:55:00 +09:00
-categories: [New posting, exercise]
-tags: [writing, exercise]
+date: 2022-03-22 14:23:00 +09:00
+categories: [first, second]
+tags: [first, exercise]
 render_with_liquid: false
 ---
 
-```html
-this code is python
-```
-`highlight code` is junsu's blog skill<br>
-한글의 글씨체를<br> 봅시다.
+ㅈㄴ 힘들다  
+``` ㅈㄴ 힘들다 ```  
+**ㅈㄴ힘들다**  
+##ㅈㄴ 힘들다  
