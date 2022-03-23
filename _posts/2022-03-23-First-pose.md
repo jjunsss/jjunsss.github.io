@@ -13,4 +13,4 @@ render_with_liquid: false
 **ㅈㄴ힘들다**  
 ##ㅈㄴ 힘들다  
 
-<a href = "assets\storage\cv\Junsu_Kim_CV.pdf" download>Junsu CV</a>
+<a href = "/assets/storage/cv/Junsu_Kim_CV.pdf" download>Junsu CV</a>
