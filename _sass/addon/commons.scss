@@ -117,13 +117,13 @@ blockquote {
     }
   }
 
-  @include prompt("tip", "\f0eb", 400);
+  @include prompt("tip", "/f0eb", 400);
 
-  @include prompt("info", "\f06a");
+  @include prompt("info", "/f06a");
 
-  @include prompt("warning", "\f06a");
+  @include prompt("warning", "/f06a");
 
-  @include prompt("danger", "\f071");
+  @include prompt("danger", "/f071");
 }
 
 kbd {
@@ -643,7 +643,12 @@ $sidebar-display: "sidebar-display";
   overflow-y: auto;
   width: $sidebar-width;
   z-index: 99;
-  background: var(--sidebar-bg);
+  // background var 선언
+  // background: var(--sidebar-bg); 
+  background-image: url('/assets/img/horse.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 40%;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -670,7 +675,7 @@ $sidebar-display: "sidebar-display";
       width: 6rem;
       height: 6rem;
       border-radius: 50%;
-      border: 2px solid rgba(222, 222, 222, 0.7);
+      border: 3px solid rgba(222, 222, 222, 0.7);
       overflow: hidden;
       transform: translateZ(0); /* fixed the zoom in Safari */
       -webkit-transition: border-color 0.35s ease-in-out;
@@ -705,13 +710,16 @@ $sidebar-display: "sidebar-display";
       font-weight: 900;
       font-size: 1.5rem;
       letter-spacing: 0.5px;
-      color: rgba(134, 133, 133, 99%);
+      // color: rgba(134, 133, 133, 99%);
+      color: rgba(46, 106, 218, 0.9);
     }
   }
 
   .site-subtitle {
-    font-size: 95%;
-    color: var(--sidebar-muted-color);
+    font-size: 85%;
+    font-weight: bold;
+    // color: var(--sidebar-muted-color);
+    color: rgba(0, 0, 0, 0.9);
     line-height: 1.2rem;
     word-spacing: 1px;
     margin: 0.5rem 1.5rem 0.5rem 1.5rem;
@@ -843,7 +851,8 @@ $sidebar-display: "sidebar-display";
     .icon-border {
       @extend %no-cursor;
 
-      background-color: var(--sidebar-muted-color);
+      // background-color: var(--sidebar-muted-color);
+      background-color: rgba(46, 106, 218, 0.9);
       content: "";
       width: 3px;
       height: 3px;
