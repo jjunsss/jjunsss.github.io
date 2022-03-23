@@ -14,3 +14,4 @@ render_with_liquid: false
 ##ㅈㄴ 힘들다  
 
 [jjunsss_Curriculum_Vitae(CV)](assets\storage\cv\Junsu_Kim_CV.pdf)
+good?
