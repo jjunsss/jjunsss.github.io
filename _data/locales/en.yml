@@ -74,5 +74,5 @@ post:
 
 # categories page
 categories:
-  category_measure: categories
+  category_measure: hh
   post_measure: posts
