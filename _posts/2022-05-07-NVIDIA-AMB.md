@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NVIDIA AI Ambassador Interview
+title: NVIDIA AI Ambassador
 author: jjunsss
 date: 2022-05-07 20:20:00 +09:00
 categories: [experience]
@@ -11,6 +11,7 @@ render_with_liquid: false
 `NVIDIA Corp.
 preliminary materials for Jetson AI Ambassador.`
 
+[DLI](/assets/storage/nvidia/DLI_Certification.png)
 ---
 
 # **NVIDIA AI Ambassador**
