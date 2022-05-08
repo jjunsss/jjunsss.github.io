@@ -11,7 +11,8 @@ render_with_liquid: false
 `NVIDIA Corp.
 preliminary materials for Jetson AI Ambassador.`
 
-[DLI](/assets/storage/nvidia/DLI_Certification.png)
+<img src= "/assets/storage/nvidia/DLI_Certification.png" width = "150px" height="300px"  title = "nvidia certification" />
+
 ---
 
 # **NVIDIA AI Ambassador**
