@@ -12,4 +12,4 @@ My first Curriculum Vitae.
 Any questions related to CV are welcome.
 
 
-<a href = "/assets/storage/cv/Junsu_Kim_CV.pdf" download>Junsu CV</a>
+<a href = "/assets/storage/cv/Junsu_Kim(08.23).pdf" download>Junsu CV</a>
