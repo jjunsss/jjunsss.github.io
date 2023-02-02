@@ -29,20 +29,20 @@ description: >-                        # used by seo meta and the atom feed
   AI Developer, Computer Vision, Object Detection, Tech Blog, artificial intelligence
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: 'https://junsuKim97.github.io'
+url: 'https://jjunsss.github.io'
 
 github:
-  username: junsuKim97             # change to your github username
+  username: jjunsss             # change to your github username
   # change to your twitter username
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: Junsu Kim
-  email: jssb0101@pukyong.ac.kr             # change to your email address
+  email: jjunsssk@unist.ac.kr             # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://github.com/junsuKim97       # change to your github homepage
+    - https://github.com/jjunsss       # change to your github homepage
     - https://www.linkedin.com/in/%EC%A4%80%EC%88%98-%EA%B9%80-84b39122b/
     - https://blog.naver.com/jjunsss
     
