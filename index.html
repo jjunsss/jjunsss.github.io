@@ -291,31 +291,30 @@
         }
         .hero-bio a:hover { text-decoration-color: var(--accent); }
 
-        .citation-badge {
-            display: inline-flex; align-items: center; gap: 0.3rem;
-            font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.65rem;
-            border-radius: 100px; letter-spacing: 0.02em;
-            position: relative; white-space: nowrap; margin-left: 0.5rem;
+        .citation-stat {
+            display: flex; align-items: baseline; gap: 0.4rem;
+            margin-bottom: 1.25rem;
         }
-        .citation-badge.fire-always {
-            animation: fire-flicker 0.4s ease-in-out infinite, fire-glow-pulse 0.8s ease-in-out infinite;
-            background: linear-gradient(to top, #ff4500, #ff8c00, #ffd700);
-            color: #fff;
-            text-shadow: 0 0 4px rgba(255,200,0,0.6);
+        .citation-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), #ef4444, var(--accent));
+            background-size: 200% 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
         }
-        .citation-badge.fire-always::before,
-        .citation-badge.fire-always::after {
-            content: ''; position: absolute; border-radius: 50%;
-            animation: fire-particle 0.6s ease-out infinite;
-            pointer-events: none;
+        .citation-plus {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem; font-weight: 700; color: var(--gold);
         }
-        .citation-badge.fire-always::before {
-            width: 4px; height: 4px; background: #ff6a00;
-            top: -2px; left: 20%; animation-delay: 0s;
+        .citation-label {
+            font-size: 0.85rem; color: var(--text-muted); font-weight: 450;
+            letter-spacing: 0.02em;
         }
-        .citation-badge.fire-always::after {
-            width: 3px; height: 3px; background: #ffd700;
-            top: -2px; right: 25%; animation-delay: 0.25s;
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .hero-links {
@@ -799,8 +798,11 @@
 <section class="section" id="publications">
     <div class="section-header reveal">
         <h2>Publications</h2>
-        <span class="citation-badge fire-always"><i class="fas fa-fire"></i> 108+ Citations</span>
         <div class="section-line"></div>
+    </div>
+    <div class="citation-stat reveal">
+        <span class="citation-number" data-target="108">0</span><span class="citation-plus">+</span>
+        <span class="citation-label">Total Citations</span>
     </div>
 
     <!-- Filters -->
@@ -1491,6 +1493,30 @@
 
         const galleryGrid = document.querySelector('.gallery-grid');
         if (galleryGrid) galleryObserver.observe(galleryGrid);
+
+    // ── Citation count-up ──
+    const citNum = document.querySelector('.citation-number');
+    if (citNum) {
+        const target = parseInt(citNum.dataset.target);
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                let start = 0;
+                const duration = 1800;
+                const startTime = performance.now();
+                function step(now) {
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    citNum.textContent = Math.floor(ease * target);
+                    if (progress < 1) requestAnimationFrame(step);
+                    else citNum.textContent = target;
+                }
+                requestAnimationFrame(step);
+                countObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.5 });
+        countObserver.observe(citNum);
+    }
     })();
 </script>
 
