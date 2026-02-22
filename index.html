@@ -250,7 +250,7 @@
         .diffusion-canvas {
             position: absolute;
             top: 3px; left: 3px;
-            width: calc(200px - 6px); height: calc(250px - 6px);
+            width: calc(100% - 6px); height: calc(100% - 6px);
             border-radius: calc(var(--radius) - 2px);
             pointer-events: none;
             z-index: 5;
@@ -700,7 +700,7 @@
         @media (max-width: 768px) {
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
-            .hero-photo-wrap { display: flex; justify-content: center; }
+            .hero-photo-wrap { display: inline-block; margin: 0 auto; }
             .hero-photo { width: 160px; height: 200px; }
             .hero-content h1 { font-size: 2rem; }
             .hero-bio { max-width: 100%; }
@@ -719,8 +719,6 @@
             .pub-card { flex: 0 0 280px; }
             .pub-summary-popup { display: none !important; }
             .pub-carousel-nav { display: none; }
-            #diffusionCanvas { display: none !important; }
-            #diffusionStep { display: none !important; }
             .diffusion-hint { display: none !important; }
         }
 
