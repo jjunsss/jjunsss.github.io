@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junsu Kim — AI Researcher</title>
+    <meta name="description" content="Junsu Kim, Combined MS-PhD Student at UNIST AIGS. Research in computer vision, continual learning, and foundation models.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ═══════════════════════ DESIGN TOKENS ═══════════════════════ */
+        :root {
+            --bg-primary: #F8F9FA;
+            --bg-secondary: #F1F3F5;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #FDFDFD;
+            --text-primary: #212529;
+            --text-secondary: #495057;
+            --text-muted: #9CA3AF;
+            --accent: #4F46E5;
+            --accent-rgb: 79, 70, 229;
+            --accent-light: #EEF2FF;
+            --accent-hover: #4338CA;
+            --gold: #D97706;
+            --gold-light: #FFFBEB;
+            --gold-rgb: 217, 119, 6;
+            --venue-top: #059669;
+            --venue-top-bg: #ECFDF5;
+            --venue-workshop: #7C3AED;
+            --venue-workshop-bg: #F5F3FF;
+            --border: #E5E7EB;
+            --border-light: #F3F4F6;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+            --radius: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --nav-bg: rgba(253, 252, 250, 0.82);
+            --gradient-hero: linear-gradient(135deg, #F0EDFF 0%, #FFF0F5 25%, #FFF8EB 50%, #EDFAF3 75%, #F0EDFF 100%);
+            --gradient-accent: linear-gradient(135deg, #4F46E5, #7C3AED);
+            --hero-pattern-opacity: 0.4;
+            --popup-bg: #FFFFFF;
+            --popup-border: #E5E7EB;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --bg-card: #181818;
+            --bg-card-hover: #202020;
+            --text-primary: #E4E6EB;
+            --text-secondary: #ADB5BD;
+            --text-muted: #6B7280;
+            --accent: #818CF8;
+            --accent-rgb: 129, 140, 248;
+            --accent-light: rgba(129, 140, 248, 0.12);
+            --accent-hover: #A5B4FC;
+            --gold: #FBBF24;
+            --gold-light: rgba(251, 191, 36, 0.1);
+            --gold-rgb: 251, 191, 36;
+            --venue-top: #34D399;
+            --venue-top-bg: rgba(52, 211, 153, 0.1);
+            --venue-workshop: #A78BFA;
+            --venue-workshop-bg: rgba(167, 139, 250, 0.1);
+            --border: #1F2937;
+            --border-light: #1F2937;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
+            --shadow-xl: 0 20px 25px rgba(0,0,0,0.3);
+            --nav-bg: rgba(11, 15, 25, 0.82);
+            --gradient-hero: linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(124,58,237,0.06) 25%, rgba(217,119,6,0.04) 50%, rgba(5,150,105,0.06) 75%, rgba(79,70,229,0.08) 100%);
+            --gradient-accent: linear-gradient(135deg, #818CF8, #A78BFA);
+            --hero-pattern-opacity: 0.15;
+            --popup-bg: #1F2937;
+            --popup-border: #374151;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background var(--transition-slow), color var(--transition-slow);
+        }
+
+        a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
+        a:hover { color: var(--accent-hover); }
+
+        /* ═══════════════════════ NAVIGATION ═══════════════════════ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            transition: background var(--transition-slow), box-shadow var(--transition);
+        }
+        nav.scrolled { box-shadow: var(--shadow-md); }
+
+        .nav-inner {
+            max-width: 1120px; margin: 0 auto; padding: 0 2rem;
+            height: 60px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 500;
+            color: var(--text-primary); text-decoration: none; letter-spacing: -0.01em;
+        }
+        .nav-right { display: flex; align-items: center; gap: 0.25rem; }
+        .nav-links { display: flex; gap: 0.15rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-muted); font-size: 0.82rem; font-weight: 480;
+            padding: 0.38rem 0.7rem; border-radius: var(--radius-sm); transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--text-primary); background: var(--bg-secondary); }
+
+        .theme-toggle {
+            background: none; border: 1px solid var(--border); width: 36px; height: 36px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-muted); transition: var(--transition); margin-left: 0.75rem; font-size: 0.9rem;
+        }
+        .theme-toggle:hover { color: var(--text-primary); border-color: var(--accent); background: var(--accent-light); }
+        [data-theme="dark"] .theme-icon-light { display: none; }
+        [data-theme="light"] .theme-icon-dark { display: none; }
+
+        .nav-toggle {
+            display: none; background: none; border: none; font-size: 1.15rem;
+            color: var(--text-primary); cursor: pointer; padding: 0.5rem;
+        }
+
+        /* ═══════════════════════ RAINBOW SHIMMER ═══════════════════════ */
+        @keyframes shimmerHover {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .shimmer-btn {
+            position: relative !important;
+            overflow: hidden !important;
+            isolation: isolate;
+        }
+
+        .shimmer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 50, 50, 0.4),
+                rgba(255, 165, 0, 0.4),
+                rgba(255, 255, 0, 0.4),
+                rgba(50, 205, 50, 0.4),
+                rgba(0, 191, 255, 0.4),
+                rgba(180, 0, 255, 0.4),
+                transparent
+            );
+            z-index: -1;
+            transform: skewX(-20deg);
+            pointer-events: none;
+        }
+
+        .shimmer-btn:hover::before {
+            animation: shimmerHover 0.8s ease-in-out forwards;
+        }
+
+        /* ═══════════════════════ HERO ═══════════════════════ */
+        .hero-wrapper { position: relative; overflow: hidden; }
+
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: var(--gradient-hero); background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+        }
+        .hero-bg::before {
+            content: ''; position: absolute; inset: 0;
+            opacity: var(--hero-pattern-opacity);
+            background-image: radial-gradient(circle at 1px 1px, var(--text-muted) 0.5px, transparent 0);
+            background-size: 32px 32px;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .hero {
+            position: relative; padding: 7.5rem 2rem 4rem;
+            max-width: 1120px; margin: 0 auto;
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 200px 1fr;
+            gap: 3rem; align-items: start;
+        }
+        .hero-photo-wrap { position: relative; cursor: pointer; }
+        .hero-photo {
+            width: 200px; height: 250px; border-radius: var(--radius);
+            object-fit: cover; object-position: center top;
+            display: block; box-shadow: var(--shadow-lg); border: 3px solid var(--bg-card);
+        }
+
+        /* Diffusion canvas overlay */
+        .diffusion-canvas {
+            position: absolute;
+            top: 3px; left: 3px;
+            width: calc(200px - 6px); height: calc(250px - 6px);
+            border-radius: calc(var(--radius) - 2px);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .diffusion-step {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            z-index: 6;
+            letter-spacing: 0.04em;
+            transition: opacity 0.5s ease;
+        }
+
+        .diffusion-step.hidden { opacity: 0; }
+
+        .diffusion-hint {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            cursor: pointer;
+        }
+        .diffusion-hint.visible { opacity: 1; }
+        .diffusion-hint:hover { color: var(--accent); }
+
+        /* Gallery diffusion canvas */
+        .gallery-item { position: relative; }
+        .gallery-diffusion {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            border-radius: inherit;
+        }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif; font-size: 2.75rem; font-weight: 500;
+            letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.3rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem; color: var(--accent); font-weight: 550;
+            margin-bottom: 1.25rem; letter-spacing: 0.01em;
+        }
+        .hero-bio {
+            color: var(--text-secondary); font-size: 0.92rem; line-height: 1.75;
+            max-width: 580px; margin-bottom: 1rem;
+        }
+        .hero-bio a {
+            font-weight: 550;
+            text-decoration-color: rgba(var(--accent-rgb), 0.3);
+            text-underline-offset: 2px;
+        }
+        .hero-bio a:hover { text-decoration-color: var(--accent); }
+
+
+        .hero-links {
+            display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1.5rem;
+        }
+        .hero-link {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.4rem 0.85rem; border-radius: 100px; font-size: 0.78rem; font-weight: 500;
+            text-decoration: none; transition: var(--transition);
+            border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card);
+        }
+        .hero-link:hover {
+            border-color: var(--accent); color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
+            transform: translateY(-1px);
+        }
+        .hero-link i { font-size: 0.8rem; }
+
+        /* ═══════════════════════ NEWS ═══════════════════════ */
+        .news-bar { max-width: 1120px; margin: 0 auto 3rem; padding: 0 2rem; }
+        .news-scroll {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 1.25rem 1.5rem;
+            display: flex; flex-direction: column; gap: 0.5rem; box-shadow: var(--shadow-sm);
+        }
+        .news-item { display: flex; align-items: center; gap: 0.65rem; font-size: 0.85rem; padding: 0.3rem 0; }
+        .news-badge {
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 0.2rem 0.55rem; border-radius: 100px;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .news-badge.new { background: var(--accent-light); color: var(--accent); }
+        .news-badge.highlight { background: var(--gold-light); color: var(--gold); }
+        .news-text { color: var(--text-secondary); line-height: 1.5; }
+        .news-text strong { color: var(--text-primary); font-weight: 600; }
+
+        /* ═══════════════════════ SECTIONS ═══════════════════════ */
+        .section { max-width: 1120px; margin: 0 auto; padding: 2.5rem 2rem; }
+        .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 500;
+            letter-spacing: -0.02em; white-space: nowrap;
+        }
+        .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+
+        /* ═══════════════════════ INTERESTS ═══════════════════════ */
+        .interests-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .interest-tag {
+            padding: 0.4rem 0.9rem; background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 100px; font-size: 0.8rem; color: var(--text-secondary);
+            font-weight: 480; transition: var(--transition); cursor: default;
+        }
+        .interest-tag:hover {
+            border-color: var(--accent); color: var(--accent); background: var(--accent-light);
+            transform: translateY(-1px); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.06);
+        }
+
+        /* ═══════════════════════ PUBLICATIONS ═══════════════════════ */
+        .pub-filters {
+            display: flex; gap: 0.35rem; margin-bottom: 1.25rem; flex-wrap: wrap;
+        }
+        .pub-filter-btn {
+            padding: 0.35rem 0.85rem; border-radius: 100px; font-size: 0.78rem; font-weight: 550;
+            border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted);
+            cursor: pointer; transition: var(--transition);
+        }
+        .pub-filter-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
+        .pub-filter-btn.active {
+            background: var(--accent); color: white; border-color: var(--accent);
+        }
+
+        .pub-carousel-wrapper {
+            position: relative;
+        }
+        .pub-carousel {
+            display: flex; gap: 1rem; overflow-x: auto;
+            scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+            padding: 0.5rem 0 1.5rem; scrollbar-width: none;
+        }
+        .pub-carousel::-webkit-scrollbar { display: none; }
+
+        .pub-carousel-nav {
+            position: absolute; top: 50%; transform: translateY(-70%);
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--bg-card); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: var(--shadow-md);
+            color: var(--text-secondary); font-size: 0.85rem;
+            transition: var(--transition); z-index: 10;
+        }
+        .pub-carousel-nav:hover {
+            background: var(--accent); color: white; border-color: var(--accent);
+        }
+        .pub-carousel-nav.prev { left: -18px; }
+        .pub-carousel-nav.next { right: -18px; }
+
+        .pub-card {
+            flex: 0 0 340px; scroll-snap-align: start;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-md); padding: 1.25rem 1.35rem;
+            transition: var(--transition); position: relative; cursor: default;
+        }
+        .pub-card:hover {
+            box-shadow: var(--shadow-lg); transform: translateY(-3px);
+            border-color: rgba(var(--accent-rgb), 0.3);
+        }
+
+        /* Highlight card (CVPR Highlight etc.) */
+        .pub-card.highlight {
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--bg-card), var(--bg-card)),
+                              linear-gradient(135deg, var(--gold), var(--accent), var(--gold));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        .pub-card.highlight::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
+            background-size: 200% 100%;
+            animation: shimmer 3s ease infinite;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .pub-card.highlight .pub-highlight-label {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.5rem;
+        }
+        .pub-highlight-label { display: none; }
+
+        .pub-meta { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+        .pub-venue {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 550;
+            padding: 0.18rem 0.55rem; border-radius: 100px; letter-spacing: 0.03em;
+        }
+        .pub-venue.top { background: var(--venue-top-bg); color: var(--venue-top); }
+        .pub-venue.workshop { background: var(--venue-workshop-bg); color: var(--venue-workshop); }
+        .pub-venue.arxiv { background: var(--bg-secondary); color: var (--text-muted); }
+
+        .pub-year { font-size: 0.73rem; color: var(--text-muted); font-weight: 450; }
+        .pub-highlight-badge {
+            font-size: 0.63rem; font-weight: 700; color: var (--gold);
+            background: var(--gold-light); padding: 0.15rem 0.5rem;
+            border-radius: 100px; letter-spacing: 0.02em;
+        }
+        .pub-title {
+            font-weight: 600; font-size: 0.88rem; line-height: 1.4;
+            margin-bottom: 0.3rem; color: var(--text-primary);
+            display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .pub-authors {
+            font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;
+        }
+        .pub-authors .me { color: var(--accent); font-weight: 600; }
+        .pub-links { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+        .pub-link {
+            font-size: 0.7rem; font-weight: 550; padding: 0.2rem 0.5rem;
+            border-radius: 100px; text-decoration: none; border: 1px solid var(--border);
+            color: var(--text-secondary); transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.2rem;
+        }
+        .pub-link:hover { color: var (--accent); border-color: var(--accent); background: var(--accent-light); }
+
+        /* ═══════ SUMMARY TOOLTIP ═══════ */
+        .pub-summary-trigger {
+            position: relative;
+            font-size: 0.7rem; font-weight: 550;
+            padding: 0.2rem 0.5rem; border-radius: 100px;
+            border: 1px solid var(--border); color: var(--text-muted);
+            cursor: pointer; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.2rem;
+            user-select: none;
+        }
+        .pub-summary-trigger:hover {
+            color: var(--accent); border-color: var(--accent); background: var(--accent-light);
+        }
+        .pub-summary-trigger i { font-size: 0.65rem; }
+
+        .pub-summary-popup {
+            position: absolute;
+            width: 280px;
+            background: var(--popup-bg); border: 1px solid var(--popup-border);
+            border-radius: var(--radius-md); box-shadow: var(--shadow-xl);
+            padding: 0.75rem; z-index: 9999;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateX(-50%) translateY(calc(-100% + 6px)) scale(0.96);
+        }
+        .pub-summary-popup::after {
+            content: ''; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border: 7px solid transparent; border-top-color: var(--popup-bg);
+        }
+        .pub-summary-popup.show {
+            opacity: 1; pointer-events: auto;
+            transform: translateX(-50%) translateY(-100%) scale(1);
+        }
+        .pub-summary-img {
+            width: 100%; height: 120px; border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--accent-light), var(--bg-secondary));
+            margin-bottom: 0.5rem;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 0.7rem; font-weight: 500;
+            overflow: hidden;
+        }
+        .pub-summary-img img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .pub-summary-text {
+            font-size: 0.73rem; color: var(--text-secondary); line-height: 1.5;
+        }
+
+        /* Hidden cards by filter */
+        .pub-card.hidden {
+            display: none;
+        }
+
+        /* ═══════════════════════ TIMELINE ═══════════════════════ */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .timeline { position: relative; padding-left: 1.25rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0.6rem; bottom: 0.6rem;
+            width: 2px; background: linear-gradient(to bottom, var(--accent), var(--border)); border-radius: 1px;
+        }
+        .timeline-item { position: relative; padding-bottom: 1.75rem; padding-left: 1.5rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -1.25rem; top: 0.55rem;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--bg-primary); border: 2.5px solid var(--accent);
+            transform: translateX(-4px); transition: background var(--transition);
+        }
+        .timeline-item:hover::before { background: var(--accent); }
+
+        .timeline-period {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--text-muted); letter-spacing: 0.04em; margin-bottom: 0.2rem;
+        }
+        .timeline-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.1rem; }
+        .timeline-org { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
+        .timeline-detail { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+        .timeline-detail a { font-weight: 500; }
+
+        /* ═══════════════════════ AWARDS ═══════════════════════ */
+        .awards-list { display: flex; flex-direction: column; gap: 0; }
+        .award-item {
+            display: flex; gap: 0.75rem; align-items: baseline; font-size: 0.85rem;
+            padding: 0.65rem 0; border-bottom: 1px solid var(--border); transition: var(--transition);
+        }
+        .award-item:last-child { border-bottom: none; }
+        .award-item:hover { padding-left: 0.5rem; }
+        .award-year {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--text-muted); flex-shrink: 0; width: 38px;
+        }
+        .award-text { color: var(--text-secondary); line-height: 1.5; }
+        .award-text strong { color: var(--gold); font-weight: 600; }
+
+        /* ═══════════════════════ ACTIVITIES ═══════════════════════ */
+        .activity-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem;
+        }
+        .activity-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-md); padding: 1.15rem 1.25rem; transition: var(--transition);
+        }
+        .activity-card:hover {
+            box-shadow: var(--shadow-sm); border-color: rgba(var(--accent-rgb), 0.2);
+            transform: translateY(-1px);
+        }
+        .activity-card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .activity-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* ═══════════════════════ GALLERY ═══════════════════════ */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;
+        }
+        .gallery-item {
+            aspect-ratio: 4/3; border-radius: var(--radius-md); overflow: hidden;
+            position: relative; background: var(--bg-secondary); cursor: pointer;
+            border: 1px solid var(--border); transition: var(--transition);
+        }
+        .gallery-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-caption {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 2.5rem 0.75rem 0.65rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white; font-size: 0.72rem; font-weight: 500;
+            opacity: 0; transform: translateY(4px); transition: var(--transition);
+        }
+        .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+
+        /* ═══════════════════════ FOOTER ═══════════════════════ */
+        footer {
+            max-width: 1120px; margin: 2.5rem auto 0; padding: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            color: var(--text-muted); font-size: 0.78rem;
+        }
+        .footer-links { display: flex; gap: 1rem; }
+        .footer-links a { color: var(--text-muted); transition: var(--transition); font-size: 1rem; }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ═══════════════════════ ANIMATIONS ═══════════════════════ */
+        .reveal {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+        @media (max-width: 768px) {
+            .hero { padding: 6rem 1.25rem 2.5rem; }
+            .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+            .hero-photo-wrap { display: flex; justify-content: center; }
+            .hero-photo { width: 160px; height: 200px; }
+            .hero-content h1 { font-size: 2rem; }
+            .hero-bio { max-width: 100%; }
+            .hero-links { justify-content: center; }
+            .two-col { grid-template-columns: 1fr; gap: 2rem; }
+            .nav-links {
+                display: none; position: absolute; top: 60px; left: 0; right: 0;
+                background: var(--bg-primary); border-bottom: 1px solid var(--border);
+                flex-direction: column; padding: 0.75rem; gap: 0;
+            }
+            .nav-links.open { display: flex; }
+            .nav-toggle { display: block; }
+            .section { padding: 1.75rem 1.25rem; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+            .pub-card { flex: 0 0 280px; }
+            .pub-summary-popup { display: none !important; }
+            .pub-carousel-nav { display: none; }
+        }
+
+        /* ═══════════════════════ SCROLLBAR ═══════════════════════ */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        ::selection { background: rgba(var(--accent-rgb), 0.15); color: var(--text-primary); }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════ NAVIGATION ════════════════════════ -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">Junsu Kim</a>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#publications">Publications</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#awards">Awards</a></li>
+                <li><a href="#activities">Activities</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank">CV ↗</a></li>
+            </ul>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <i class="fas fa-moon theme-icon-light"></i>
+                <i class="fas fa-sun theme-icon-dark"></i>
+            </button>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<div class="hero-wrapper">
+    <div class="hero-bg"></div>
+    <section class="hero" id="about">
+        <div class="hero-grid">
+            <div class="reveal">
+                <div class="hero-photo-wrap" id="diffusionWrap" title="Click to replay diffusion">
+                    <img class="hero-photo" src="https://lh3.googleusercontent.com/sitesv/APaQ0SQBSon30onyU2p0nSD-VBFNPvc4nO7K4qKPW1TrEPa_c-_mBJxatrllQSKX-0dbieHHfZhEOxq5pmKcMNOf7FZhVpuYLPVT-VyWYtDK0ojXhjaO8yBBj3fM2ryuSXPVvwUaGXMkCH7hfnHYAnIyvW_m_KC8UJKin2DXCNE717MUr1R2El9T7oRsjKnJlIFvrMgv2jM1tauFc7kL3u5_SXKqX72R6zezJkzI=w1280" alt="Junsu Kim">
+                    <canvas id="diffusionCanvas" class="diffusion-canvas"></canvas>
+                    <div id="diffusionStep" class="diffusion-step">t=1000</div>
+                </div>
+                <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
+            </div>
+            <div class="hero-content">
+                <h1 class="reveal reveal-delay-1">Junsu Kim</h1>
+                <p class="hero-subtitle reveal reveal-delay-2">Combined MS-PhD · UNIST AI Graduate School</p>
+                <p class="hero-bio reveal reveal-delay-2">
+                    I am a Combined MS/PhD student in the AI Graduate School (AIGS) at UNIST, advised by
+                    <a href="https://sites.google.com/site/bsrvision00/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Prof. Seungryul Baek</a>.
+                    My research spans computer vision, continual learning, open-world object detection, and
+                    vision-language models, with a particular focus on integrating these into robotics and
+                    foundation models such as diffusion models.
+                </p>
+                <p class="hero-bio reveal reveal-delay-3" style="margin-top: -0.25rem;">
+                    Previously, I interned at <strong>NAVER AI Lab</strong> working with
+                    <a href="https://sites.google.com/site/dyhan0920/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Dongyoon Han</a>.
+                    I also served as an <strong>NVIDIA DLI Ambassador</strong> and led the NVIDIA × MODULABS Foundation Models Lab.
+                </p>
+                <div class="hero-links reveal reveal-delay-4">
+                    <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link shimmer-btn"><i class="fas fa-envelope"></i> Email</a>
+                    <a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-graduation-cap"></i> Scholar</a>
+                    <a href="https://github.com/jjunsss" target="_blank" class="hero-link shimmer-btn"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" class="hero-link shimmer-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://blog.naver.com/jjunsss" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-pen-nib"></i> Blog</a>
+                    <a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-file-alt"></i> CV</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- ════════════════════════ NEWS ════════════════════════ -->
+<div class="news-bar reveal">
+    <div class="news-scroll">
+        <div class="news-item">
+            <span class="news-badge new">New</span>
+            <span class="news-text">Selected as an <strong>Outstanding Reviewer</strong> at BMVC 2025</span>
+        </div>
+        <div class="news-item">
+            <span class="news-badge new">New</span>
+            <span class="news-text">Jul 2025 — One paper accepted to <strong>BMVC</strong> (co-first author)</span>
+        </div>
+        <div class="news-item">
+            <span class="news-badge new">New</span>
+            <span class="news-text">Jul 2025 — Two papers accepted to <strong>ICCV Workshops</strong> (1st author)</span>
+        </div>
+        <div class="news-item">
+            <span class="news-badge highlight">Highlight</span>
+            <span class="news-text">CVPR 2024 first-author paper selected as <strong>Highlight Poster</strong> (top 2.8%)</span>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════ INTERESTS ════════════════════════ -->
+<section class="section reveal">
+    <div class="section-header">
+        <h2>Research Interests</h2>
+        <div class="section-line"></div>
+    </div>
+    <div class="interests-grid">
+        <span class="interest-tag">Computer Vision</span>
+        <span class="interest-tag">Continual Learning</span>
+        <span class="interest-tag">Open-World Object Detection</span>
+        <span class="interest-tag">Vision-Language Models</span>
+        <span class="interest-tag">Diffusion Models</span>
+        <span class="interest-tag">Few-Shot Learning</span>
+        <span class="interest-tag">Robotics</span>
+        <span class="interest-tag">Efficient AI</span>
+    </div>
+</section>
+
+<!-- ════════════════════════ PUBLICATIONS ════════════════════════ -->
+<section class="section" id="publications">
+    <div class="section-header reveal">
+        <h2>Publications</h2>
+        <div class="section-line"></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="pub-filters reveal">
+        <button class="pub-filter-btn active" data-filter="all">All</button>
+        <button class="pub-filter-btn" data-filter="main">Main Venue</button>
+        <button class="pub-filter-btn" data-filter="workshop">Workshop</button>
+        <button class="pub-filter-btn" data-filter="arxiv">ArXiv</button>
+    </div>
+
+    <!-- Carousel -->
+    <div class="pub-carousel-wrapper reveal">
+        <button class="pub-carousel-nav prev" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="pub-carousel-nav next" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="pub-carousel" id="pubCarousel">
+
+            <!-- SDDGR — CVPR 2024 Highlight -->
+            <div class="pub-card highlight" data-venue="main">
+                <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight — Top 2.8%</div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">CVPR 2024</span>
+                    <span class="pub-highlight-badge">★ Highlight</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, H. Cho, J. Kim, Y. Tiruneh, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2402.17323" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img">
+                                <!-- Replace with your paper figure -->
+                                <span>Paper Figure</span>
+                            </div>
+                            <div class="pub-summary-text">
+                                Proposes using Stable Diffusion as a generative replay mechanism for class incremental object detection, effectively mitigating catastrophic forgetting while maintaining high-quality synthetic data generation.
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- B-RIGHT — BMVC 2025 -->
+            <div class="pub-card" data-venue="main">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">BMVC 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing</div>
+                <div class="pub-authors"><span class="me">J. Kim*</span>, Y. Jang*, H. Kim, E. Lee, E. Kim, S. Baek, J. Yoo</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2501.16724" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">A systematic re-evaluation of existing HOI benchmarks, revealing integrity issues and proposing new evaluation protocols for generalized human-object interaction testing.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- FSCIL Synthetic — ICCV-W 2025 -->
+            <div class="pub-card" data-venue="workshop">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">ICCV-W 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in Few-Shot Class-Incremental Learning</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/pdf/2507.13739" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">Investigates whether synthetic image generation can effectively address catastrophic forgetting in few-shot class-incremental learning, challenging common assumptions in the field.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- RPE — ICCV-W 2025 -->
+            <div class="pub-card" data-venue="workshop">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">ICCV-W 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, N. Kim, J. Lee, I. Park, D. Han†, S. Baek†</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">Critically examines the reliability of reasoning-based pose estimation benchmarks, identifying systematic biases and proposing refined evaluation metrics.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Diffusion FSCIL — ArXiv -->
+            <div class="pub-card" data-venue="arxiv">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue arxiv">ArXiv 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Diffusion Meets Few-shot Class Incremental Learning</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han†, S. Baek†</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">Bridges diffusion models with few-shot class incremental learning, leveraging generative priors to overcome data scarcity and catastrophic forgetting simultaneously.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- VLM-PL — CVPR-W 2024 -->
+            <div class="pub-card" data-venue="workshop">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">CVPR-W 2024</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">VLM-PL: Advanced Pseudo Labeling Approach for Class Incremental Object Detection with Vision-Language Model</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, J. Kim, J. Cha, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2403.05346" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">Leverages vision-language models for advanced pseudo labeling in class incremental object detection, improving detection accuracy on novel classes without forgetting.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- ICASSP 2024 -->
+            <div class="pub-card" data-venue="main">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">ICASSP 2024</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">Class-Wise Buffer Management for Incremental Object Detection: An Effective Buffer Training Strategy</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, Y. Tiruneh, J. On, J. Song, S. Choi, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2312.09139" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-text">Introduces a class-wise buffer management strategy for incremental object detection that optimizes exemplar selection and training to balance old and new class performance.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ EDUCATION & EXPERIENCE ════════════════════════ -->
+<section class="section" id="experience">
+    <div class="two-col">
+        <div>
+            <div class="section-header reveal">
+                <h2>Education</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline reveal">
+                <div class="timeline-item">
+                    <div class="timeline-period">2023 — Present</div>
+                    <div class="timeline-title">Combined MS-PhD in AI</div>
+                    <div class="timeline-org">UNIST, Ulsan, South Korea</div>
+                    <div class="timeline-detail">Advisor: <a href="https://sites.google.com/site/bsrvision00/">Prof. Seungryul Baek</a></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-period">2016 — 2022</div>
+                    <div class="timeline-title">B.S. in ICE</div>
+                    <div class="timeline-org">Pukyong National University, Busan</div>
+                    <div class="timeline-detail">Advisor: <a href="https://sites.google.com/site/hoonlee1014/advisor">Prof. Hoon Lee</a></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="section-header reveal">
+                <h2>Experience</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline reveal">
+                <div class="timeline-item">
+                    <div class="timeline-period">2024 — 2025</div>
+                    <div class="timeline-title">AI Research Intern</div>
+                    <div class="timeline-org">NAVER AI Lab, Seoul</div>
+                    <div class="timeline-detail">Backbone Research Team · Advisor: <a href="https://sites.google.com/site/dyhan0920/">Dongyoon Han</a></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-period">2022 — 2025</div>
+                    <div class="timeline-title">NVIDIA AI Ambassador</div>
+                    <div class="timeline-org">NVIDIA DLI Program</div>
+                    <div class="timeline-detail">Leader, NVIDIA × MODULABS Foundation Models Lab</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-period">2022 — 2023</div>
+                    <div class="timeline-title">AI Research Intern</div>
+                    <div class="timeline-org">UVL Lab, Ulsan & Corp. KST, Busan</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ AWARDS & SERVICE ════════════════════════ -->
+<section class="section" id="awards">
+    <div class="two-col">
+        <div>
+            <div class="section-header reveal">
+                <h2>Awards</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="awards-list reveal">
+                <div class="award-item">
+                    <span class="award-year">2025</span>
+                    <span class="award-text"><strong>Outstanding Reviewer</strong>, BMVC 2025</span>
+                </div>
+                <div class="award-item">
+                    <span class="award-year">2025</span>
+                    <span class="award-text"><strong>Excellence Award</strong>, 37th IPIU Poster Presentation</span>
+                </div>
+                <div class="award-item">
+                    <span class="award-year">2021</span>
+                    <span class="award-text"><strong>Best Paper Award</strong>, IEMEK · KICS · IEIE (×3)</span>
+                </div>
+                <div class="award-item">
+                    <span class="award-year">2021</span>
+                    <span class="award-text"><strong>1st Prize</strong>, PKNU Capstone Design</span>
+                </div>
+                <div class="award-item">
+                    <span class="award-year">2020</span>
+                    <span class="award-text"><strong>2nd Prize</strong>, Busan AI Idea Contest (KIBO)</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="section-header reveal">
+                <h2>Professional Service</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="reveal">
+                <div class="activity-card" style="margin-bottom: 0.75rem;">
+                    <h4>Reviewer</h4>
+                    <p>AAAI 2025 · BMVC 2025 (Outstanding) · IEEE TMM · IEEE TIP</p>
+                </div>
+                <div class="activity-card" style="margin-bottom: 0.75rem;">
+                    <h4>Invited Activities</h4>
+                    <p>Young Researcher, National Physical-AI Strategy Advisory Seminar (ETRI & NST, Sep 2025)</p>
+                </div>
+                <div class="activity-card">
+                    <h4>Presentations</h4>
+                    <p>Oral at KOREA Digital Innovators Symposium 2024 (UNIST representative) · Poster at KCCV 2024</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ TEACHING ════════════════════════ -->
+<section class="section" id="activities">
+    <div class="section-header reveal">
+        <h2>Teaching & Mentoring</h2>
+        <div class="section-line"></div>
+    </div>
+    <div class="activity-grid reveal">
+        <div class="activity-card">
+            <h4>Samsung SSAFY (13th)</h4>
+            <p>Lecture Mentor — Language Models & RAG, Jul 2025</p>
+        </div>
+        <div class="activity-card">
+            <h4>UNIST AI Novatus Academia</h4>
+            <p>Workshop Lecturer — Computer Vision, 2023</p>
+        </div>
+        <div class="activity-card">
+            <h4>NVIDIA Jetson AI Workshop</h4>
+            <p>Pukyong National University, May 2022</p>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ GALLERY ════════════════════════ -->
+<section class="section" id="gallery">
+    <div class="section-header reveal">
+        <h2>Gallery</h2>
+        <div class="section-line"></div>
+    </div>
+    <div class="gallery-grid reveal">
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SR58OIq_Hz3WUhs-llCR0eXMedkFEyMCdgCVRcXoQ7lUZIg1fDo4xww8PSNobxQnkKrq6VeKMb3JC1_lP6DrflRmue_ViKMaGLhYzDmZNCyWw6mgz3iDMGjFcZiozNXZnUTRIP_Qf5dpBrOOllMgqnqsaMgVbaM5nm-3ncPJNpjMFo7yTMDEfzNRthjr4iR8Rj1P9m0bIK2NM46omHp0NcdfAhJ65xQ1cSM=w1280" alt="CVPR 2024">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">CVPR 2024 — Highlight Poster</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STRjYHaFY8NEvnKVUrOUkjOqja72rxOuYpMJ2L15HLVr75MQJLQwslaqzeA002ylXw9LLAGyphLGyseRH9FZ2gh02sxZUhms6z3z4Ebztgr1PFqfvLz2QSGa9K3iXMArvNB_cwHuefeUzIhy51g7Y0VpMXLc7XTbx657y0ev1j8lgmnPFvm5pQ8FqFBSwYhofYZ2FUFEBa6YPcLuEFRikHz3aEqwasGMCEJTRo=w1280" alt="CVPR 2024 Workshop">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">CVPR 2024 — Workshop</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STvTsOf14whpVHq0SnuI_ZXw8qagwBNKKbydu0ixUz1EOC9lfk6QVi-tAVisxwIAUIaJM0Ib7VbWbYA6FkTUtPEVWR5Iqr68zxvLM3ScGAStTZKAePF_ZWcsjiqb7pXqqVxmMnwT8PgToxUQmF5d0CfSp7hFlqJk0WYn01xe2xGEFKRa61qRgsd1k-VobrIlgF_GnQm8x_TeIueGDMgcMOAlmUBxgsGcBRS=w1280" alt="KCCV 2024">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">KCCV 2024 — Poster</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQ-6TEduFeFyMH0LiKwIub6D51ETtM2ShQmUhpIWUoPExEfw5Rh_Lrc9Ip5L5rChgvAyh0SL6TPnTAXLjCBxKqEGh5NqSvQLRD4AwRwmawNkHo7Gw6zcfnPzjAE7KhQUVinwTRq1140mfMa206KNt-HV9ITDmXiUDM1khESKHFidGQ5Hb2pBkm15ZhDGF8J-aZudB5SgePWwEnUbrtOiLAA8DXadnlaKPqGLAM=w1280" alt="Innovation Symposium 2024">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">Digital Innovators Symposium 2024</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SRbBLcSwWbiaPadIVHtfK5rZ2zVuMSG1QrlSQGt3rOesdwCW5LTsOUCHkpW27EkNdaXIyaT_x5PB0bxLMY2ZZjAjmy4BgAfkb7GLtP7paI2dkQNrRTpCorRPrqvhHPlRaLnfrmSoHhJNK_ldH49NA-Q_TUcTU31saD2XpfneBh3yvZQcAFvMgy_KJ1Pnj8Alu9XnFS1rcG5QMX9ISdbaHI9fcGBbisIVT0HNz4=w1280" alt="ICASSP 2024">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">ICASSP 2024 — Seoul</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STf6hM-q-W1Ga5w3cI13I4hrarNpAixzXWmqge-A3rwwekmnzeu-zNGMJ3fXqbOWQeJ3hIFrt9V0zk6y_ab9A6iDgSQpIGMiFI-E6gH_e5CZl546Uac_Y_qE1BQDHszlBZfwulmTdQWNwYH3eN3MDqqWaGhKr3Ag7eSyh-CbZ5SkNmZbQsdSKITLUNIRaHFtlwbMHVR43ta_lhcfI_1whqVkoxR7llYP9b2=w1280" alt="CVPR 2023 Workshop">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">CVPR 2023 — Workshop</div>
+        </div>
+    </div>
+</section>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer>
+    <p>&copy; 2025 Junsu Kim · Built with care</p>
+    <div class="footer-links">
+        <a href="mailto:jjunsssk@unist.ac.kr" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://github.com/jjunsss" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+    </div>
+</footer>
+
+<!-- ════════════════════════ SCRIPTS ════════════════════════ -->
+<script>
+    // Theme toggle
+    function toggleTheme() {
+        const html = document.documentElement;
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    }
+    (function() {
+        const saved = localStorage.getItem('theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
+        else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+            document.documentElement.setAttribute('data-theme', 'dark');
+    })();
+
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 10));
+
+    // Reveal animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Mobile nav close
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+    });
+
+    // Summary Popup Logic
+    document.querySelectorAll('.pub-summary-trigger').forEach(trigger => {
+        const popup = trigger.querySelector('.pub-summary-popup');
+        if (!popup) return;
+        
+        document.body.appendChild(popup);
+        
+        trigger.addEventListener('mouseenter', () => {
+            const rect = trigger.getBoundingClientRect();
+            popup.style.top = (window.scrollY + rect.top - 10) + 'px';
+            popup.style.left = (window.scrollX + rect.left + rect.width / 2) + 'px';
+            popup.classList.add('show');
+        });
+        
+        trigger.addEventListener('mouseleave', () => {
+            popup.classList.remove('show');
+        });
+    });
+
+    // Publication filters
+    document.querySelectorAll('.pub-filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.pub-filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.dataset.filter;
+            document.querySelectorAll('.pub-card').forEach(card => {
+                if (filter === 'all' || card.dataset.venue === filter) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
+
+    // Carousel scroll
+    function scrollCarousel(dir) {
+        const carousel = document.getElementById('pubCarousel');
+        const cardWidth = carousel.querySelector('.pub-card')?.offsetWidth || 340;
+        carousel.scrollBy({ left: dir * (cardWidth + 16), behavior: 'smooth' });
+    }
+
+    // ═══════════════════════ DIFFUSION DENOISING EFFECT ═══════════════════════
+    (function() {
+        const canvas = document.getElementById('diffusionCanvas');
+        const stepLabel = document.getElementById('diffusionStep');
+        const wrap = document.getElementById('diffusionWrap');
+        if (!canvas || !stepLabel || !wrap) return;
+
+        const ctx = canvas.getContext('2d');
+
+        // Match canvas pixel size to its CSS size
+        function sizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+        sizeCanvas();
+
+        const TOTAL_DURATION = 3000; // 3 seconds
+        const TOTAL_STEPS = 1000;    // diffusion timesteps t=1000 → t=0
+        let animId = null;
+        let startTime = null;
+
+        // Get theme-aware noise tint
+        function getNoiseTint() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            return isDark
+                ? { r: 129, g: 140, b: 248, mix: 0.15 }  // indigo-400
+                : { r: 79, g: 70, b: 229, mix: 0.08 };   // indigo-600
+        }
+
+        // Box-Muller for more realistic Gaussian noise
+        function gaussRand() {
+            let u = 0, v = 0;
+            while (u === 0) u = Math.random();
+            while (v === 0) v = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        }
+
+        // Draw noise at a given intensity (0 = no noise, 1 = full noise)
+        function drawNoise(intensity) {
+            const w = canvas.width / window.devicePixelRatio;
+            const h = canvas.height / window.devicePixelRatio;
+            const imgData = ctx.createImageData(canvas.width, canvas.height);
+            const data = imgData.data;
+            const tint = getNoiseTint();
+
+            // Pixel size increases as we denoise (blocky → fine → gone)
+            const blockSize = intensity > 0.6 ? 3 : intensity > 0.3 ? 2 : 1;
+            const pixW = canvas.width;
+            const pixH = canvas.height;
+
+            for (let y = 0; y < pixH; y += blockSize) {
+                for (let x = 0; x < pixW; x += blockSize) {
+                    // Gaussian noise centered at 128, variance scales with intensity
+                    const variance = intensity * 128;
+                    const noise = 128 + gaussRand() * variance;
+                    const val = Math.max(0, Math.min(255, noise));
+
+                    // Mix with accent tint
+                    const r = val * (1 - tint.mix) + tint.r * tint.mix;
+                    const g = val * (1 - tint.mix) + tint.g * tint.mix;
+                    const b = val * (1 - tint.mix) + tint.b * tint.mix;
+
+                    // Fill block
+                    for (let dy = 0; dy < blockSize && (y + dy) < pixH; dy++) {
+                        for (let dx = 0; dx < blockSize && (x + dx) < pixW; dx++) {
+                            const idx = ((y + dy) * pixW + (x + dx)) * 4;
+                            data[idx] = r;
+                            data[idx + 1] = g;
+                            data[idx + 2] = b;
+                            data[idx + 3] = 255;
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / TOTAL_DURATION, 1);
+
+            // Easing: slow start, accelerate, then slow finish (ease-in-out)
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            // Noise intensity goes from 1.0 → 0.0
+            const noiseIntensity = 1.0 - eased;
+
+            // Canvas opacity: starts at 1, fades out in the last 30%
+            const opacity = progress > 0.7
+                ? 1.0 - ((progress - 0.7) / 0.3)
+                : 1.0;
+
+            canvas.style.opacity = opacity;
+            drawNoise(noiseIntensity);
+
+            // Update timestep counter
+            const currentStep = Math.round(TOTAL_STEPS * (1.0 - progress));
+            stepLabel.textContent = `t=${currentStep}`;
+
+            if (progress < 1) {
+                animId = requestAnimationFrame(animate);
+            } else {
+                // Animation complete
+                canvas.style.opacity = 0;
+                stepLabel.classList.add('hidden');
+                setTimeout(() => {
+                    stepLabel.textContent = 'Click to replay';
+                    stepLabel.classList.remove('hidden');
+                    setTimeout(() => stepLabel.classList.add('hidden'), 2000);
+                }, 500);
+            }
+        }
+
+        function startDiffusion() {
+            if (animId) cancelAnimationFrame(animId);
+            startTime = null;
+            canvas.style.opacity = 1;
+            stepLabel.classList.remove('hidden');
+            stepLabel.textContent = 't=1000';
+            animId = requestAnimationFrame(animate);
+        }
+
+        // Play on load
+        startDiffusion();
+
+        // Show hint after first animation completes
+        const hint = document.getElementById('diffusionHint');
+        setTimeout(() => { if (hint) hint.classList.add('visible'); }, 3800);
+
+        // Click to replay
+        wrap.addEventListener('click', () => {
+            if (hint) hint.classList.remove('visible');
+            startDiffusion();
+            setTimeout(() => { if (hint) hint.classList.add('visible'); }, 3800);
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => { sizeCanvas(); });
+    })();
+
+    // ═══════════════════════ GALLERY DIFFUSION EFFECT ═══════════════════════
+    (function() {
+        function gaussRand() {
+            let u = 0, v = 0;
+            while (u === 0) u = Math.random();
+            while (v === 0) v = Math.random();
+            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+        }
+
+        function getNoiseTint() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            return isDark
+                ? { r: 129, g: 140, b: 248, mix: 0.12 }
+                : { r: 79, g: 70, b: 229, mix: 0.06 };
+        }
+
+        function drawGalleryNoise(ctx, w, h, intensity) {
+            const imgData = ctx.createImageData(w, h);
+            const data = imgData.data;
+            const tint = getNoiseTint();
+            const blockSize = intensity > 0.5 ? 3 : intensity > 0.25 ? 2 : 1;
+
+            for (let y = 0; y < h; y += blockSize) {
+                for (let x = 0; x < w; x += blockSize) {
+                    const variance = intensity * 128;
+                    const val = Math.max(0, Math.min(255, 128 + gaussRand() * variance));
+                    const r = val * (1 - tint.mix) + tint.r * tint.mix;
+                    const g = val * (1 - tint.mix) + tint.g * tint.mix;
+                    const b = val * (1 - tint.mix) + tint.b * tint.mix;
+                    for (let dy = 0; dy < blockSize && (y+dy) < h; dy++) {
+                        for (let dx = 0; dx < blockSize && (x+dx) < w; dx++) {
+                            const idx = ((y+dy)*w + (x+dx)) * 4;
+                            data[idx]=r; data[idx+1]=g; data[idx+2]=b; data[idx+3]=255;
+                        }
+                    }
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function animateGalleryItem(item) {
+            const c = item.querySelector('.gallery-diffusion');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            const rect = item.getBoundingClientRect();
+            const dpr = window.devicePixelRatio;
+            c.width = rect.width * dpr;
+            c.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const duration = 2000;
+            let start = null;
+            let anim = null;
+
+            function tick(ts) {
+                if (!start) start = ts;
+                const progress = Math.min((ts - start) / duration, 1);
+                const eased = progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                const intensity = 1.0 - eased;
+                const opacity = progress > 0.65 ? 1.0 - ((progress - 0.65) / 0.35) : 1.0;
+
+                c.style.opacity = opacity;
+                drawGalleryNoise(ctx, c.width, c.height, intensity);
+
+                if (progress < 1) {
+                    anim = requestAnimationFrame(tick);
+                } else {
+                    c.style.opacity = 0;
+                }
+            }
+
+            c.style.opacity = 1;
+            anim = requestAnimationFrame(tick);
+            item._galleryAnim = anim;
+        }
+
+        // Trigger gallery diffusion when gallery scrolls into view
+        const galleryObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const items = entry.target.querySelectorAll('[data-diffuse]');
+                    items.forEach((item, i) => {
+                        setTimeout(() => animateGalleryItem(item), i * 200);
+                    });
+                    galleryObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        const galleryGrid = document.querySelector('.gallery-grid');
+        if (galleryGrid) galleryObserver.observe(galleryGrid);
+    })();
+</script>
+
+</body>
+</html>
