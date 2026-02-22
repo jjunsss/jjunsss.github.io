@@ -320,9 +320,56 @@
             font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
             letter-spacing: 0.08em; padding: 0.2rem 0.55rem; border-radius: 100px;
             white-space: nowrap; flex-shrink: 0;
+            position: relative; cursor: default; transition: var(--transition);
         }
         .news-badge.new { background: var(--accent-light); color: var(--accent); }
         .news-badge.highlight { background: var(--gold-light); color: var(--gold); }
+
+        /* ── Fire effect on hover ── */
+        @keyframes fire-flicker {
+            0%, 100% { transform: scaleY(1) translateY(0); opacity: 0.9; }
+            25% { transform: scaleY(1.2) translateY(-1px) scaleX(0.95); opacity: 1; }
+            50% { transform: scaleY(0.9) translateY(1px) scaleX(1.05); opacity: 0.85; }
+            75% { transform: scaleY(1.1) translateY(-0.5px); opacity: 0.95; }
+        }
+        @keyframes fire-particle {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-18px) scale(0); opacity: 0; }
+        }
+        @keyframes fire-glow-pulse {
+            0%, 100% { box-shadow: 0 0 4px rgba(255,100,0,0.3), 0 0 8px rgba(255,60,0,0.15); }
+            50% { box-shadow: 0 0 8px rgba(255,100,0,0.5), 0 0 16px rgba(255,60,0,0.25), 0 -2px 20px rgba(255,160,0,0.15); }
+        }
+        .news-badge.new:hover,
+        .news-badge.highlight:hover,
+        .pub-highlight-badge:hover {
+            animation: fire-flicker 0.4s ease-in-out infinite, fire-glow-pulse 0.8s ease-in-out infinite;
+            background: linear-gradient(to top, #ff4500, #ff8c00, #ffd700);
+            color: #fff;
+            text-shadow: 0 0 4px rgba(255,200,0,0.6);
+        }
+        .news-badge.new:hover::before,
+        .news-badge.highlight:hover::before,
+        .pub-highlight-badge:hover::before,
+        .news-badge.new:hover::after,
+        .news-badge.highlight:hover::after,
+        .pub-highlight-badge:hover::after {
+            content: ''; position: absolute; border-radius: 50%;
+            animation: fire-particle 0.6s ease-out infinite;
+            pointer-events: none;
+        }
+        .news-badge.new:hover::before,
+        .news-badge.highlight:hover::before,
+        .pub-highlight-badge:hover::before {
+            width: 4px; height: 4px; background: #ff6a00;
+            top: -2px; left: 20%; animation-delay: 0s;
+        }
+        .news-badge.new:hover::after,
+        .news-badge.highlight:hover::after,
+        .pub-highlight-badge:hover::after {
+            width: 3px; height: 3px; background: #ffd700;
+            top: -2px; right: 25%; animation-delay: 0.25s;
+        }
         .news-text { color: var(--text-secondary); line-height: 1.5; }
         .news-text strong { color: var(--text-primary); font-weight: 600; }
 
@@ -424,9 +471,10 @@
 
         .pub-year { font-size: 0.73rem; color: var(--text-muted); font-weight: 450; }
         .pub-highlight-badge {
-            font-size: 0.63rem; font-weight: 700; color: var (--gold);
+            font-size: 0.63rem; font-weight: 700; color: var(--gold);
             background: var(--gold-light); padding: 0.15rem 0.5rem;
             border-radius: 100px; letter-spacing: 0.02em;
+            position: relative; cursor: default; transition: var(--transition);
         }
         .pub-title {
             font-weight: 600; font-size: 0.88rem; line-height: 1.4;
