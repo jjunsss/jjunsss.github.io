@@ -50,6 +50,7 @@
             --hero-pattern-opacity: 0.4;
             --popup-bg: #FFFFFF;
             --popup-border: #E5E7EB;
+            --bio-color: #6B4C3B;
         }
 
         [data-theme="dark"] {
@@ -84,6 +85,7 @@
             --hero-pattern-opacity: 0.15;
             --popup-bg: #1F2937;
             --popup-border: #374151;
+            --bio-color: #C4A882;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -279,7 +281,7 @@
             margin-bottom: 1.25rem; letter-spacing: 0.01em;
         }
         .hero-bio {
-            color: var(--text-secondary); font-size: 0.92rem; line-height: 1.75;
+            color: var(--bio-color); font-size: 0.92rem; line-height: 1.75;
             max-width: 580px; margin-bottom: 1rem;
         }
         .hero-bio a {
@@ -333,17 +335,6 @@
         }
         .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
 
-        /* ═══════════════════════ INTERESTS ═══════════════════════ */
-        .interests-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-        .interest-tag {
-            padding: 0.4rem 0.9rem; background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 100px; font-size: 0.8rem; color: var(--text-secondary);
-            font-weight: 480; transition: var(--transition); cursor: default;
-        }
-        .interest-tag:hover {
-            border-color: var(--accent); color: var(--accent); background: var(--accent-light);
-            transform: translateY(-1px); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.06);
-        }
 
         /* ═══════════════════════ PUBLICATIONS ═══════════════════════ */
         .pub-filters {
@@ -735,23 +726,6 @@
 </div>
 
 <!-- ════════════════════════ INTERESTS ════════════════════════ -->
-<section class="section reveal">
-    <div class="section-header">
-        <h2>Research Interests</h2>
-        <div class="section-line"></div>
-    </div>
-    <div class="interests-grid">
-        <span class="interest-tag">Computer Vision</span>
-        <span class="interest-tag">Continual Learning</span>
-        <span class="interest-tag">Open-World Object Detection</span>
-        <span class="interest-tag">Vision-Language Models</span>
-        <span class="interest-tag">Diffusion Models</span>
-        <span class="interest-tag">Few-Shot Learning</span>
-        <span class="interest-tag">Robotics</span>
-        <span class="interest-tag">Efficient AI</span>
-    </div>
-</section>
-
 <!-- ════════════════════════ PUBLICATIONS ════════════════════════ -->
 <section class="section" id="publications">
     <div class="section-header reveal">
