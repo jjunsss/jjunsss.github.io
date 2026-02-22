@@ -291,6 +291,12 @@
         }
         .hero-bio a:hover { text-decoration-color: var(--accent); }
 
+        .hero-citation {
+            font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.25rem;
+            font-weight: 450; letter-spacing: 0.01em;
+        }
+        .hero-citation i { font-size: 0.65rem; color: var(--gold); margin-right: 0.3rem; }
+        .hero-citation strong { color: var(--gold); font-weight: 700; }
 
         .hero-links {
             display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1.5rem;
@@ -340,33 +346,28 @@
             0%, 100% { box-shadow: 0 0 4px rgba(255,100,0,0.3), 0 0 8px rgba(255,60,0,0.15); }
             50% { box-shadow: 0 0 8px rgba(255,100,0,0.5), 0 0 16px rgba(255,60,0,0.25), 0 -2px 20px rgba(255,160,0,0.15); }
         }
-        .news-badge.new:hover,
-        .news-badge.highlight:hover,
-        .pub-highlight-badge:hover {
+        .news-item:hover .news-badge,
+        .pub-card.highlight:hover .pub-highlight-badge {
             animation: fire-flicker 0.4s ease-in-out infinite, fire-glow-pulse 0.8s ease-in-out infinite;
             background: linear-gradient(to top, #ff4500, #ff8c00, #ffd700);
             color: #fff;
             text-shadow: 0 0 4px rgba(255,200,0,0.6);
         }
-        .news-badge.new:hover::before,
-        .news-badge.highlight:hover::before,
-        .pub-highlight-badge:hover::before,
-        .news-badge.new:hover::after,
-        .news-badge.highlight:hover::after,
-        .pub-highlight-badge:hover::after {
+        .news-item:hover .news-badge::before,
+        .pub-card.highlight:hover .pub-highlight-badge::before,
+        .news-item:hover .news-badge::after,
+        .pub-card.highlight:hover .pub-highlight-badge::after {
             content: ''; position: absolute; border-radius: 50%;
             animation: fire-particle 0.6s ease-out infinite;
             pointer-events: none;
         }
-        .news-badge.new:hover::before,
-        .news-badge.highlight:hover::before,
-        .pub-highlight-badge:hover::before {
+        .news-item:hover .news-badge::before,
+        .pub-card.highlight:hover .pub-highlight-badge::before {
             width: 4px; height: 4px; background: #ff6a00;
             top: -2px; left: 20%; animation-delay: 0s;
         }
-        .news-badge.new:hover::after,
-        .news-badge.highlight:hover::after,
-        .pub-highlight-badge:hover::after {
+        .news-item:hover .news-badge::after,
+        .pub-card.highlight:hover .pub-highlight-badge::after {
             width: 3px; height: 3px; background: #ffd700;
             top: -2px; right: 25%; animation-delay: 0.25s;
         }
@@ -738,6 +739,7 @@
                     <a href="https://sites.google.com/site/dyhan0920/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Dongyoon Han</a>.
                     I also served as an <strong>NVIDIA DLI Ambassador</strong> and led the NVIDIA × MODULABS Foundation Models Lab.
                 </p>
+                <p class="hero-citation reveal reveal-delay-3"><i class="fas fa-quote-left"></i> Total Citations: <strong>108</strong></p>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link shimmer-btn"><i class="fas fa-envelope"></i> Email</a>
                     <a href="https://scholar.google.com/citations?user=YOUR_ID" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-graduation-cap"></i> Scholar</a>
