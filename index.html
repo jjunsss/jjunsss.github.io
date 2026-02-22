@@ -291,12 +291,32 @@
         }
         .hero-bio a:hover { text-decoration-color: var(--accent); }
 
-        .hero-citation {
-            font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.25rem;
-            font-weight: 450; letter-spacing: 0.01em;
+        .citation-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.65rem;
+            border-radius: 100px; letter-spacing: 0.02em;
+            position: relative; white-space: nowrap; margin-left: 0.5rem;
         }
-        .hero-citation i { font-size: 0.65rem; color: var(--gold); margin-right: 0.3rem; }
-        .hero-citation strong { color: var(--gold); font-weight: 700; }
+        .citation-badge.fire-always {
+            animation: fire-flicker 0.4s ease-in-out infinite, fire-glow-pulse 0.8s ease-in-out infinite;
+            background: linear-gradient(to top, #ff4500, #ff8c00, #ffd700);
+            color: #fff;
+            text-shadow: 0 0 4px rgba(255,200,0,0.6);
+        }
+        .citation-badge.fire-always::before,
+        .citation-badge.fire-always::after {
+            content: ''; position: absolute; border-radius: 50%;
+            animation: fire-particle 0.6s ease-out infinite;
+            pointer-events: none;
+        }
+        .citation-badge.fire-always::before {
+            width: 4px; height: 4px; background: #ff6a00;
+            top: -2px; left: 20%; animation-delay: 0s;
+        }
+        .citation-badge.fire-always::after {
+            width: 3px; height: 3px; background: #ffd700;
+            top: -2px; right: 25%; animation-delay: 0.25s;
+        }
 
         .hero-links {
             display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1.5rem;
@@ -739,7 +759,6 @@
                     <a href="https://sites.google.com/site/dyhan0920/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Dongyoon Han</a>.
                     I also served as an <strong>NVIDIA DLI Ambassador</strong> and led the NVIDIA × MODULABS Foundation Models Lab.
                 </p>
-                <p class="hero-citation reveal reveal-delay-3"><i class="fas fa-quote-left"></i> Total Citations: <strong>108+</strong></p>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link shimmer-btn"><i class="fas fa-envelope"></i> Email</a>
                     <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-graduation-cap"></i> Scholar</a>
@@ -780,6 +799,7 @@
 <section class="section" id="publications">
     <div class="section-header reveal">
         <h2>Publications</h2>
+        <span class="citation-badge fire-always"><i class="fas fa-fire"></i> 108+ Citations</span>
         <div class="section-line"></div>
     </div>
 
