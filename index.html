@@ -576,9 +576,9 @@
         }
         .gallery-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
         .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+            width: 100%; height: 100%; object-fit: contain; transition: transform 0.6s ease;
         }
-        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-item:hover img { transform: scale(1.15); }
         .gallery-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 2.5rem 0.75rem 0.65rem;
@@ -678,7 +678,7 @@
         <div class="hero-grid">
             <div class="reveal">
                 <div class="hero-photo-wrap" id="diffusionWrap" title="Click to replay diffusion">
-                    <img class="hero-photo" src="https://lh3.googleusercontent.com/sitesv/APaQ0SQBSon30onyU2p0nSD-VBFNPvc4nO7K4qKPW1TrEPa_c-_mBJxatrllQSKX-0dbieHHfZhEOxq5pmKcMNOf7FZhVpuYLPVT-VyWYtDK0ojXhjaO8yBBj3fM2ryuSXPVvwUaGXMkCH7hfnHYAnIyvW_m_KC8UJKin2DXCNE717MUr1R2El9T7oRsjKnJlIFvrMgv2jM1tauFc7kL3u5_SXKqX72R6zezJkzI=w1280" alt="Junsu Kim">
+                    <img class="hero-photo" src="images/profile.jpg" alt="Junsu Kim">
                     <canvas id="diffusionCanvas" class="diffusion-canvas"></canvas>
                     <div id="diffusionStep" class="diffusion-step">t=1000</div>
                 </div>
@@ -790,8 +790,7 @@
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img">
-                                <!-- Replace with your paper figure -->
-                                <span>Paper Figure</span>
+                                <img src="images/papers/sddgr.png" alt="SDDGR Figure">
                             </div>
                             <div class="pub-summary-text">
                                 Proposes using Stable Diffusion as a generative replay mechanism for class incremental object detection, effectively mitigating catastrophic forgetting while maintaining high-quality synthetic data generation.
@@ -815,7 +814,7 @@
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/bright.png" alt="B-RIGHT Figure"></div>
                             <div class="pub-summary-text">A systematic re-evaluation of existing HOI benchmarks, revealing integrity issues and proposing new evaluation protocols for generalized human-object interaction testing.</div>
                         </div>
                     </span>
@@ -836,7 +835,7 @@
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/fscil-synthetic.png" alt="FSCIL Synthetic Figure"></div>
                             <div class="pub-summary-text">Investigates whether synthetic image generation can effectively address catastrophic forgetting in few-shot class-incremental learning, challenging common assumptions in the field.</div>
                         </div>
                     </span>
@@ -858,7 +857,7 @@
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/rpe.png" alt="RPE Figure"></div>
                             <div class="pub-summary-text">Critically examines the reliability of reasoning-based pose estimation benchmarks, identifying systematic biases and proposing refined evaluation metrics.</div>
                         </div>
                     </span>
@@ -872,14 +871,14 @@
                     <span class="pub-venue arxiv">ArXiv 2025</span>
                     <span class="pub-year">2025</span>
                 </div>
-                <div class="pub-title">Diffusion Meets Few-shot Class Incremental Learning</div>
+                <div class="pub-title">Beyond Synthetic Replays: Turning Diffusion Features into Few-Shot Class-Incremental Learning Knowledge</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han†, S. Baek†</div>
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/diffusion-fscil.png" alt="Diffusion FSCIL Figure"></div>
                             <div class="pub-summary-text">Bridges diffusion models with few-shot class incremental learning, leveraging generative priors to overcome data scarcity and catastrophic forgetting simultaneously.</div>
                         </div>
                     </span>
@@ -900,7 +899,7 @@
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/vlmpl.png" alt="VLM-PL Figure"></div>
                             <div class="pub-summary-text">Leverages vision-language models for advanced pseudo labeling in class incremental object detection, improving detection accuracy on novel classes without forgetting.</div>
                         </div>
                     </span>
@@ -921,7 +920,7 @@
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
-                            <div class="pub-summary-img"><span>Paper Figure</span></div>
+                            <div class="pub-summary-img"><img src="images/papers/icassp.png" alt="ICASSP Figure"></div>
                             <div class="pub-summary-text">Introduces a class-wise buffer management strategy for incremental object detection that optimizes exemplar selection and training to balance old and new class performance.</div>
                         </div>
                     </span>
@@ -1067,34 +1066,39 @@
     </div>
     <div class="gallery-grid reveal">
         <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SR58OIq_Hz3WUhs-llCR0eXMedkFEyMCdgCVRcXoQ7lUZIg1fDo4xww8PSNobxQnkKrq6VeKMb3JC1_lP6DrflRmue_ViKMaGLhYzDmZNCyWw6mgz3iDMGjFcZiozNXZnUTRIP_Qf5dpBrOOllMgqnqsaMgVbaM5nm-3ncPJNpjMFo7yTMDEfzNRthjr4iR8Rj1P9m0bIK2NM46omHp0NcdfAhJ65xQ1cSM=w1280" alt="CVPR 2024">
+            <img src="images/cvpr2024.jpg" alt="CVPR 2024">
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">CVPR 2024 — Highlight Poster</div>
         </div>
         <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STRjYHaFY8NEvnKVUrOUkjOqja72rxOuYpMJ2L15HLVr75MQJLQwslaqzeA002ylXw9LLAGyphLGyseRH9FZ2gh02sxZUhms6z3z4Ebztgr1PFqfvLz2QSGa9K3iXMArvNB_cwHuefeUzIhy51g7Y0VpMXLc7XTbx657y0ev1j8lgmnPFvm5pQ8FqFBSwYhofYZ2FUFEBa6YPcLuEFRikHz3aEqwasGMCEJTRo=w1280" alt="CVPR 2024 Workshop">
+            <img src="images/cvpr2024-workshop.jpg" alt="CVPR 2024 Workshop">
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">CVPR 2024 — Workshop</div>
         </div>
         <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STvTsOf14whpVHq0SnuI_ZXw8qagwBNKKbydu0ixUz1EOC9lfk6QVi-tAVisxwIAUIaJM0Ib7VbWbYA6FkTUtPEVWR5Iqr68zxvLM3ScGAStTZKAePF_ZWcsjiqb7pXqqVxmMnwT8PgToxUQmF5d0CfSp7hFlqJk0WYn01xe2xGEFKRa61qRgsd1k-VobrIlgF_GnQm8x_TeIueGDMgcMOAlmUBxgsGcBRS=w1280" alt="KCCV 2024">
+            <img src="images/BMVC2025.png" alt="BMVC 2025">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">BMVC 2025</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="images/ICCV2025.png" alt="ICCV 2025">
+            <canvas class="gallery-diffusion"></canvas>
+            <div class="gallery-caption">ICCV 2025 — Workshop</div>
+        </div>
+        <div class="gallery-item" data-diffuse>
+            <img src="images/kccv2024.jpg" alt="KCCV 2024">
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">KCCV 2024 — Poster</div>
         </div>
         <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SQ-6TEduFeFyMH0LiKwIub6D51ETtM2ShQmUhpIWUoPExEfw5Rh_Lrc9Ip5L5rChgvAyh0SL6TPnTAXLjCBxKqEGh5NqSvQLRD4AwRwmawNkHo7Gw6zcfnPzjAE7KhQUVinwTRq1140mfMa206KNt-HV9ITDmXiUDM1khESKHFidGQ5Hb2pBkm15ZhDGF8J-aZudB5SgePWwEnUbrtOiLAA8DXadnlaKPqGLAM=w1280" alt="Innovation Symposium 2024">
+            <img src="images/symposium2024.png" alt="Innovation Symposium 2024">
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">Digital Innovators Symposium 2024</div>
         </div>
         <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0SRbBLcSwWbiaPadIVHtfK5rZ2zVuMSG1QrlSQGt3rOesdwCW5LTsOUCHkpW27EkNdaXIyaT_x5PB0bxLMY2ZZjAjmy4BgAfkb7GLtP7paI2dkQNrRTpCorRPrqvhHPlRaLnfrmSoHhJNK_ldH49NA-Q_TUcTU31saD2XpfneBh3yvZQcAFvMgy_KJ1Pnj8Alu9XnFS1rcG5QMX9ISdbaHI9fcGBbisIVT0HNz4=w1280" alt="ICASSP 2024">
+            <img src="images/ICASSP2024.jpg" alt="ICASSP 2024">
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">ICASSP 2024 — Seoul</div>
-        </div>
-        <div class="gallery-item" data-diffuse>
-            <img src="https://lh3.googleusercontent.com/sitesv/APaQ0STf6hM-q-W1Ga5w3cI13I4hrarNpAixzXWmqge-A3rwwekmnzeu-zNGMJ3fXqbOWQeJ3hIFrt9V0zk6y_ab9A6iDgSQpIGMiFI-E6gH_e5CZl546Uac_Y_qE1BQDHszlBZfwulmTdQWNwYH3eN3MDqqWaGhKr3Ag7eSyh-CbZ5SkNmZbQsdSKITLUNIRaHFtlwbMHVR43ta_lhcfI_1whqVkoxR7llYP9b2=w1280" alt="CVPR 2023 Workshop">
-            <canvas class="gallery-diffusion"></canvas>
-            <div class="gallery-caption">CVPR 2023 — Workshop</div>
         </div>
     </div>
 </section>
@@ -1374,14 +1378,30 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
+        // Pre-render noise on all gallery canvases immediately (visible as static noise)
+        document.querySelectorAll('[data-diffuse]').forEach(item => {
+            const c = item.querySelector('.gallery-diffusion');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            const dpr = window.devicePixelRatio;
+            const w = item.offsetWidth || 280;
+            const h = item.offsetHeight || 210;
+            c.width = w * dpr;
+            c.height = h * dpr;
+            ctx.scale(dpr, dpr);
+            c.style.opacity = 1;
+            drawGalleryNoise(ctx, c.width, c.height, 1.0);
+        });
+
         function animateGalleryItem(item) {
             const c = item.querySelector('.gallery-diffusion');
             if (!c) return;
             const ctx = c.getContext('2d');
-            const rect = item.getBoundingClientRect();
             const dpr = window.devicePixelRatio;
-            c.width = rect.width * dpr;
-            c.height = rect.height * dpr;
+            const w = item.offsetWidth || 280;
+            const h = item.offsetHeight || 210;
+            c.width = w * dpr;
+            c.height = h * dpr;
             ctx.scale(dpr, dpr);
 
             const duration = 2000;
@@ -1412,18 +1432,18 @@
             item._galleryAnim = anim;
         }
 
-        // Trigger gallery diffusion when gallery scrolls into view
+        // Trigger denoising as soon as gallery scrolls into view
         const galleryObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const items = entry.target.querySelectorAll('[data-diffuse]');
                     items.forEach((item, i) => {
-                        setTimeout(() => animateGalleryItem(item), i * 200);
+                        setTimeout(() => animateGalleryItem(item), i * 150);
                     });
                     galleryObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.1 });
 
         const galleryGrid = document.querySelector('.gallery-grid');
         if (galleryGrid) galleryObserver.observe(galleryGrid);
