@@ -1561,8 +1561,6 @@
         const ctx = canvas.getContext('2d');
         const BUBBLE_COUNT = 13;
         const bubbles = [];
-        let tiltX = 0, tiltY = 0;
-        let smoothTiltX = 0, smoothTiltY = 0;
         let scrollForce = 0;
         let smoothScrollForce = 0;
         let lastScrollY = window.scrollY;
@@ -1653,11 +1651,9 @@
             const w = window.innerWidth;
             const h = window.innerHeight;
 
-            // Smooth interpolation
-            smoothTiltX += (tiltX - smoothTiltX) * 0.12;
-            smoothTiltY += (tiltY - smoothTiltY) * 0.12;
+            // Smooth scroll force interpolation
             smoothScrollForce += (scrollForce - smoothScrollForce) * 0.15;
-            scrollForce *= 0.92; // decay scroll force
+            scrollForce *= 0.92;
 
             ctx.clearRect(0, 0, w, h);
 
@@ -1665,17 +1661,11 @@
                 const b = bubbles[i];
 
                 const wobble = Math.sin(time * 0.001 * b.wobbleSpeed + b.phase) * b.wobbleAmp;
-
-                // Tilt force — faster response (1.5x X, 0.8x Y)
                 const sizeFactor = 1 - (b.radius - 12) / 76;
-                const tiltForceX = smoothTiltX * 1.5 * (0.5 + sizeFactor * 0.5);
-                const tiltForceY = smoothTiltY * 0.8 * (0.5 + sizeFactor * 0.5);
-
-                // Scroll force — scroll down pushes bubbles up, scroll up pushes down
                 const scrollPush = smoothScrollForce * (0.5 + sizeFactor * 0.5);
 
-                b.x += b.vx + wobble + tiltForceX;
-                b.y += b.vy + tiltForceY + scrollPush;
+                b.x += b.vx + wobble;
+                b.y += b.vy + scrollPush;
 
                 // Wrap-around
                 if (b.y + b.radius < -20) { b.y = h + b.radius + 10; b.x = Math.random() * w; }
@@ -1691,37 +1681,13 @@
 
         animId = requestAnimationFrame(animate);
 
-        // ── Desktop: scroll interaction ──
+        // ── Scroll interaction (desktop + mobile) ──
         window.addEventListener('scroll', () => {
             const currentY = window.scrollY;
             const delta = currentY - lastScrollY;
-            // Scroll down (delta > 0) → push bubbles up (negative force)
             scrollForce = -delta * 0.15;
             lastScrollY = currentY;
         }, { passive: true });
-
-        // ── Mobile: gyroscope handling ──
-        function handleOrientation(e) {
-            if (e.gamma !== null) tiltX = (e.gamma || 0) / 30; // wider range for faster response
-            if (e.beta !== null) tiltY = ((e.beta || 0) - 45) / 30;
-            tiltX = Math.max(-1.5, Math.min(1.5, tiltX));
-            tiltY = Math.max(-1.5, Math.min(1.5, tiltY));
-        }
-
-        if (typeof DeviceOrientationEvent !== 'undefined' &&
-            typeof DeviceOrientationEvent.requestPermission === 'function') {
-            document.addEventListener('touchstart', function requestGyro() {
-                DeviceOrientationEvent.requestPermission()
-                    .then(state => {
-                        if (state === 'granted') {
-                            window.addEventListener('deviceorientation', handleOrientation);
-                        }
-                    }).catch(() => {});
-                document.removeEventListener('touchstart', requestGyro);
-            }, { once: true });
-        } else if ('DeviceOrientationEvent' in window) {
-            window.addEventListener('deviceorientation', handleOrientation);
-        }
 
         // Theme change: update bubble colors
         const themeObserver = new MutationObserver(() => {
