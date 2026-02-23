@@ -696,8 +696,16 @@
         .reveal-delay-3 { transition-delay: 0.3s; }
         .reveal-delay-4 { transition-delay: 0.4s; }
 
+        /* ═══════════════════════ BUBBLE CANVAS ═══════════════════════ */
+        #bubble-canvas { display: none; }
+
         /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
         @media (max-width: 768px) {
+            #bubble-canvas {
+                display: block; position: fixed; inset: 0;
+                z-index: 0; pointer-events: none;
+                width: 100%; height: 100%;
+            }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
@@ -732,6 +740,8 @@
     </style>
 </head>
 <body>
+
+<canvas id="bubble-canvas"></canvas>
 
 <!-- ════════════════════════ NAVIGATION ════════════════════════ -->
 <nav id="navbar">
@@ -1545,6 +1555,188 @@
         }, { threshold: 0.5 });
         countObserver.observe(citNum);
     }
+    })();
+
+    // ═══════════════════ MOBILE GYROSCOPE BUBBLES ═══════════════════
+    (function() {
+        const canvas = document.getElementById('bubble-canvas');
+        if (!canvas) return;
+
+        function isMobileView() {
+            return getComputedStyle(canvas).display !== 'none';
+        }
+        if (!isMobileView()) return;
+
+        const ctx = canvas.getContext('2d');
+        const BUBBLE_COUNT = 13;
+        const bubbles = [];
+        let tiltX = 0, tiltY = 0;
+        let smoothTiltX = 0, smoothTiltY = 0;
+        let animId = null;
+        let gyroEnabled = false;
+
+        function sizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+        }
+        sizeCanvas();
+        window.addEventListener('resize', () => {
+            if (!isMobileView()) return;
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            sizeCanvas();
+        });
+
+        function getBubbleColors() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                return [
+                    { r: 129, g: 140, b: 248 }, // indigo
+                    { r: 167, g: 139, b: 250 }, // purple
+                    { r: 196, g: 181, b: 253 }, // light purple
+                    { r: 165, g: 180, b: 252 }, // periwinkle
+                    { r: 134, g: 239, b: 172 }, // mint
+                ];
+            }
+            return [
+                { r: 79, g: 70, b: 229 },   // indigo
+                { r: 124, g: 58, b: 237 },  // purple
+                { r: 236, g: 72, b: 153 },  // pink
+                { r: 99, g: 102, b: 241 },  // blue-indigo
+                { r: 5, g: 150, b: 105 },   // emerald
+            ];
+        }
+
+        function createBubble(idx) {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const colors = getBubbleColors();
+            const color = colors[idx % colors.length];
+            return {
+                x: Math.random() * w,
+                y: Math.random() * h,
+                radius: 12 + Math.random() * 38,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: -(0.15 + Math.random() * 0.35),
+                opacity: 0.06 + Math.random() * 0.12,
+                color: color,
+                phase: Math.random() * Math.PI * 2,
+                wobbleSpeed: 0.3 + Math.random() * 0.5,
+                wobbleAmp: 0.3 + Math.random() * 0.5,
+            };
+        }
+
+        for (let i = 0; i < BUBBLE_COUNT; i++) {
+            bubbles.push(createBubble(i));
+        }
+
+        function drawBubble(b) {
+            const { x, y, radius, opacity, color } = b;
+
+            // Main bubble body
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
+            ctx.fill();
+
+            // Subtle border
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.6})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+
+            // Glass highlight (top-left arc)
+            ctx.beginPath();
+            ctx.arc(x - radius * 0.25, y - radius * 0.25, radius * 0.55, Math.PI * 1.1, Math.PI * 1.9);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 1.2})`;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            // Small bright spot
+            ctx.beginPath();
+            ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.12, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 1.5})`;
+            ctx.fill();
+        }
+
+        function animate(time) {
+            if (!isMobileView()) { animId = null; return; }
+
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            // Smooth tilt interpolation
+            smoothTiltX += (tiltX - smoothTiltX) * 0.08;
+            smoothTiltY += (tiltY - smoothTiltY) * 0.08;
+
+            ctx.clearRect(0, 0, w, h);
+
+            for (let i = 0; i < bubbles.length; i++) {
+                const b = bubbles[i];
+
+                // Natural wobble
+                const wobble = Math.sin(time * 0.001 * b.wobbleSpeed + b.phase) * b.wobbleAmp;
+
+                // Apply tilt force (scaled by bubble size — bigger = slower)
+                const sizeFactor = 1 - (b.radius - 12) / 76;
+                const tiltForceX = smoothTiltX * 0.6 * (0.5 + sizeFactor * 0.5);
+                const tiltForceY = smoothTiltY * 0.3 * (0.5 + sizeFactor * 0.5);
+
+                b.x += b.vx + wobble + tiltForceX;
+                b.y += b.vy + tiltForceY;
+
+                // Wrap-around
+                if (b.y + b.radius < -20) { b.y = h + b.radius + 10; b.x = Math.random() * w; }
+                if (b.y - b.radius > h + 20) { b.y = -b.radius - 10; b.x = Math.random() * w; }
+                if (b.x + b.radius < -20) b.x = w + b.radius + 10;
+                if (b.x - b.radius > w + 20) b.x = -b.radius - 10;
+
+                drawBubble(b);
+            }
+
+            animId = requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animId = requestAnimationFrame(animate);
+
+        // ── Gyroscope handling ──
+        function handleOrientation(e) {
+            if (e.gamma !== null) tiltX = (e.gamma || 0) / 45; // -1 to 1
+            if (e.beta !== null) tiltY = ((e.beta || 0) - 45) / 45; // normalize around 45° (phone held upright)
+            // Clamp
+            tiltX = Math.max(-1, Math.min(1, tiltX));
+            tiltY = Math.max(-1, Math.min(1, tiltY));
+        }
+
+        // iOS 13+ requires permission
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+            // Request on first touch
+            document.addEventListener('touchstart', function requestGyro() {
+                DeviceOrientationEvent.requestPermission()
+                    .then(state => {
+                        if (state === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                            gyroEnabled = true;
+                        }
+                    }).catch(() => {});
+                document.removeEventListener('touchstart', requestGyro);
+            }, { once: true });
+        } else if ('DeviceOrientationEvent' in window) {
+            window.addEventListener('deviceorientation', handleOrientation);
+            gyroEnabled = true;
+        }
+
+        // Theme change: update bubble colors
+        const themeObserver = new MutationObserver(() => {
+            const colors = getBubbleColors();
+            bubbles.forEach((b, i) => { b.color = colors[i % colors.length]; });
+        });
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
     })();
 </script>
 
