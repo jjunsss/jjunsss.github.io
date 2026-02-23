@@ -102,7 +102,7 @@
             transition: background var(--transition-slow), color var(--transition-slow);
         }
         body::before {
-            content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
             background:
                 radial-gradient(ellipse 80% 50% at 20% 10%, rgba(79,70,229,0.07) 0%, transparent 60%),
                 radial-gradient(ellipse 60% 40% at 80% 30%, rgba(236,72,153,0.05) 0%, transparent 55%),
@@ -110,6 +110,57 @@
                 radial-gradient(ellipse 60% 45% at 15% 75%, rgba(5,150,105,0.05) 0%, transparent 55%),
                 radial-gradient(ellipse 50% 40% at 85% 85%, rgba(124,58,237,0.06) 0%, transparent 50%);
             animation: bg-drift 25s ease-in-out infinite alternate;
+        }
+        .bubble-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+            display: none;
+        }
+        .bubble {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at 32% 25%,
+                rgba(255,255,255,0.72) 0%,
+                rgba(255,255,255,0.18) 35%,
+                rgba(var(--accent-rgb),0.12) 67%,
+                rgba(var(--accent-rgb),0.04) 100%
+            );
+            border: 1px solid rgba(var(--accent-rgb), 0.16);
+            box-shadow: inset 0 0 14px rgba(255,255,255,0.22), 0 12px 24px rgba(var(--accent-rgb),0.08);
+            will-change: transform;
+        }
+        .motion-toggle {
+            position: fixed;
+            right: 0.9rem;
+            bottom: 1rem;
+            z-index: 1001;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.72);
+            color: var(--text-primary);
+            border-radius: 999px;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            display: none;
+        }
+        .motion-toggle.show {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [data-theme="dark"] .motion-toggle {
+            background: rgba(17,24,39,0.76);
+            border-color: #374151;
         }
         @keyframes bg-drift {
             0% { transform: translate(0, 0) scale(1); }
@@ -514,7 +565,7 @@
         }
         .pub-venue.top { background: var(--venue-top-bg); color: var(--venue-top); }
         .pub-venue.workshop { background: var(--venue-workshop-bg); color: var(--venue-workshop); }
-        .pub-venue.arxiv { background: var(--bg-secondary); color: var (--text-muted); }
+        .pub-venue.arxiv { background: var(--bg-secondary); color: var(--text-muted); }
 
         .pub-year { font-size: 0.73rem; color: var(--text-muted); font-weight: 450; }
         .pub-highlight-badge {
@@ -539,7 +590,7 @@
             color: var(--text-secondary); transition: var(--transition);
             display: inline-flex; align-items: center; gap: 0.2rem;
         }
-        .pub-link:hover { color: var (--accent); border-color: var(--accent); background: var(--accent-light); }
+        .pub-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
 
         /* ═══════ SUMMARY TOOLTIP ═══════ */
         .pub-summary-trigger {
@@ -721,6 +772,13 @@
             .pub-carousel-nav { display: none; }
             .diffusion-hint { display: none !important; }
         }
+        @media (max-width: 768px) and (pointer: coarse) {
+            .bubble-layer { display: block; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .bubble-layer,
+            .motion-toggle { display: none !important; }
+        }
 
         /* ═══════════════════════ SCROLLBAR ═══════════════════════ */
         ::-webkit-scrollbar { width: 6px; }
@@ -732,6 +790,8 @@
     </style>
 </head>
 <body>
+<div id="bubbleLayer" class="bubble-layer" aria-hidden="true"></div>
+<button id="motionToggle" class="motion-toggle" type="button" aria-label="Enable tilt interaction">Enable Tilt</button>
 
 <!-- ════════════════════════ NAVIGATION ════════════════════════ -->
 <nav id="navbar">
@@ -1545,6 +1605,132 @@
         }, { threshold: 0.5 });
         countObserver.observe(citNum);
     }
+    })();
+
+    // ═══════════════════════ MOBILE TILT BUBBLES ═══════════════════════
+    (function() {
+        const layer = document.getElementById('bubbleLayer');
+        const toggleBtn = document.getElementById('motionToggle');
+        if (!layer || !toggleBtn) return;
+
+        const isMobile = window.matchMedia('(max-width: 768px)').matches &&
+            window.matchMedia('(pointer: coarse)').matches;
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!isMobile || reducedMotion) return;
+
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const bubbles = [];
+        const state = {
+            tiltX: 0,
+            tiltY: 0,
+            targetTiltX: 0,
+            targetTiltY: 0,
+            rafId: null
+        };
+
+        function createBubbles() {
+            layer.innerHTML = '';
+            bubbles.length = 0;
+            const bubbleCount = 13;
+
+            for (let i = 0; i < bubbleCount; i++) {
+                const size = random(24, 96);
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.opacity = random(0.2, 0.62).toFixed(2);
+                layer.appendChild(bubble);
+
+                bubbles.push({
+                    el: bubble,
+                    size,
+                    xPct: Math.random(),
+                    yPct: Math.random(),
+                    driftAmp: random(4, 18),
+                    speed: random(0.18, 0.55),
+                    depth: random(0.45, 1.5),
+                    phase: random(0, Math.PI * 2)
+                });
+            }
+        }
+
+        function onOrientation(event) {
+            const gamma = Math.max(-35, Math.min(35, event.gamma || 0));
+            const beta = Math.max(-35, Math.min(35, event.beta || 0));
+            state.targetTiltX = (gamma / 35) * 20;
+            state.targetTiltY = (beta / 35) * 16;
+        }
+
+        function animate(now) {
+            const t = now * 0.001;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            state.tiltX += (state.targetTiltX - state.tiltX) * 0.08;
+            state.tiltY += (state.targetTiltY - state.tiltY) * 0.08;
+
+            bubbles.forEach((bubble) => {
+                const baseX = bubble.xPct * w;
+                const baseY = bubble.yPct * h;
+                const driftX = Math.sin((t * bubble.speed) + bubble.phase) * bubble.driftAmp;
+                const driftY = Math.cos((t * bubble.speed * 0.85) + bubble.phase) * bubble.driftAmp;
+                const tiltX = state.tiltX * bubble.depth;
+                const tiltY = state.tiltY * bubble.depth;
+                const x = baseX + driftX + tiltX - (bubble.size * 0.5);
+                const y = baseY + driftY + tiltY - (bubble.size * 0.5);
+                bubble.el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            });
+
+            state.rafId = requestAnimationFrame(animate);
+        }
+
+        async function enableTilt() {
+            if (typeof DeviceOrientationEvent === 'undefined') return false;
+
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission !== 'granted') return false;
+                } catch (error) {
+                    return false;
+                }
+            }
+
+            window.addEventListener('deviceorientation', onOrientation, true);
+            return true;
+        }
+
+        createBubbles();
+        state.rafId = requestAnimationFrame(animate);
+
+        if (typeof DeviceOrientationEvent !== 'undefined') {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                toggleBtn.classList.add('show');
+                toggleBtn.addEventListener('click', async () => {
+                    toggleBtn.disabled = true;
+                    const ok = await enableTilt();
+
+                    if (ok) {
+                        toggleBtn.classList.remove('show');
+                        return;
+                    }
+
+                    toggleBtn.disabled = false;
+                    toggleBtn.textContent = 'Tilt blocked';
+                    setTimeout(() => {
+                        toggleBtn.textContent = 'Enable Tilt';
+                    }, 1300);
+                });
+            } else {
+                enableTilt();
+            }
+        }
+
+        window.addEventListener('resize', createBubbles);
     })();
 </script>
 
