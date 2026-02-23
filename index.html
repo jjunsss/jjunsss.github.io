@@ -697,15 +697,14 @@
         .reveal-delay-4 { transition-delay: 0.4s; }
 
         /* ═══════════════════════ BUBBLE CANVAS ═══════════════════════ */
-        #bubble-canvas { display: none; }
+        #bubble-canvas {
+            position: fixed; inset: 0;
+            z-index: 0; pointer-events: none;
+            width: 100%; height: 100%;
+        }
 
         /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
         @media (max-width: 768px) {
-            #bubble-canvas {
-                display: block; position: fixed; inset: 0;
-                z-index: 0; pointer-events: none;
-                width: 100%; height: 100%;
-            }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
@@ -1208,10 +1207,7 @@
         localStorage.setItem('theme', next);
     }
     (function() {
-        const saved = localStorage.getItem('theme');
-        if (saved) document.documentElement.setAttribute('data-theme', saved);
-        else if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-            document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'light');
     })();
 
     // Navbar scroll
@@ -1557,23 +1553,20 @@
     }
     })();
 
-    // ═══════════════════ MOBILE GYROSCOPE BUBBLES ═══════════════════
+    // ═══════════════════ FLOATING BUBBLES ═══════════════════
     (function() {
         const canvas = document.getElementById('bubble-canvas');
         if (!canvas) return;
-
-        function isMobileView() {
-            return getComputedStyle(canvas).display !== 'none';
-        }
-        if (!isMobileView()) return;
 
         const ctx = canvas.getContext('2d');
         const BUBBLE_COUNT = 13;
         const bubbles = [];
         let tiltX = 0, tiltY = 0;
         let smoothTiltX = 0, smoothTiltY = 0;
+        let scrollForce = 0;
+        let smoothScrollForce = 0;
+        let lastScrollY = window.scrollY;
         let animId = null;
-        let gyroEnabled = false;
 
         function sizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
@@ -1583,7 +1576,6 @@
         }
         sizeCanvas();
         window.addEventListener('resize', () => {
-            if (!isMobileView()) return;
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             sizeCanvas();
         });
@@ -1592,19 +1584,19 @@
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             if (isDark) {
                 return [
-                    { r: 129, g: 140, b: 248 }, // indigo
-                    { r: 167, g: 139, b: 250 }, // purple
-                    { r: 196, g: 181, b: 253 }, // light purple
-                    { r: 165, g: 180, b: 252 }, // periwinkle
-                    { r: 134, g: 239, b: 172 }, // mint
+                    { r: 129, g: 140, b: 248 },
+                    { r: 167, g: 139, b: 250 },
+                    { r: 196, g: 181, b: 253 },
+                    { r: 165, g: 180, b: 252 },
+                    { r: 134, g: 239, b: 172 },
                 ];
             }
             return [
-                { r: 79, g: 70, b: 229 },   // indigo
-                { r: 124, g: 58, b: 237 },  // purple
-                { r: 236, g: 72, b: 153 },  // pink
-                { r: 99, g: 102, b: 241 },  // blue-indigo
-                { r: 5, g: 150, b: 105 },   // emerald
+                { r: 79, g: 70, b: 229 },
+                { r: 124, g: 58, b: 237 },
+                { r: 236, g: 72, b: 153 },
+                { r: 99, g: 102, b: 241 },
+                { r: 5, g: 150, b: 105 },
             ];
         }
 
@@ -1634,27 +1626,23 @@
         function drawBubble(b) {
             const { x, y, radius, opacity, color } = b;
 
-            // Main bubble body
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
             ctx.fill();
 
-            // Subtle border
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
             ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.6})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
 
-            // Glass highlight (top-left arc)
             ctx.beginPath();
             ctx.arc(x - radius * 0.25, y - radius * 0.25, radius * 0.55, Math.PI * 1.1, Math.PI * 1.9);
             ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 1.2})`;
             ctx.lineWidth = 1.2;
             ctx.stroke();
 
-            // Small bright spot
             ctx.beginPath();
             ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.12, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 1.5})`;
@@ -1662,30 +1650,32 @@
         }
 
         function animate(time) {
-            if (!isMobileView()) { animId = null; return; }
-
             const w = window.innerWidth;
             const h = window.innerHeight;
 
-            // Smooth tilt interpolation
-            smoothTiltX += (tiltX - smoothTiltX) * 0.08;
-            smoothTiltY += (tiltY - smoothTiltY) * 0.08;
+            // Smooth interpolation
+            smoothTiltX += (tiltX - smoothTiltX) * 0.12;
+            smoothTiltY += (tiltY - smoothTiltY) * 0.12;
+            smoothScrollForce += (scrollForce - smoothScrollForce) * 0.15;
+            scrollForce *= 0.92; // decay scroll force
 
             ctx.clearRect(0, 0, w, h);
 
             for (let i = 0; i < bubbles.length; i++) {
                 const b = bubbles[i];
 
-                // Natural wobble
                 const wobble = Math.sin(time * 0.001 * b.wobbleSpeed + b.phase) * b.wobbleAmp;
 
-                // Apply tilt force (scaled by bubble size — bigger = slower)
+                // Tilt force — faster response (1.5x X, 0.8x Y)
                 const sizeFactor = 1 - (b.radius - 12) / 76;
-                const tiltForceX = smoothTiltX * 0.6 * (0.5 + sizeFactor * 0.5);
-                const tiltForceY = smoothTiltY * 0.3 * (0.5 + sizeFactor * 0.5);
+                const tiltForceX = smoothTiltX * 1.5 * (0.5 + sizeFactor * 0.5);
+                const tiltForceY = smoothTiltY * 0.8 * (0.5 + sizeFactor * 0.5);
+
+                // Scroll force — scroll down pushes bubbles up, scroll up pushes down
+                const scrollPush = smoothScrollForce * (0.5 + sizeFactor * 0.5);
 
                 b.x += b.vx + wobble + tiltForceX;
-                b.y += b.vy + tiltForceY;
+                b.y += b.vy + tiltForceY + scrollPush;
 
                 // Wrap-around
                 if (b.y + b.radius < -20) { b.y = h + b.radius + 10; b.x = Math.random() * w; }
@@ -1699,35 +1689,38 @@
             animId = requestAnimationFrame(animate);
         }
 
-        // Start animation
         animId = requestAnimationFrame(animate);
 
-        // ── Gyroscope handling ──
+        // ── Desktop: scroll interaction ──
+        window.addEventListener('scroll', () => {
+            const currentY = window.scrollY;
+            const delta = currentY - lastScrollY;
+            // Scroll down (delta > 0) → push bubbles up (negative force)
+            scrollForce = -delta * 0.15;
+            lastScrollY = currentY;
+        }, { passive: true });
+
+        // ── Mobile: gyroscope handling ──
         function handleOrientation(e) {
-            if (e.gamma !== null) tiltX = (e.gamma || 0) / 45; // -1 to 1
-            if (e.beta !== null) tiltY = ((e.beta || 0) - 45) / 45; // normalize around 45° (phone held upright)
-            // Clamp
-            tiltX = Math.max(-1, Math.min(1, tiltX));
-            tiltY = Math.max(-1, Math.min(1, tiltY));
+            if (e.gamma !== null) tiltX = (e.gamma || 0) / 30; // wider range for faster response
+            if (e.beta !== null) tiltY = ((e.beta || 0) - 45) / 30;
+            tiltX = Math.max(-1.5, Math.min(1.5, tiltX));
+            tiltY = Math.max(-1.5, Math.min(1.5, tiltY));
         }
 
-        // iOS 13+ requires permission
         if (typeof DeviceOrientationEvent !== 'undefined' &&
             typeof DeviceOrientationEvent.requestPermission === 'function') {
-            // Request on first touch
             document.addEventListener('touchstart', function requestGyro() {
                 DeviceOrientationEvent.requestPermission()
                     .then(state => {
                         if (state === 'granted') {
                             window.addEventListener('deviceorientation', handleOrientation);
-                            gyroEnabled = true;
                         }
                     }).catch(() => {});
                 document.removeEventListener('touchstart', requestGyro);
             }, { once: true });
         } else if ('DeviceOrientationEvent' in window) {
             window.addEventListener('deviceorientation', handleOrientation);
-            gyroEnabled = true;
         }
 
         // Theme change: update bubble colors
