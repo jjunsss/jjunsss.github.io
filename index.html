@@ -1547,7 +1547,7 @@
                 requestAnimationFrame(step);
                 countObserver.unobserve(entry.target);
             });
-        }, { threshold: 0.5 });
+        }, { threshold: 1.0, rootMargin: '-45% 0px -45% 0px' });
         countObserver.observe(citNum);
     }
     })();
