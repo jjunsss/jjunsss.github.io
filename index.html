@@ -1205,7 +1205,8 @@
         localStorage.setItem('theme', next);
     }
     (function() {
-        document.documentElement.setAttribute('data-theme', 'light');
+        const h = new Date().getHours();
+        document.documentElement.setAttribute('data-theme', (h >= 18 || h < 6) ? 'dark' : 'light');
     })();
 
     // Navbar scroll
@@ -1557,7 +1558,7 @@
         if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
-        const PARTICLE_COUNT = 13;
+        const PARTICLE_COUNT = isDark() ? 35 : 13;
         const particles = [];
         let scrollForce = 0;
         let smoothScrollForce = 0;
@@ -1610,10 +1611,10 @@
                 wobbleSpeed: 0.3 + Math.random() * 0.5,
                 wobbleAmp: 0.3 + Math.random() * 0.5,
                 // Star-specific
-                starSize: 1 + Math.random() * 2.5,
-                twinkleSpeed: 0.5 + Math.random() * 1.5,
+                starSize: 1.5 + Math.random() * 4,
+                twinkleSpeed: 0.5 + Math.random() * 2,
                 twinklePhase: Math.random() * Math.PI * 2,
-                baseStarOpacity: 0.3 + Math.random() * 0.6,
+                baseStarOpacity: 0.5 + Math.random() * 0.5,
             };
         }
 
@@ -1648,12 +1649,22 @@
 
         function drawStar(p, time) {
             const twinkle = Math.sin(time * 0.001 * p.twinkleSpeed + p.twinklePhase);
-            const opacity = p.baseStarOpacity * (0.4 + 0.6 * (twinkle * 0.5 + 0.5));
-            const size = p.starSize * (0.8 + 0.2 * (twinkle * 0.5 + 0.5));
+            const opacity = p.baseStarOpacity * (0.3 + 0.7 * (twinkle * 0.5 + 0.5));
+            const size = p.starSize * (0.7 + 0.3 * (twinkle * 0.5 + 0.5));
 
-            // Glow
+            // Outer glow
+            const g2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 8);
+            g2.addColorStop(0, `rgba(180, 200, 255, ${opacity * 0.15})`);
+            g2.addColorStop(1, 'rgba(180, 200, 255, 0)');
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size * 8, 0, Math.PI * 2);
+            ctx.fillStyle = g2;
+            ctx.fill();
+
+            // Inner glow
             const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 4);
-            gradient.addColorStop(0, `rgba(200, 210, 255, ${opacity * 0.4})`);
+            gradient.addColorStop(0, `rgba(220, 230, 255, ${opacity * 0.6})`);
+            gradient.addColorStop(0.4, `rgba(200, 210, 255, ${opacity * 0.2})`);
             gradient.addColorStop(1, 'rgba(200, 210, 255, 0)');
             ctx.beginPath();
             ctx.arc(p.x, p.y, size * 4, 0, Math.PI * 2);
@@ -1661,18 +1672,27 @@
             ctx.fill();
 
             // Cross sparkle
-            ctx.strokeStyle = `rgba(220, 225, 255, ${opacity * 0.6})`;
-            ctx.lineWidth = 0.5;
-            const armLen = size * 2.5;
+            ctx.strokeStyle = `rgba(230, 235, 255, ${opacity * 0.7})`;
+            ctx.lineWidth = 0.8;
+            const armLen = size * 3.5;
             ctx.beginPath();
             ctx.moveTo(p.x - armLen, p.y); ctx.lineTo(p.x + armLen, p.y);
             ctx.moveTo(p.x, p.y - armLen); ctx.lineTo(p.x, p.y + armLen);
             ctx.stroke();
 
+            // Diagonal sparkle (smaller)
+            ctx.strokeStyle = `rgba(230, 235, 255, ${opacity * 0.35})`;
+            ctx.lineWidth = 0.5;
+            const diagLen = armLen * 0.55;
+            ctx.beginPath();
+            ctx.moveTo(p.x - diagLen, p.y - diagLen); ctx.lineTo(p.x + diagLen, p.y + diagLen);
+            ctx.moveTo(p.x + diagLen, p.y - diagLen); ctx.lineTo(p.x - diagLen, p.y + diagLen);
+            ctx.stroke();
+
             // Core dot
             ctx.beginPath();
-            ctx.arc(p.x, p.y, size * 0.8, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(240, 245, 255, ${opacity})`;
+            ctx.arc(p.x, p.y, size * 0.9, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(250, 252, 255, ${opacity})`;
             ctx.fill();
         }
 
