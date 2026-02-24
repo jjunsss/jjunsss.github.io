@@ -1649,10 +1649,9 @@
             stars.length = 0;
             const area = window.innerWidth * window.innerHeight;
             const density = area / (400 * 800);
-            const m = isMobile ? 0.45 : 1; // mobile: 45% density
-            const far = Math.round(45 * density * m);
-            const mid = Math.round(16 * density * m);
-            const near = Math.round(5 * density * m);
+            const far = Math.round(45 * density);
+            const mid = Math.round(16 * density);
+            const near = Math.round(5 * density);
             for (let i = 0; i < far; i++) stars.push(createStar(0));
             for (let i = 0; i < mid; i++) stars.push(createStar(1));
             for (let i = 0; i < near; i++) stars.push(createStar(2));
