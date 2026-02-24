@@ -1552,14 +1552,14 @@
     }
     })();
 
-    // ═══════════════════ FLOATING BUBBLES / STARS ═══════════════════
+    // ═══════════════════ FLOATING BUBBLES / LAYERED STARS ═══════════════════
     (function() {
         const canvas = document.getElementById('bubble-canvas');
         if (!canvas) return;
 
         const ctx = canvas.getContext('2d');
-        const PARTICLE_COUNT = isDark() ? 35 : 13;
-        const particles = [];
+        const bubbles = [];
+        const stars = [];
         let scrollForce = 0;
         let smoothScrollForce = 0;
         let lastScrollY = window.scrollY;
@@ -1582,44 +1582,100 @@
         window.addEventListener('resize', () => {
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             sizeCanvas();
+            rebuildStars();
         });
 
-        function getBubbleColors() {
-            return [
-                { r: 79, g: 70, b: 229 },
-                { r: 124, g: 58, b: 237 },
-                { r: 236, g: 72, b: 153 },
-                { r: 99, g: 102, b: 241 },
-                { r: 5, g: 150, b: 105 },
-            ];
-        }
+        // ── Star color temperatures ──
+        const STAR_COLORS = [
+            { r: 155, g: 176, b: 255 }, // blue-white (hot, O/B type)
+            { r: 170, g: 191, b: 255 }, // blue-white
+            { r: 202, g: 215, b: 255 }, // white-blue (A type)
+            { r: 248, g: 247, b: 255 }, // pure white (F type)
+            { r: 255, g: 244, b: 234 }, // warm white (G type, like sun)
+            { r: 255, g: 210, b: 161 }, // warm yellow (K type)
+            { r: 255, g: 204, b: 111 }, // amber (cool K type)
+        ];
 
-        function createParticle(idx) {
+        // ── Star layers ──
+        // Layer 0: far background — many tiny dim static dots
+        // Layer 1: mid field — medium stars with gentle twinkle
+        // Layer 2: foreground — few bright stars with glow + sparkle
+
+        function createStar(layer) {
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const colors = getBubbleColors();
-            const color = colors[idx % colors.length];
-            return {
-                x: Math.random() * w,
-                y: Math.random() * h,
+            const color = STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)];
+
+            if (layer === 0) {
+                return {
+                    layer: 0, x: Math.random() * w, y: Math.random() * h,
+                    size: 0.5 + Math.random() * 1.2,
+                    baseOpacity: 0.25 + Math.random() * 0.35,
+                    twinkleSpeed: 0.2 + Math.random() * 0.5,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    color: color,
+                    vx: 0, vy: 0,
+                    scrollFactor: 0.02,
+                };
+            } else if (layer === 1) {
+                return {
+                    layer: 1, x: Math.random() * w, y: Math.random() * h,
+                    size: 1.2 + Math.random() * 2.2,
+                    baseOpacity: 0.45 + Math.random() * 0.35,
+                    twinkleSpeed: 0.4 + Math.random() * 1.2,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    color: color,
+                    vx: (Math.random() - 0.5) * 0.04,
+                    vy: (Math.random() - 0.5) * 0.03,
+                    scrollFactor: 0.06,
+                };
+            } else {
+                return {
+                    layer: 2, x: Math.random() * w, y: Math.random() * h,
+                    size: 2.5 + Math.random() * 3.5,
+                    baseOpacity: 0.7 + Math.random() * 0.3,
+                    twinkleSpeed: 0.8 + Math.random() * 2,
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    color: color,
+                    vx: (Math.random() - 0.5) * 0.08,
+                    vy: (Math.random() - 0.5) * 0.06,
+                    scrollFactor: 0.15,
+                };
+            }
+        }
+
+        function rebuildStars() {
+            stars.length = 0;
+            const area = window.innerWidth * window.innerHeight;
+            const density = area / (400 * 800); // normalize to a phone-ish screen
+            const far = Math.round(45 * density);
+            const mid = Math.round(16 * density);
+            const near = Math.round(5 * density);
+            for (let i = 0; i < far; i++) stars.push(createStar(0));
+            for (let i = 0; i < mid; i++) stars.push(createStar(1));
+            for (let i = 0; i < near; i++) stars.push(createStar(2));
+        }
+        rebuildStars();
+
+        // ── Bubbles (light mode) ──
+        const BUBBLE_COLORS = [
+            { r: 79, g: 70, b: 229 }, { r: 124, g: 58, b: 237 },
+            { r: 236, g: 72, b: 153 }, { r: 99, g: 102, b: 241 },
+            { r: 5, g: 150, b: 105 },
+        ];
+        for (let i = 0; i < 13; i++) {
+            const w = window.innerWidth, h = window.innerHeight;
+            bubbles.push({
+                x: Math.random() * w, y: Math.random() * h,
                 radius: 12 + Math.random() * 38,
                 vx: (Math.random() - 0.5) * 0.3,
                 vy: -(0.15 + Math.random() * 0.35),
                 opacity: 0.06 + Math.random() * 0.12,
-                color: color,
+                color: BUBBLE_COLORS[i % BUBBLE_COLORS.length],
                 phase: Math.random() * Math.PI * 2,
                 wobbleSpeed: 0.3 + Math.random() * 0.5,
                 wobbleAmp: 0.3 + Math.random() * 0.5,
-                // Star-specific
-                starSize: 1.5 + Math.random() * 4,
-                twinkleSpeed: 0.5 + Math.random() * 2,
-                twinklePhase: Math.random() * Math.PI * 2,
-                baseStarOpacity: 0.5 + Math.random() * 0.5,
-            };
-        }
-
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            particles.push(createParticle(i));
+            });
         }
 
         function drawBubble(b) {
@@ -1628,76 +1684,106 @@
             ctx.arc(x, y, radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity})`;
             ctx.fill();
-
             ctx.beginPath();
             ctx.arc(x, y, radius, 0, Math.PI * 2);
             ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${opacity * 0.6})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
-
             ctx.beginPath();
             ctx.arc(x - radius * 0.25, y - radius * 0.25, radius * 0.55, Math.PI * 1.1, Math.PI * 1.9);
             ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 1.2})`;
             ctx.lineWidth = 1.2;
             ctx.stroke();
-
             ctx.beginPath();
             ctx.arc(x - radius * 0.3, y - radius * 0.3, radius * 0.12, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 1.5})`;
             ctx.fill();
         }
 
-        function drawStar(p, time) {
-            const twinkle = Math.sin(time * 0.001 * p.twinkleSpeed + p.twinklePhase);
-            const opacity = p.baseStarOpacity * (0.3 + 0.7 * (twinkle * 0.5 + 0.5));
-            const size = p.starSize * (0.7 + 0.3 * (twinkle * 0.5 + 0.5));
-
-            // Outer glow
-            const g2 = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 8);
-            g2.addColorStop(0, `rgba(180, 200, 255, ${opacity * 0.15})`);
-            g2.addColorStop(1, 'rgba(180, 200, 255, 0)');
+        // ── Star drawing per layer ──
+        function drawStarL0(s, time) {
+            const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
+            const op = s.baseOpacity * (0.5 + 0.5 * t);
             ctx.beginPath();
-            ctx.arc(p.x, p.y, size * 8, 0, Math.PI * 2);
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${s.color.r}, ${s.color.g}, ${s.color.b}, ${op})`;
+            ctx.fill();
+        }
+
+        function drawStarL1(s, time) {
+            const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
+            const op = s.baseOpacity * (0.4 + 0.6 * (t * 0.5 + 0.5));
+            const sz = s.size * (0.8 + 0.2 * (t * 0.5 + 0.5));
+            const { r, g, b } = s.color;
+
+            // Soft glow
+            const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, sz * 5);
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${op * 0.3})`);
+            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, sz * 5, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            // Core
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, sz * 0.7, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${op})`;
+            ctx.fill();
+        }
+
+        function drawStarL2(s, time) {
+            const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
+            const t2 = Math.sin(time * 0.0007 * s.twinkleSpeed + s.twinklePhase + 1.3);
+            const op = s.baseOpacity * (0.3 + 0.7 * (t * 0.5 + 0.5));
+            const sz = s.size * (0.7 + 0.3 * (t * 0.5 + 0.5));
+            const { r, g, b } = s.color;
+
+            // Outer haze
+            const g2 = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, sz * 10);
+            g2.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${op * 0.1})`);
+            g2.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, sz * 10, 0, Math.PI * 2);
             ctx.fillStyle = g2;
             ctx.fill();
 
             // Inner glow
-            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, size * 4);
-            gradient.addColorStop(0, `rgba(220, 230, 255, ${opacity * 0.6})`);
-            gradient.addColorStop(0.4, `rgba(200, 210, 255, ${opacity * 0.2})`);
-            gradient.addColorStop(1, 'rgba(200, 210, 255, 0)');
+            const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, sz * 4);
+            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${op * 0.6})`);
+            grad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${op * 0.15})`);
+            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
             ctx.beginPath();
-            ctx.arc(p.x, p.y, size * 4, 0, Math.PI * 2);
-            ctx.fillStyle = gradient;
+            ctx.arc(s.x, s.y, sz * 4, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
             ctx.fill();
 
-            // Cross sparkle
-            ctx.strokeStyle = `rgba(230, 235, 255, ${opacity * 0.7})`;
+            // 4-point cross sparkle
+            const armLen = sz * 4 * (0.8 + 0.2 * (t2 * 0.5 + 0.5));
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${op * 0.55})`;
             ctx.lineWidth = 0.8;
-            const armLen = size * 3.5;
             ctx.beginPath();
-            ctx.moveTo(p.x - armLen, p.y); ctx.lineTo(p.x + armLen, p.y);
-            ctx.moveTo(p.x, p.y - armLen); ctx.lineTo(p.x, p.y + armLen);
+            ctx.moveTo(s.x - armLen, s.y); ctx.lineTo(s.x + armLen, s.y);
+            ctx.moveTo(s.x, s.y - armLen); ctx.lineTo(s.x, s.y + armLen);
             ctx.stroke();
 
-            // Diagonal sparkle (smaller)
-            ctx.strokeStyle = `rgba(230, 235, 255, ${opacity * 0.35})`;
+            // Diagonal sparkle
+            const dLen = armLen * 0.45;
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${op * 0.25})`;
             ctx.lineWidth = 0.5;
-            const diagLen = armLen * 0.55;
             ctx.beginPath();
-            ctx.moveTo(p.x - diagLen, p.y - diagLen); ctx.lineTo(p.x + diagLen, p.y + diagLen);
-            ctx.moveTo(p.x + diagLen, p.y - diagLen); ctx.lineTo(p.x - diagLen, p.y + diagLen);
+            ctx.moveTo(s.x - dLen, s.y - dLen); ctx.lineTo(s.x + dLen, s.y + dLen);
+            ctx.moveTo(s.x + dLen, s.y - dLen); ctx.lineTo(s.x - dLen, s.y + dLen);
             ctx.stroke();
 
-            // Core dot
+            // Core
             ctx.beginPath();
-            ctx.arc(p.x, p.y, size * 0.9, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(250, 252, 255, ${opacity})`;
+            ctx.arc(s.x, s.y, sz * 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 253, 250, ${op})`;
             ctx.fill();
         }
 
         function animate(time) {
-            // FPS throttling
             const elapsed = time - lastFrameTime;
             if (elapsed < FRAME_INTERVAL) {
                 animId = requestAnimationFrame(animate);
@@ -1714,25 +1800,36 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
+            if (dark) {
+                // Draw stars back-to-front
+                for (let i = 0; i < stars.length; i++) {
+                    const s = stars[i];
+                    s.x += s.vx;
+                    s.y += s.vy + smoothScrollForce * s.scrollFactor;
 
-                const wobble = Math.sin(time * 0.001 * p.wobbleSpeed + p.phase) * p.wobbleAmp;
-                const sizeFactor = 1 - (p.radius - 12) / 76;
-                const scrollPush = smoothScrollForce * (0.5 + sizeFactor * 0.5);
+                    // Wrap
+                    if (s.x < -10) s.x = w + 10;
+                    if (s.x > w + 10) s.x = -10;
+                    if (s.y < -10) s.y = h + 10;
+                    if (s.y > h + 10) s.y = -10;
 
-                p.x += p.vx + wobble;
-                p.y += p.vy + scrollPush;
-
-                if (p.y + p.radius < -20) { p.y = h + p.radius + 10; p.x = Math.random() * w; }
-                if (p.y - p.radius > h + 20) { p.y = -p.radius - 10; p.x = Math.random() * w; }
-                if (p.x + p.radius < -20) p.x = w + p.radius + 10;
-                if (p.x - p.radius > w + 20) p.x = -p.radius - 10;
-
-                if (dark) {
-                    drawStar(p, time);
-                } else {
-                    drawBubble(p);
+                    if (s.layer === 0) drawStarL0(s, time);
+                    else if (s.layer === 1) drawStarL1(s, time);
+                    else drawStarL2(s, time);
+                }
+            } else {
+                for (let i = 0; i < bubbles.length; i++) {
+                    const b = bubbles[i];
+                    const wobble = Math.sin(time * 0.001 * b.wobbleSpeed + b.phase) * b.wobbleAmp;
+                    const sizeFactor = 1 - (b.radius - 12) / 76;
+                    const scrollPush = smoothScrollForce * (0.5 + sizeFactor * 0.5);
+                    b.x += b.vx + wobble;
+                    b.y += b.vy + scrollPush;
+                    if (b.y + b.radius < -20) { b.y = h + b.radius + 10; b.x = Math.random() * w; }
+                    if (b.y - b.radius > h + 20) { b.y = -b.radius - 10; b.x = Math.random() * w; }
+                    if (b.x + b.radius < -20) b.x = w + b.radius + 10;
+                    if (b.x - b.radius > w + 20) b.x = -b.radius - 10;
+                    drawBubble(b);
                 }
             }
 
@@ -1741,7 +1838,7 @@
 
         animId = requestAnimationFrame(animate);
 
-        // ── Scroll interaction (desktop + mobile) ──
+        // ── Scroll interaction ──
         window.addEventListener('scroll', () => {
             const currentY = window.scrollY;
             const delta = currentY - lastScrollY;
