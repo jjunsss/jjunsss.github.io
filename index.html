@@ -1382,17 +1382,21 @@
             if (started) return;
             started = true;
             const duration = 1800;
-            const startTime = performance.now();
+            const startTime = Date.now();
+            let timerId = null;
 
-            const step = (now) => {
-                const progress = Math.min((now - startTime) / duration, 1);
+            const step = () => {
+                const progress = Math.min((Date.now() - startTime) / duration, 1);
                 const ease = 1 - Math.pow(1 - progress, 3);
                 citNum.textContent = Math.floor(ease * target);
-                if (progress < 1) requestAnimationFrame(step);
-                else citNum.textContent = target;
+                if (progress >= 1) {
+                    citNum.textContent = target;
+                    if (timerId !== null) clearInterval(timerId);
+                }
             };
 
-            requestAnimationFrame(step);
+            step();
+            timerId = setInterval(step, 16);
         };
 
         const maybeRun = () => {
