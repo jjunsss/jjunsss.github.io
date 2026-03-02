@@ -238,26 +238,34 @@
 
         /* 논문 제목 롤링 */
         .story-pub-roller {
-            margin-top: 1.25rem; height: 2.4em; overflow: hidden;
-            position: relative; max-width: 540px; margin-left: auto; margin-right: auto;
+            margin-top: 1.5rem; height: 3.6em; overflow: hidden;
+            position: relative; max-width: 620px; margin-left: auto; margin-right: auto;
+            border-left: 2px solid var(--accent); padding-left: 1rem;
         }
         .story-pub-roller-inner {
             display: flex; flex-direction: column;
-            animation: pub-roll 18s ease-in-out infinite;
+            animation: pub-roll 21s ease-in-out infinite;
         }
         .story-pub-roller-item {
-            height: 2.4em; display: flex; align-items: center; justify-content: center;
-            font-size: 0.82rem; color: var(--text-secondary); line-height: 1.35;
-            padding: 0 1rem; text-align: center;
+            height: 3.6em; display: flex; flex-direction: column; justify-content: center;
+            text-align: left; padding: 0 0.5rem; gap: 0.2rem;
         }
+        .story-pub-roller-title {
+            font-size: 0.92rem; font-weight: 600; color: var(--text-primary);
+            line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .story-pub-roller-meta {
+            font-size: 0.75rem; color: var(--text-muted); font-weight: 450;
+        }
+        .story-pub-roller-meta strong { color: var(--accent); font-weight: 600; }
         @keyframes pub-roll {
             0%, 11% { transform: translateY(0); }
-            14.28%, 25.28% { transform: translateY(-2.4em); }
-            28.56%, 39.56% { transform: translateY(-4.8em); }
-            42.84%, 53.84% { transform: translateY(-7.2em); }
-            57.12%, 68.12% { transform: translateY(-9.6em); }
-            71.4%, 82.4% { transform: translateY(-12em); }
-            85.68%, 97% { transform: translateY(-14.4em); }
+            14.28%, 25.28% { transform: translateY(-3.6em); }
+            28.56%, 39.56% { transform: translateY(-7.2em); }
+            42.84%, 53.84% { transform: translateY(-10.8em); }
+            57.12%, 68.12% { transform: translateY(-14.4em); }
+            71.4%, 82.4% { transform: translateY(-18em); }
+            85.68%, 97% { transform: translateY(-21.6em); }
             100% { transform: translateY(0); }
         }
 
@@ -924,7 +932,9 @@
             .story-photo { width: 90px; height: 112px; }
             .story-pub-stats { gap: 1.25rem; }
             .story-pub-stat-num { font-size: clamp(1.5rem, 5vw, 2rem); }
-            .story-pub-roller-item { font-size: 0.72rem; padding: 0 0.5rem; }
+            .story-pub-roller { max-width: 100%; padding-left: 0.75rem; }
+            .story-pub-roller-title { font-size: 0.78rem; }
+            .story-pub-roller-meta { font-size: 0.68rem; }
             .story-enter-btn { font-size: 0.9rem; padding: 0.75rem 1.8rem; }
             .story-tl-period { min-width: 75px; font-size: 0.84rem; }
             .story-stat-row { gap: 1.5rem; }
@@ -1024,7 +1034,7 @@
             <h2 class="story-heading story-fade">Publications</h2>
             <!-- Citation: 크게 상단 -->
             <div class="story-fade story-fade-delay" style="margin-top:0.75rem;">
-                <div class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="108">0</div>
+                <div style="display:inline;"><span class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="111">0</span><span class="story-pub-stat-num gold" style="font-size:clamp(2rem,6vw,3rem);">+</span></div>
                 <div class="story-pub-stat-label" style="font-size:0.9rem;">Citations</div>
             </div>
             <!-- 나머지 통계: 작게 하단 -->
@@ -1049,13 +1059,34 @@
             <!-- 논문 제목 자동 롤링 -->
             <div class="story-pub-roller story-fade story-fade-delay-2">
                 <div class="story-pub-roller-inner">
-                    <div class="story-pub-roller-item">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection · <strong>CVPR 2024</strong></div>
-                    <div class="story-pub-roller-item">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing · <strong>BMVC 2025</strong></div>
-                    <div class="story-pub-roller-item">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in FSCIL · <strong>ICCV 2025 Workshop</strong></div>
-                    <div class="story-pub-roller-item">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark · <strong>CVPR 2025 Workshop</strong></div>
-                    <div class="story-pub-roller-item">Beyond Synthetic Replays: Turning Diffusion Features into FSCIL Knowledge · <strong>ICASSP 2025</strong></div>
-                    <div class="story-pub-roller-item">VLM-PL: Advanced Pseudo Labeling for Class Incremental Object Detection · <strong>CVPR 2024 Workshop</strong></div>
-                    <div class="story-pub-roller-item">Class-Wise Buffer Management for Incremental Object Detection · <strong>ArXiv 2024</strong></div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>CVPR 2024 Highlight</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized HOI Testing</div>
+                        <div class="story-pub-roller-meta">Co-First Author · <strong>BMVC 2025</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in FSCIL</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>ICCV 2025 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>ICCV 2025 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Beyond Synthetic Replays: Turning Diffusion Features into FSCIL Knowledge</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>ArXiv 2025</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">VLM-PL: Advanced Pseudo Labeling for Class Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>CVPR 2024 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Class-Wise Buffer Management for Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author · <strong>ArXiv 2024</strong></div>
+                    </div>
                 </div>
             </div>
             <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
@@ -1211,7 +1242,7 @@
         <div class="section-line"></div>
     </div>
     <div class="citation-stat reveal">
-        <span class="citation-number" data-target="108">0</span><span class="citation-plus">+</span>
+        <span class="citation-number" data-target="111">0</span><span class="citation-plus">+</span>
         <span class="citation-label">Total Citations</span>
     </div>
 
