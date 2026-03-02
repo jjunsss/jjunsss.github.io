@@ -1633,6 +1633,10 @@
 
 <!-- ════════════════════════ SCRIPTS ════════════════════════ -->
 <script>
+    // Prevent browser scroll restoration on refresh — always start at top
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
     // Theme toggle
     function toggleTheme() {
         const html = document.documentElement;
