@@ -128,6 +128,128 @@
         a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--accent-hover); }
 
+        /* ═══════════════════════ STORYTELLING INTRO ═══════════════════════ */
+        #story-intro { position: relative; z-index: 1; }
+        .story-panel {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative;
+        }
+        .story-content { text-align: center; max-width: 720px; padding: 2rem; }
+        .story-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 500; color: var(--text-primary);
+            line-height: 1.3; margin-bottom: 1rem; letter-spacing: -0.02em;
+        }
+        .story-sub {
+            font-size: clamp(0.85rem, 2vw, 1.05rem);
+            color: var(--text-secondary); line-height: 1.7;
+            max-width: 500px; margin: 0 auto;
+        }
+        .story-photo {
+            width: 120px; height: 150px; border-radius: var(--radius);
+            object-fit: cover; margin: 0 auto 1.5rem; display: block;
+            border: 3px solid var(--border); box-shadow: var(--shadow-md);
+        }
+        .story-tags {
+            display: flex; justify-content: center; flex-wrap: wrap;
+            gap: 0.5rem; margin-top: 1.25rem;
+        }
+        .story-tag {
+            display: inline-block; padding: 0.35rem 1rem;
+            border: 1px solid var(--border); border-radius: 100px;
+            font-size: 0.8rem; color: var(--text-secondary); font-weight: 450;
+            background: rgba(var(--accent-rgb), 0.04);
+        }
+        .story-citation {
+            font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700;
+            color: var(--accent); font-family: 'Playfair Display', serif;
+            line-height: 1; margin: 0.75rem 0 0.25rem;
+        }
+        .story-citation-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 450; }
+        .story-pub {
+            text-align: left; padding: 0.85rem 1rem;
+            border: 1px solid var(--border); border-radius: var(--radius-sm);
+            max-width: 500px; margin: 0.5rem auto;
+            background: rgba(var(--accent-rgb), 0.02);
+            transition: var(--transition);
+        }
+        .story-pub:hover { border-color: var(--accent); transform: translateY(-1px); }
+        .story-pub-venue {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--venue-top); margin-bottom: 0.25rem;
+        }
+        .story-pub-title {
+            font-size: 0.82rem; font-weight: 500; color: var(--text-primary); line-height: 1.4;
+        }
+        .story-tl { max-width: 480px; margin: 1.25rem auto 0; text-align: left; }
+        .story-tl-item {
+            display: flex; align-items: baseline; gap: 0.75rem;
+            padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);
+        }
+        .story-tl-item:last-child { border-bottom: none; }
+        .story-tl-period {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            color: var(--text-muted); white-space: nowrap; min-width: 90px;
+        }
+        .story-tl-info { font-size: 0.85rem; }
+        .story-tl-role { font-weight: 550; color: var(--text-primary); }
+        .story-tl-org { color: var(--text-secondary); font-size: 0.8rem; }
+        .story-more {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            margin-top: 1.5rem; font-size: 0.85rem; font-weight: 500;
+            color: var(--accent); transition: var(--transition);
+        }
+        .story-more:hover { gap: 0.6rem; }
+        .story-stat-row {
+            display: flex; justify-content: center; gap: 2.5rem;
+            margin: 1.25rem 0; flex-wrap: wrap;
+        }
+        .story-stat { text-align: center; }
+        .story-stat-num {
+            font-size: 1.8rem; font-weight: 700; color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+        .story-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+
+        .story-fade {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .story-fade.visible { opacity: 1; transform: translateY(0); }
+        .story-fade-delay { transition-delay: 0.2s; }
+        .story-fade-delay-2 { transition-delay: 0.4s; }
+        .story-fade-delay-3 { transition-delay: 0.6s; }
+
+        .story-scroll-cue { margin-top: 2rem; display: flex; justify-content: center; }
+        .story-arrow {
+            width: 20px; height: 20px;
+            border-right: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            transform: rotate(45deg);
+            animation: story-bounce 2s ease-in-out infinite;
+        }
+        @keyframes story-bounce {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.3; }
+            50% { transform: rotate(45deg) translate(5px, 5px); opacity: 1; }
+        }
+        #story-skip {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 100px; padding: 0.5rem 1.25rem;
+            font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500;
+            color: var(--text-muted); cursor: pointer;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.4rem;
+            opacity: 0.7; transition: var(--transition);
+        }
+        #story-skip:hover { color: var(--text-primary); border-color: var(--accent); opacity: 1; }
+        #story-skip.hidden { opacity: 0; pointer-events: none; }
+        nav.nav-hidden {
+            transform: translateY(-100%); opacity: 0; pointer-events: none;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
         /* ═══════════════════════ NAVIGATION ═══════════════════════ */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -703,6 +825,13 @@
 
         /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
         @media (max-width: 768px) {
+            .story-heading { font-size: clamp(1.4rem, 6vw, 2rem); }
+            .story-content { padding: 1.5rem; }
+            .story-photo { width: 90px; height: 112px; }
+            .story-pub { padding: 0.75rem; }
+            .story-tl-period { min-width: 75px; font-size: 0.65rem; }
+            .story-stat-row { gap: 1.5rem; }
+            #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.72rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
@@ -739,6 +868,107 @@
 <body>
 
 <canvas id="bubble-canvas"></canvas>
+
+<!-- ════════════════════════ STORYTELLING INTRO ════════════════════════ -->
+<div id="story-intro">
+
+    <!-- Panel 1: Who I Am -->
+    <div class="story-panel">
+        <div class="story-content">
+            <img class="story-photo story-fade" src="images/profile.jpg" alt="Junsu Kim">
+            <h2 class="story-heading story-fade story-fade-delay">Junsu Kim</h2>
+            <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.82rem; letter-spacing:0.03em;">
+                Combined MS-PhD · UNIST AI Graduate School
+            </p>
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:0.75rem; max-width:460px;">
+                Researching how machines learn to see, adapt, and never stop learning — from continual learning to foundation models.
+            </p>
+            <div class="story-tags story-fade story-fade-delay-3">
+                <span class="story-tag">Computer Vision</span>
+                <span class="story-tag">Continual Learning</span>
+                <span class="story-tag">Foundation Models</span>
+                <span class="story-tag">Vision-Language</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 2: Publications + Citations -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Publications</h2>
+            <div class="story-fade story-fade-delay">
+                <div class="story-citation"><span class="story-citation-number" data-target="108">0</span><span style="font-size:0.6em; opacity:0.7;">+</span></div>
+                <div class="story-citation-label">Total Citations</div>
+            </div>
+            <div class="story-fade story-fade-delay-2" style="margin-top:1.25rem;">
+                <div class="story-pub">
+                    <div class="story-pub-venue">CVPR 2024 · Highlight (Top 2.8%)</div>
+                    <div class="story-pub-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+                </div>
+                <div class="story-pub">
+                    <div class="story-pub-venue">ECCV 2024</div>
+                    <div class="story-pub-title">DOSOD: Dense Open-Set Object Detection with Vision-Language Model</div>
+                </div>
+            </div>
+            <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+        </div>
+    </div>
+
+    <!-- Panel 3: Education & Experience -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Education & Experience</h2>
+            <div class="story-tl story-fade story-fade-delay">
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2023 — Present</span>
+                    <span class="story-tl-info"><span class="story-tl-role">MS-PhD in AI</span> <span class="story-tl-org">· UNIST</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2024 — 2025</span>
+                    <span class="story-tl-info"><span class="story-tl-role">AI Research Intern</span> <span class="story-tl-org">· NAVER AI Lab</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2022 — 2025</span>
+                    <span class="story-tl-info"><span class="story-tl-role">NVIDIA AI Ambassador</span> <span class="story-tl-org">· DLI Program</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2016 — 2022</span>
+                    <span class="story-tl-info"><span class="story-tl-role">B.S. in ICE</span> <span class="story-tl-org">· Pukyong National Univ.</span></span>
+                </div>
+            </div>
+            <a href="#experience" class="story-more story-fade story-fade-delay-2">View details <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+        </div>
+    </div>
+
+    <!-- Panel 4: Awards + Activities + Explore -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Awards & Activities</h2>
+            <div class="story-stat-row story-fade story-fade-delay">
+                <div class="story-stat">
+                    <div class="story-stat-num">5+</div>
+                    <div class="story-stat-label">Awards</div>
+                </div>
+                <div class="story-stat">
+                    <div class="story-stat-num">4</div>
+                    <div class="story-stat-label">Venues Reviewed</div>
+                </div>
+                <div class="story-stat">
+                    <div class="story-stat-num">3</div>
+                    <div class="story-stat-label">Invited Talks</div>
+                </div>
+            </div>
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:2.5rem; color:var(--text-muted);">
+                Scroll to explore my full portfolio
+            </p>
+            <div class="story-scroll-cue story-fade story-fade-delay-3">
+                <div class="story-arrow"></div>
+            </div>
+        </div>
+    </div>
+
+    <button id="story-skip">Skip <i class="fas fa-angle-double-down"></i></button>
+</div>
 
 <!-- ════════════════════════ NAVIGATION ════════════════════════ -->
 <nav id="navbar">
@@ -1209,9 +1439,75 @@
         document.documentElement.setAttribute('data-theme', (h >= 18 || h < 6) ? 'dark' : 'light');
     })();
 
+    // ═══════════════════ STORYTELLING INTRO ═══════════════════
+    (function() {
+        const intro = document.getElementById('story-intro');
+        const skipBtn = document.getElementById('story-skip');
+        const nav = document.getElementById('navbar');
+        if (!intro || !nav) return;
+
+        // Story fade observer
+        const storyObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); storyObs.unobserve(e.target); }
+            });
+        }, { threshold: 0.3, rootMargin: '0px 0px -15% 0px' });
+        document.querySelectorAll('.story-fade').forEach(el => storyObs.observe(el));
+
+        // Story citation count-up
+        const storyCit = document.querySelector('.story-citation-number');
+        if (storyCit) {
+            const target = parseInt(storyCit.dataset.target);
+            const citObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (!e.isIntersecting) return;
+                    const dur = 1800, st = performance.now();
+                    function step(now) {
+                        const p = Math.min((now - st) / dur, 1);
+                        storyCit.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
+                        if (p < 1) requestAnimationFrame(step); else storyCit.textContent = target;
+                    }
+                    requestAnimationFrame(step);
+                    citObs.unobserve(e.target);
+                });
+            }, { threshold: 1.0, rootMargin: '-35% 0px -35% 0px' });
+            citObs.observe(storyCit);
+        }
+
+        // Navbar visibility
+        function updateNav() {
+            const introBottom = intro.offsetTop + intro.offsetHeight;
+            const mid = window.scrollY + window.innerHeight * 0.5;
+            const inIntro = mid < introBottom;
+            nav.classList.toggle('nav-hidden', inIntro);
+            if (skipBtn) skipBtn.classList.toggle('hidden', !inIntro);
+        }
+        nav.classList.add('nav-hidden');
+        window.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+
+        // Skip button
+        if (skipBtn) {
+            skipBtn.addEventListener('click', () => {
+                const hero = document.getElementById('about');
+                if (hero) hero.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Hash navigation: skip intro
+        if (window.location.hash && window.location.hash !== '#') {
+            nav.classList.remove('nav-hidden');
+            if (skipBtn) skipBtn.classList.add('hidden');
+        }
+    })();
+
     // Navbar scroll
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 10));
+    window.addEventListener('scroll', () => {
+        const introEl = document.getElementById('story-intro');
+        const introH = introEl ? introEl.offsetTop + introEl.offsetHeight : 0;
+        navbar.classList.toggle('scrolled', window.scrollY > introH + 10);
+    });
 
     // Reveal animations
     const observer = new IntersectionObserver((entries) => {
