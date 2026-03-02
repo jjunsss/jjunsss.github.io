@@ -2452,7 +2452,6 @@
     if (citNum) {
         let isCitationRunning = false;
         const target = parseInt(citNum.dataset.target, 10);
-
         const startCitationCount = () => {
             if (isCitationRunning) return;
             if (Number.isNaN(target)) return;
@@ -2477,7 +2476,6 @@
             if (rect.bottom > 0 && rect.top < window.innerHeight) {
                 startCitationCount();
                 citationObs.disconnect();
-                window.removeEventListener('scroll', triggerCitation);
             }
         };
 
@@ -2492,6 +2490,7 @@
 
         citationObs.observe(citNum);
         window.addEventListener('scroll', triggerCitation, { passive: true });
+        setTimeout(startCitationCount, 1200);
         triggerCitation();
     }
     })();
