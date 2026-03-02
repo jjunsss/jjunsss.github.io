@@ -2450,25 +2450,49 @@
     // ── Citation count-up ──
     const citNum = document.querySelector('.citation-number');
     if (citNum) {
-        const target = parseInt(citNum.dataset.target);
-        const countObserver = new IntersectionObserver((entries) => {
+        let isCitationRunning = false;
+        const target = parseInt(citNum.dataset.target, 10);
+
+        const startCitationCount = () => {
+            if (isCitationRunning) return;
+            if (Number.isNaN(target)) return;
+
+            isCitationRunning = true;
+            const duration = 1800;
+            const startTime = performance.now();
+
+            function step(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                citNum.textContent = Math.floor(ease * target);
+                if (progress < 1) requestAnimationFrame(step);
+                else citNum.textContent = target;
+            }
+
+            requestAnimationFrame(step);
+        };
+
+        const triggerCitation = () => {
+            const rect = citNum.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                startCitationCount();
+                citationObs.disconnect();
+                window.removeEventListener('scroll', triggerCitation);
+            }
+        };
+
+        const citationObs = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
-                let start = 0;
-                const duration = 1800;
-                const startTime = performance.now();
-                function step(now) {
-                    const progress = Math.min((now - startTime) / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    citNum.textContent = Math.floor(ease * target);
-                    if (progress < 1) requestAnimationFrame(step);
-                    else citNum.textContent = target;
-                }
-                requestAnimationFrame(step);
-                countObserver.unobserve(entry.target);
+                startCitationCount();
+                citationObs.unobserve(entry.target);
+                window.removeEventListener('scroll', triggerCitation);
             });
-        }, { threshold: 0.25, rootMargin: '0px 0px -12% 0px' });
-        countObserver.observe(citNum);
+        }, { threshold: 0.01, root: null, rootMargin: '0px 0px -15% 0px' });
+
+        citationObs.observe(citNum);
+        window.addEventListener('scroll', triggerCitation, { passive: true });
+        triggerCitation();
     }
     })();
 
