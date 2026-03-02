@@ -676,13 +676,16 @@
             will-change: transform;
             --pub-ticker-distance: 0px;
             --pub-ticker-duration: 26s;
+        }
+        .pub-ticker-track.ticking {
             animation: pub-ticker-marquee var(--pub-ticker-duration) linear infinite;
         }
         .pub-ticker-list {
             display: flex; flex-direction: column; gap: 0.95rem;
         }
-        .pub-ticker-track:hover,
-        .pub-ticker-track:focus-within {
+        .pub-ticker-track.ticking:hover,
+        .pub-ticker-track.ticking:focus-within,
+        .pub-ticker-track.ticker-paused {
             animation-play-state: paused;
         }
         .pub-ticker-toggle {
@@ -1927,17 +1930,13 @@
 
     function startPublicationTicker(visibleCards) {
         if (!pubTickerTrack) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || visibleCards.length <= 1) {
-            pubTickerTrack.style.animation = 'none';
-            pubTickerTrack.style.transform = 'translateY(0)';
-            pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
-            return;
-        }
-
-        // Reset animation so JS can recalc distance.
-        pubTickerTrack.style.animation = 'none';
+        pubTickerTrack.classList.remove('ticking');
         pubTickerTrack.style.transform = 'translateY(0)';
         pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || visibleCards.length <= 1) {
+            return;
+        }
 
         requestAnimationFrame(() => {
             const cycleHeight = Math.ceil(pubTickerTrack.scrollHeight / 2);
@@ -1946,7 +1945,7 @@
             pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight}px`);
             pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration}s`);
             requestAnimationFrame(() => {
-                pubTickerTrack.style.animation = 'pub-ticker-marquee var(--pub-ticker-duration) linear infinite';
+                pubTickerTrack.classList.add('ticking');
             });
         });
     }
@@ -2007,14 +2006,12 @@
     // Ticker pause/play toggle
     const tickerToggle = document.getElementById('pubTickerToggle');
     if (tickerToggle && pubTickerTrack) {
-        let tickerPaused = false;
         tickerToggle.addEventListener('click', () => {
-            tickerPaused = !tickerPaused;
-            pubTickerTrack.style.animationPlayState = tickerPaused ? 'paused' : '';
-            tickerToggle.innerHTML = tickerPaused
+            const paused = pubTickerTrack.classList.toggle('ticker-paused');
+            tickerToggle.innerHTML = paused
                 ? '<i class="fas fa-play"></i>'
                 : '<i class="fas fa-pause"></i>';
-            tickerToggle.setAttribute('aria-label', tickerPaused ? 'Play ticker' : 'Pause ticker');
+            tickerToggle.setAttribute('aria-label', paused ? 'Play ticker' : 'Pause ticker');
         });
     }
 
