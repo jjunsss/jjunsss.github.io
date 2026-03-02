@@ -278,6 +278,10 @@
         .story-pub-roller-inner.ticking {
             animation: story-pub-marquee var(--story-roll-duration) linear infinite;
         }
+        .story-pub-roller:hover .story-pub-roller-inner.ticking,
+        .story-pub-roller:focus-within .story-pub-roller-inner.ticking {
+            animation-play-state: paused;
+        }
         .story-pub-roller-item {
             height: 4.8em; display: flex; flex-direction: column; justify-content: center;
             text-align: left; padding: 0 0.5rem; gap: 0.25rem;
@@ -733,6 +737,10 @@
         }
         .pub-ticker-track.ticking {
             animation: pub-ticker-marquee var(--pub-ticker-duration) linear infinite;
+        }
+        .pub-ticker-wrapper:hover .pub-ticker-track.ticking,
+        .pub-ticker-wrapper:focus-within .pub-ticker-track.ticking {
+            animation-play-state: paused;
         }
         .pub-ticker-list {
             display: flex; flex-direction: column; gap: 0.95rem;
