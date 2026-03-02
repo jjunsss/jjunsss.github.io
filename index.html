@@ -2452,46 +2452,52 @@
     if (citNum) {
         let isCitationRunning = false;
         const target = parseInt(citNum.dataset.target, 10);
-        const startCitationCount = () => {
-            if (isCitationRunning) return;
-            if (Number.isNaN(target)) return;
 
+        const runCitationCount = () => {
+            if (isCitationRunning) return;
             isCitationRunning = true;
+            if (Number.isNaN(target)) {
+                citNum.textContent = '0';
+                return;
+            }
+
             const duration = 1800;
             const startTime = performance.now();
-
-            function step(now) {
+            const step = (now) => {
                 const progress = Math.min((now - startTime) / duration, 1);
                 const ease = 1 - Math.pow(1 - progress, 3);
                 citNum.textContent = Math.floor(ease * target);
                 if (progress < 1) requestAnimationFrame(step);
                 else citNum.textContent = target;
-            }
-
+            };
             requestAnimationFrame(step);
+        };
+
+        const stopCitationWatchers = () => {
+            if (citationObs) citationObs.disconnect();
+            window.removeEventListener('scroll', triggerCitation);
         };
 
         const triggerCitation = () => {
             const rect = citNum.getBoundingClientRect();
-            if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                startCitationCount();
-                citationObs.disconnect();
+            if ((rect.top < window.innerHeight * 1.2) && (rect.bottom > -window.innerHeight * 0.2)) {
+                runCitationCount();
+                stopCitationWatchers();
             }
         };
 
         const citationObs = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
-                startCitationCount();
-                citationObs.unobserve(entry.target);
-                window.removeEventListener('scroll', triggerCitation);
+                runCitationCount();
+                stopCitationWatchers();
             });
-        }, { threshold: 0.01, root: null, rootMargin: '0px 0px -15% 0px' });
+        }, { threshold: 0.01, root: null, rootMargin: '0px 0px -20% 0px' });
 
         citationObs.observe(citNum);
         window.addEventListener('scroll', triggerCitation, { passive: true });
-        setTimeout(startCitationCount, 1200);
-        triggerCitation();
+        requestAnimationFrame(() => runCitationCount());
+        setTimeout(triggerCitation, 400);
     }
     })();
 
