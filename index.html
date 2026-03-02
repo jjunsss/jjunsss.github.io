@@ -223,11 +223,28 @@
             font-family: 'Playfair Display', serif;
         }
         .story-stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .story-quote {
+            margin: 0.9rem auto 0;
+            max-width: 560px;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1rem, 2.1vw, 1.22rem);
+            line-height: 1.55;
+            color: var(--text-primary);
+            letter-spacing: 0.01em;
+        }
+        .story-quote-author {
+            margin-top: 0.35rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
 
         /* Explore Full Portfolio 버튼 */
         .story-enter-btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            margin-top: 2.5rem; padding: 0.85rem 2.2rem;
+            margin-top: 1.45rem; padding: 0.85rem 2.2rem;
             font-size: 1rem; font-weight: 550; letter-spacing: 0.02em;
             color: #fff; background: var(--accent);
             border-radius: 100px; transition: all 0.3s ease;
@@ -683,6 +700,8 @@
         .pub-ticker-list {
             display: flex; flex-direction: column; gap: 0.95rem;
         }
+        .pub-ticker-wrapper:hover .pub-ticker-track.ticking,
+        .pub-ticker-wrapper:focus-within .pub-ticker-track.ticking,
         .pub-ticker-track.ticking:hover,
         .pub-ticker-track.ticking:focus-within,
         .pub-ticker-track.ticker-paused {
@@ -1157,6 +1176,10 @@
                     <div class="story-stat-label">Invited Talks</div>
                 </div>
             </div>
+            <p class="story-quote story-fade story-fade-delay-2">
+                "Shoot for the moon. Even if you miss, you'll land among the stars."
+            </p>
+            <p class="story-quote-author story-fade story-fade-delay-2">- Norman Vincent Peale</p>
             <a href="#about" id="story-enter" class="story-enter-btn story-fade story-fade-delay-2">
                 Explore Full Portfolio <i class="fas fa-arrow-down" style="font-size:0.85rem;"></i>
             </a>
@@ -1235,6 +1258,10 @@
 <!-- ════════════════════════ NEWS ════════════════════════ -->
 <div class="news-bar reveal">
     <div class="news-scroll">
+        <div class="news-item">
+            <span class="news-badge new">Update</span>
+            <span class="news-text">Mar 2, 2026 — Portfolio refresh notes posted on <a href="https://blog.naver.com/jjunsss" target="_blank" rel="noopener noreferrer"><strong>Blog</strong></a></span>
+        </div>
         <div class="news-item">
             <span class="news-badge new">New</span>
             <span class="news-text">Selected as an <strong>Outstanding Reviewer</strong> at BMVC 2025</span>
@@ -1636,8 +1663,11 @@
 
 <!-- ════════════════════════ SCRIPTS ════════════════════════ -->
 <script>
-    // Prevent browser scroll restoration on refresh — always start at top
+    // Prevent browser scroll restoration on refresh — always start at intro first panel
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
     window.scrollTo(0, 0);
 
     // Theme toggle
@@ -1671,18 +1701,15 @@
         const panels = intro.querySelectorAll('.story-panel');
         let introDone = false;
 
-        // Hash navigation: skip intro entirely
-        if (window.location.hash && window.location.hash !== '#') {
-            intro.style.display = 'none';
-            nav.classList.remove('nav-hidden');
-            if (skipBtn) skipBtn.classList.add('hidden');
-            introDone = true;
-        } else {
-            // Lock body scroll, activate intro scroll container
-            intro.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            nav.classList.add('nav-hidden');
-        }
+        // Always start from intro on refresh/load
+        intro.classList.add('active');
+        intro.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+        nav.classList.add('nav-hidden');
+        requestAnimationFrame(() => {
+            window.scrollTo(0, 0);
+            intro.scrollTop = 0;
+        });
 
         // Story fade observer (inside intro scroll container)
         const storyObs = new IntersectionObserver((entries) => {
