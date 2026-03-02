@@ -874,6 +874,7 @@
             font-size: 0.9rem; font-weight: 550; padding: 0.35rem 0.72rem;
             border-radius: 100px; text-decoration: none; border: 1px solid var(--border);
             color: var(--text-secondary); transition: var(--transition);
+            pointer-events: auto;
             display: inline-flex; align-items: center; gap: 0.2rem;
         }
         .pub-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
@@ -887,6 +888,7 @@
             cursor: pointer; transition: var(--transition);
             display: inline-flex; align-items: center; gap: 0.2rem;
             user-select: none;
+            pointer-events: auto;
         }
         .pub-summary-trigger:hover {
             color: var(--accent); border-color: var(--accent); background: var(--accent-light);
@@ -2152,6 +2154,24 @@
     let pubTickerRaf = null;
     let isUserPausedTicker = false;
     let isHoverPausedTicker = false;
+    let wheelPauseTimer = null;
+    const WHEEL_PAUSE_DELAY = 260;
+
+    function setHoverPause(paused) {
+        isHoverPausedTicker = paused;
+        updateTickerPauseState();
+    }
+
+    function pauseTickerTemporarilyAfterWheel() {
+        isHoverPausedTicker = true;
+        updateTickerPauseState();
+        if (wheelPauseTimer) clearTimeout(wheelPauseTimer);
+        wheelPauseTimer = window.setTimeout(() => {
+            wheelPauseTimer = null;
+            isHoverPausedTicker = false;
+            updateTickerPauseState();
+        }, WHEEL_PAUSE_DELAY);
+    }
 
     function updateTickerPauseState() {
       if (!pubTickerTrack) return;
@@ -2311,19 +2331,40 @@
 
     if (pubTickerWrapper && pubTickerTrack) {
         pubTickerWrapper.addEventListener('mouseenter', () => {
-            isHoverPausedTicker = true;
-            updateTickerPauseState();
+            if (wheelPauseTimer) {
+                clearTimeout(wheelPauseTimer);
+                wheelPauseTimer = null;
+            }
+            setHoverPause(true);
         });
 
         pubTickerWrapper.addEventListener('mouseleave', () => {
-            isHoverPausedTicker = false;
-            updateTickerPauseState();
+            if (wheelPauseTimer) {
+                clearTimeout(wheelPauseTimer);
+                wheelPauseTimer = null;
+            }
+            setHoverPause(false);
         });
 
-        // Prioritize mouse wheel over auto ticker animation while interacting.
-        pubTickerWrapper.addEventListener('wheel', () => {
-            isHoverPausedTicker = true;
-            updateTickerPauseState();
+        pubTickerWrapper.addEventListener('focusin', () => {
+            setHoverPause(true);
+        });
+
+        pubTickerWrapper.addEventListener('focusout', (e) => {
+            if (!pubTickerWrapper.contains(e.relatedTarget)) {
+                setHoverPause(false);
+            }
+        });
+
+        // Wheel should have priority over auto movement.
+        pubTickerWrapper.addEventListener('wheel', (e) => {
+            pauseTickerTemporarilyAfterWheel();
+            e.stopPropagation();
+        }, { passive: true });
+
+        // Pause immediately on click/touch target interaction.
+        pubTickerWrapper.addEventListener('pointerdown', () => {
+            setHoverPause(true);
         }, { passive: true });
     }
 
