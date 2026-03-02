@@ -2456,6 +2456,7 @@
         const runCitationCount = () => {
             if (isCitationRunning) return;
             isCitationRunning = true;
+            clearTimeout(hardFallbackTimer);
             if (Number.isNaN(target)) {
                 citNum.textContent = '0';
                 return;
@@ -2497,6 +2498,10 @@
         citationObs.observe(citNum);
         window.addEventListener('scroll', triggerCitation, { passive: true });
         requestAnimationFrame(() => runCitationCount());
+        const hardFallbackTimer = setTimeout(() => {
+            if (isCitationRunning) return;
+            runCitationCount();
+        }, 1500);
         setTimeout(triggerCitation, 400);
     }
     })();
