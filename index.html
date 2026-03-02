@@ -169,30 +169,8 @@
             border: 3px solid var(--border); box-shadow: var(--shadow-md);
         }
         .story-tags {
-            display: flex; justify-content: center; flex-wrap: wrap;
+            display: flex; justify-content: center; flex-wrap: nowrap;
             gap: 0.5rem; margin-top: 1.25rem;
-        }
-        .story-tags--single-line {
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            overflow-y: visible;
-            white-space: nowrap;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            max-width: 100%;
-            width: 100%;
-            padding-bottom: 0.15rem;
-        }
-        .story-tags--single-line::-webkit-scrollbar { display: none; }
-        .story-intro-summary {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            overflow: hidden;
-            max-width: 560px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .story-tag {
             display: inline-block; padding: 0.35rem 1rem;
@@ -268,7 +246,7 @@
         }
         .story-pub-roller-inner {
             display: flex; flex-direction: column;
-            animation: pub-roll 14s ease-in-out infinite;
+            animation: pub-roll 10s ease-in-out infinite;
         }
         .story-pub-roller-item {
             height: 4.8em; display: flex; flex-direction: column; justify-content: center;
@@ -1055,11 +1033,10 @@
             <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; letter-spacing:0.03em;">
                 Combined MS-PhD · UNIST AI Graduate School
             </p>
-            <p class="story-sub story-fade story-fade-delay-2 story-intro-summary" style="margin-top:0.75rem; max-width:460px;">
-                Researching how machines learn to see, adapt, and never stop learning — from continual learning to foundation models.
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:0.75rem; max-width:520px;">
+                Exploring continual &amp; incremental learning, open-world detection, and vision-language foundation models.
             </p>
             <div class="story-tags story-fade story-fade-delay-3">
-            <div class="story-tags story-tags--single-line story-fade story-fade-delay-3">
                 <span class="story-tag">Computer Vision</span>
                 <span class="story-tag">Continual Learning</span>
                 <span class="story-tag">Foundation Models</span>
@@ -1741,7 +1718,10 @@
             document.body.style.overflow = '';
             nav.classList.remove('nav-hidden');
             if (skipBtn) skipBtn.classList.add('hidden');
+            // Bypass html scroll-behavior:smooth — force instant
+            document.documentElement.style.scrollBehavior = 'auto';
             window.scrollTo(0, 0);
+            requestAnimationFrame(() => { document.documentElement.style.scrollBehavior = ''; });
         }
 
         // Keyboard navigation: ArrowDown/Up, Space, PageDown/Up to move panels
