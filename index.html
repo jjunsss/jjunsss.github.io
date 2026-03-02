@@ -95,8 +95,8 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.7;
-            font-size: 15px;
+            line-height: 1.75;
+            font-size: 18px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             transition: background var(--transition-slow), color var(--transition-slow);
@@ -127,6 +127,13 @@
 
         a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--accent-hover); }
+        a:focus-visible,
+        button:focus-visible,
+        .pub-summary-trigger:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
 
         /* ═══════════════════════ STORYTELLING INTRO ═══════════════════════ */
         #story-intro {
@@ -147,12 +154,12 @@
         .story-content { text-align: center; max-width: 720px; padding: 2rem; }
         .story-heading {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-size: clamp(2.05rem, 5.3vw, 3.45rem);
             font-weight: 500; color: var(--text-primary);
             line-height: 1.3; margin-bottom: 1rem; letter-spacing: -0.02em;
         }
         .story-sub {
-            font-size: clamp(0.85rem, 2vw, 1.05rem);
+            font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-secondary); line-height: 1.7;
             max-width: 500px; margin: 0 auto;
         }
@@ -168,7 +175,7 @@
         .story-tag {
             display: inline-block; padding: 0.35rem 1rem;
             border: 1px solid var(--border); border-radius: 100px;
-            font-size: 0.8rem; color: var(--text-secondary); font-weight: 450;
+            font-size: 0.95rem; color: var(--text-secondary); font-weight: 450;
             background: rgba(var(--accent-rgb), 0.04);
         }
         .story-pub-stats {
@@ -183,7 +190,7 @@
         }
         .story-pub-stat-num.gold { color: var(--gold); }
         .story-pub-stat-label {
-            font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 450;
+            font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 450;
         }
         .story-tl { max-width: 480px; margin: 1.25rem auto 0; text-align: left; }
         .story-tl-item {
@@ -192,15 +199,15 @@
         }
         .story-tl-item:last-child { border-bottom: none; }
         .story-tl-period {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
             color: var(--text-muted); white-space: nowrap; min-width: 90px;
         }
-        .story-tl-info { font-size: 0.85rem; }
+        .story-tl-info { font-size: 1rem; }
         .story-tl-role { font-weight: 550; color: var(--text-primary); }
-        .story-tl-org { color: var(--text-secondary); font-size: 0.8rem; }
+        .story-tl-org { color: var(--text-secondary); font-size: 0.93rem; }
         .story-more {
             display: inline-flex; align-items: center; gap: 0.35rem;
-            margin-top: 1.5rem; font-size: 0.85rem; font-weight: 500;
+            margin-top: 1.5rem; font-size: 1rem; font-weight: 500;
             color: var(--accent); transition: var(--transition);
         }
         .story-more:hover { gap: 0.6rem; }
@@ -213,7 +220,7 @@
             font-size: 1.8rem; font-weight: 700; color: var(--gold);
             font-family: 'Playfair Display', serif;
         }
-        .story-stat-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .story-stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
 
         .story-fade {
             opacity: 0; transform: translateY(30px);
@@ -239,8 +246,8 @@
         #story-skip {
             position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 100px; padding: 0.5rem 1.25rem;
-            font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500;
+            border-radius: 100px; padding: 0.55rem 1.3rem;
+            font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500;
             color: var(--text-muted); cursor: pointer;
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.4rem;
@@ -269,28 +276,28 @@
             height: 60px; display: flex; align-items: center; justify-content: space-between;
         }
         .nav-logo {
-            font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 500;
+            font-family: 'Playfair Display', serif; font-size: 1.24rem; font-weight: 500;
             color: var(--text-primary); text-decoration: none; letter-spacing: -0.01em;
         }
         .nav-right { display: flex; align-items: center; gap: 0.25rem; }
         .nav-links { display: flex; gap: 0.15rem; list-style: none; align-items: center; }
         .nav-links a {
-            text-decoration: none; color: var(--text-muted); font-size: 0.82rem; font-weight: 480;
-            padding: 0.38rem 0.7rem; border-radius: var(--radius-sm); transition: var(--transition);
+            text-decoration: none; color: var(--text-muted); font-size: 0.94rem; font-weight: 480;
+            padding: 0.38rem 0.75rem; border-radius: var(--radius-sm); transition: var(--transition);
         }
         .nav-links a:hover { color: var(--text-primary); background: var(--bg-secondary); }
 
         .theme-toggle {
             background: none; border: 1px solid var(--border); width: 36px; height: 36px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text-muted); transition: var(--transition); margin-left: 0.75rem; font-size: 0.9rem;
+            cursor: pointer; color: var(--text-muted); transition: var(--transition); margin-left: 0.75rem; font-size: 0.95rem;
         }
         .theme-toggle:hover { color: var(--text-primary); border-color: var(--accent); background: var(--accent-light); }
         [data-theme="dark"] .theme-icon-light { display: none; }
         [data-theme="light"] .theme-icon-dark { display: none; }
 
         .nav-toggle {
-            display: none; background: none; border: none; font-size: 1.15rem;
+            display: none; background: none; border: none; font-size: 1.25rem;
             color: var(--text-primary); cursor: pointer; padding: 0.5rem;
         }
 
@@ -385,7 +392,7 @@
             position: absolute;
             bottom: 10px; right: 10px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
+            font-size: 0.68rem;
             font-weight: 500;
             color: rgba(255,255,255,0.85);
             background: rgba(0,0,0,0.45);
@@ -402,7 +409,7 @@
         .diffusion-hint {
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
             margin-top: 0.6rem;
             opacity: 0;
@@ -423,15 +430,15 @@
             border-radius: inherit;
         }
         .hero-content h1 {
-            font-family: 'Playfair Display', serif; font-size: 2.75rem; font-weight: 500;
+            font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 500;
             letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.3rem;
         }
         .hero-subtitle {
-            font-size: 1rem; color: var(--accent); font-weight: 550;
+            font-size: 1.16rem; color: var(--accent); font-weight: 550;
             margin-bottom: 1.25rem; letter-spacing: 0.01em;
         }
         .hero-bio {
-            color: var(--bio-color); font-size: 0.92rem; line-height: 1.75;
+            color: var(--bio-color); font-size: 1.08rem; line-height: 1.78;
             max-width: 580px; margin-bottom: 1rem;
         }
         .hero-bio a {
@@ -459,7 +466,7 @@
             font-size: 1.5rem; font-weight: 700; color: var(--gold);
         }
         .citation-label {
-            font-size: 0.85rem; color: var(--text-muted); font-weight: 450;
+            font-size: 0.92rem; color: var(--text-muted); font-weight: 450;
             letter-spacing: 0.02em;
         }
         @keyframes gradient-shift {
@@ -472,7 +479,7 @@
         }
         .hero-link {
             display: inline-flex; align-items: center; gap: 0.35rem;
-            padding: 0.4rem 0.85rem; border-radius: 100px; font-size: 0.78rem; font-weight: 500;
+            padding: 0.45rem 0.95rem; border-radius: 100px; font-size: 0.92rem; font-weight: 500;
             text-decoration: none; transition: var(--transition);
             border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card);
         }
@@ -481,7 +488,7 @@
             box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
             transform: translateY(-1px);
         }
-        .hero-link i { font-size: 0.8rem; }
+        .hero-link i { font-size: 0.88rem; }
 
         /* ═══════════════════════ NEWS ═══════════════════════ */
         .news-bar { max-width: 1120px; margin: 0 auto 3rem; padding: 0 2rem; }
@@ -490,9 +497,9 @@
             border-radius: var(--radius); padding: 1.25rem 1.5rem;
             display: flex; flex-direction: column; gap: 0.5rem; box-shadow: var(--shadow-sm);
         }
-        .news-item { display: flex; align-items: center; gap: 0.65rem; font-size: 0.85rem; padding: 0.3rem 0; }
+        .news-item { display: flex; align-items: center; gap: 0.65rem; font-size: 1rem; padding: 0.3rem 0; }
         .news-badge {
-            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            font-size: 0.82rem; font-weight: 700; text-transform: uppercase;
             letter-spacing: 0.08em; padding: 0.2rem 0.55rem; border-radius: 100px;
             white-space: nowrap; flex-shrink: 0;
             position: relative; cursor: default; transition: var(--transition);
@@ -547,7 +554,7 @@
         .section { max-width: 1120px; margin: 0 auto; padding: 2.5rem 2rem; }
         .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
         .section-header h2 {
-            font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 500;
+            font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 500;
             letter-spacing: -0.02em; white-space: nowrap;
         }
         .section-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
@@ -555,10 +562,59 @@
 
         /* ═══════════════════════ PUBLICATIONS ═══════════════════════ */
         .pub-filters {
-            display: flex; gap: 0.35rem; margin-bottom: 1.25rem; flex-wrap: wrap;
+            display: flex; gap: 0.35rem; margin-bottom: 0; flex-wrap: wrap;
+        }
+        .pub-toolbar {
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+            flex-wrap: wrap; margin-bottom: 1.15rem;
+        }
+        .pub-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 0;
+        }
+        .pub-sort-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            flex-wrap: nowrap;
+            min-width: 0;
+        }
+        .pub-sort-label {
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .pub-sort-select {
+            appearance: none;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            padding: 0.35rem 2.1rem 0.35rem 0.8rem;
+            font-size: 0.95rem;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: var(--transition);
+            background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+            background-position: calc(100% - 12px) calc(50% - 2px), calc(100% - 8px) calc(50% - 2px);
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+        }
+        .pub-sort-select:hover { color: var(--text-primary); border-color: var(--text-muted); }
+        .pub-sort-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+        .pub-count {
+            color: var(--text-muted); font-size: 1rem;
+            margin-left: auto;
+            padding-top: 0.2rem;
+            white-space: nowrap;
         }
         .pub-filter-btn {
-            padding: 0.35rem 0.85rem; border-radius: 100px; font-size: 0.78rem; font-weight: 550;
+            padding: 0.46rem 1.08rem; border-radius: 100px; font-size: 0.98rem; font-weight: 550;
             border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted);
             cursor: pointer; transition: var(--transition);
         }
@@ -567,35 +623,40 @@
             background: var(--accent); color: white; border-color: var(--accent);
         }
 
-        .pub-carousel-wrapper {
+        .pub-ticker-wrapper {
             position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-md);
+            max-height: 68vh;
+            min-height: 420px;
         }
-        .pub-carousel {
-            display: flex; gap: 1rem; overflow-x: auto;
-            scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 0 1.5rem; scrollbar-width: none;
+        .pub-ticker-track {
+            display: flex;
+            flex-direction: column;
+            gap: 0.95rem;
+            will-change: transform;
+            --pub-ticker-distance: 0px;
+            --pub-ticker-duration: 26s;
+            animation: pub-ticker-marquee var(--pub-ticker-duration) linear infinite;
         }
-        .pub-carousel::-webkit-scrollbar { display: none; }
-
-        .pub-carousel-nav {
-            position: absolute; top: 50%; transform: translateY(-70%);
-            width: 36px; height: 36px; border-radius: 50%;
-            background: var(--bg-card); border: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: var(--shadow-md);
-            color: var(--text-secondary); font-size: 0.85rem;
-            transition: var(--transition); z-index: 10;
+        .pub-ticker-list {
+            display: flex; flex-direction: column; gap: 0.95rem;
         }
-        .pub-carousel-nav:hover {
-            background: var(--accent); color: white; border-color: var(--accent);
+        .pub-ticker-track:hover,
+        .pub-ticker-track:focus-within {
+            animation-play-state: paused;
         }
-        .pub-carousel-nav.prev { left: -18px; }
-        .pub-carousel-nav.next { right: -18px; }
+        @keyframes pub-ticker-marquee {
+            from { transform: translateY(0); }
+            to { transform: translateY(calc(-1 * var(--pub-ticker-distance))); }
+        }
 
         .pub-card {
-            flex: 0 0 340px; scroll-snap-align: start;
+            flex: 0 0 auto;
+            width: 100%;
+            scroll-snap-align: start;
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-md); padding: 1.25rem 1.35rem;
+            border-radius: var(--radius-md); padding: 1.55rem 1.55rem;
             transition: var(--transition); position: relative; cursor: default;
         }
         .pub-card:hover {
@@ -625,49 +686,49 @@
         }
         .pub-card.highlight .pub-highlight-label {
             display: inline-flex; align-items: center; gap: 0.3rem;
-            font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
             letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.5rem;
         }
         .pub-highlight-label { display: none; }
 
         .pub-meta { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
         .pub-venue {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 550;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 550;
             padding: 0.18rem 0.55rem; border-radius: 100px; letter-spacing: 0.03em;
         }
         .pub-venue.top { background: var(--venue-top-bg); color: var(--venue-top); }
         .pub-venue.workshop { background: var(--venue-workshop-bg); color: var(--venue-workshop); }
-        .pub-venue.arxiv { background: var(--bg-secondary); color: var (--text-muted); }
+        .pub-venue.arxiv { background: var(--bg-secondary); color: var(--text-muted); }
 
-        .pub-year { font-size: 0.73rem; color: var(--text-muted); font-weight: 450; }
+        .pub-year { font-size: 0.94rem; color: var(--text-muted); font-weight: 450; }
         .pub-highlight-badge {
-            font-size: 0.63rem; font-weight: 700; color: var(--gold);
+            font-size: 0.8rem; font-weight: 700; color: var(--gold);
             background: var(--gold-light); padding: 0.15rem 0.5rem;
             border-radius: 100px; letter-spacing: 0.02em;
             position: relative; cursor: default; transition: var(--transition);
         }
         .pub-title {
-            font-weight: 600; font-size: 0.88rem; line-height: 1.4;
+            font-weight: 600; font-size: 1.14rem; line-height: 1.45;
             margin-bottom: 0.3rem; color: var(--text-primary);
             display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
         .pub-authors {
-            font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;
+            font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.5rem;
         }
         .pub-authors .me { color: var(--accent); font-weight: 600; }
         .pub-links { display: flex; gap: 0.35rem; flex-wrap: wrap; }
         .pub-link {
-            font-size: 0.7rem; font-weight: 550; padding: 0.2rem 0.5rem;
+            font-size: 0.9rem; font-weight: 550; padding: 0.35rem 0.72rem;
             border-radius: 100px; text-decoration: none; border: 1px solid var(--border);
             color: var(--text-secondary); transition: var(--transition);
             display: inline-flex; align-items: center; gap: 0.2rem;
         }
-        .pub-link:hover { color: var (--accent); border-color: var(--accent); background: var(--accent-light); }
+        .pub-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
 
         /* ═══════ SUMMARY TOOLTIP ═══════ */
         .pub-summary-trigger {
             position: relative;
-            font-size: 0.7rem; font-weight: 550;
+            font-size: 0.9rem; font-weight: 550;
             padding: 0.2rem 0.5rem; border-radius: 100px;
             border: 1px solid var(--border); color: var(--text-muted);
             cursor: pointer; transition: var(--transition);
@@ -677,11 +738,11 @@
         .pub-summary-trigger:hover {
             color: var(--accent); border-color: var(--accent); background: var(--accent-light);
         }
-        .pub-summary-trigger i { font-size: 0.65rem; }
+        .pub-summary-trigger i { font-size: 0.7rem; }
 
         .pub-summary-popup {
             position: absolute;
-            width: 280px;
+            width: 300px;
             background: var(--popup-bg); border: 1px solid var(--popup-border);
             border-radius: var(--radius-md); box-shadow: var(--shadow-xl);
             padding: 0.75rem; z-index: 9999;
@@ -703,19 +764,22 @@
             background: linear-gradient(135deg, var(--accent-light), var(--bg-secondary));
             margin-bottom: 0.5rem;
             display: flex; align-items: center; justify-content: center;
-            color: var(--text-muted); font-size: 0.7rem; font-weight: 500;
+            color: var(--text-muted); font-size: 0.82rem; font-weight: 500;
             overflow: hidden;
         }
         .pub-summary-img img {
             width: 100%; height: 100%; object-fit: cover;
         }
         .pub-summary-text {
-            font-size: 0.73rem; color: var(--text-secondary); line-height: 1.5;
+            font-size: 0.93rem; color: var(--text-secondary); line-height: 1.5;
         }
 
         /* Hidden cards by filter */
         .pub-card.hidden {
             display: none;
+        }
+        .pub-card.ticker-clone {
+            pointer-events: none;
         }
 
         /* ═══════════════════════ TIMELINE ═══════════════════════ */
@@ -736,12 +800,12 @@
         .timeline-item:hover::before { background: var(--accent); }
 
         .timeline-period {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
             color: var(--text-muted); letter-spacing: 0.04em; margin-bottom: 0.2rem;
         }
-        .timeline-title { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.1rem; }
-        .timeline-org { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
-        .timeline-detail { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+        .timeline-title { font-weight: 600; font-size: 1.06rem; margin-bottom: 0.1rem; }
+        .timeline-org { font-size: 0.96rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
+        .timeline-detail { font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; }
         .timeline-detail a { font-weight: 500; }
 
         /* ═══════════════════════ AWARDS ═══════════════════════ */
@@ -753,10 +817,10 @@
         .award-item:last-child { border-bottom: none; }
         .award-item:hover { padding-left: 0.5rem; }
         .award-year {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
             color: var(--text-muted); flex-shrink: 0; width: 38px;
         }
-        .award-text { color: var(--text-secondary); line-height: 1.5; }
+        .award-text { color: var(--text-secondary); line-height: 1.55; font-size: 0.96rem; }
         .award-text strong { color: var(--gold); font-weight: 600; }
 
         /* ═══════════════════════ ACTIVITIES ═══════════════════════ */
@@ -771,8 +835,8 @@
             box-shadow: var(--shadow-sm); border-color: rgba(var(--accent-rgb), 0.2);
             transform: translateY(-1px);
         }
-        .activity-card h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .activity-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+        .activity-card h4 { font-size: 1.02rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .activity-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; }
 
         /* ═══════════════════════ GALLERY ═══════════════════════ */
         .gallery-grid {
@@ -792,7 +856,7 @@
             position: absolute; bottom: 0; left: 0; right: 0;
             padding: 2.5rem 0.75rem 0.65rem;
             background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: white; font-size: 0.72rem; font-weight: 500;
+            color: white; font-size: 0.88rem; font-weight: 500;
             opacity: 0; transform: translateY(4px); transition: var(--transition);
         }
         .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
@@ -802,10 +866,10 @@
             max-width: 1120px; margin: 2.5rem auto 0; padding: 2rem;
             border-top: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
-            color: var(--text-muted); font-size: 0.78rem;
+            color: var(--text-muted); font-size: 0.98rem;
         }
         .footer-links { display: flex; gap: 1rem; }
-        .footer-links a { color: var(--text-muted); transition: var(--transition); font-size: 1rem; }
+        .footer-links a { color: var(--text-muted); transition: var(--transition); font-size: 1.04rem; }
         .footer-links a:hover { color: var(--accent); }
 
         /* ═══════════════════════ ANIMATIONS ═══════════════════════ */
@@ -828,21 +892,22 @@
 
         /* ═══════════════════════ RESPONSIVE ═══════════════════════ */
         @media (max-width: 768px) {
-            .story-heading { font-size: clamp(1.4rem, 6vw, 2rem); }
+            .story-heading { font-size: clamp(1.65rem, 6vw, 2.25rem); }
             .story-content { padding: 1.5rem; }
             .story-photo { width: 90px; height: 112px; }
             .story-pub-stats { gap: 1.25rem; }
-            .story-pub-stat-num { font-size: clamp(1.4rem, 5vw, 2rem); }
-            .story-tl-period { min-width: 75px; font-size: 0.65rem; }
+            .story-pub-stat-num { font-size: clamp(1.5rem, 5vw, 2rem); }
+            .story-tl-period { min-width: 75px; font-size: 0.84rem; }
             .story-stat-row { gap: 1.5rem; }
-            #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.72rem; }
+            #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.88rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
             .hero-photo { width: 160px; height: 200px; }
-            .hero-content h1 { font-size: 2rem; }
+            .hero-content h1 { font-size: 2.35rem; }
             .hero-bio { max-width: 100%; }
             .hero-links { justify-content: center; }
+            .hero-link { padding: 0.45rem 0.95rem; font-size: 0.92rem; }
             .two-col { grid-template-columns: 1fr; gap: 2rem; }
             .nav-links {
                 display: none; position: absolute; top: 60px; left: 0; right: 0;
@@ -852,12 +917,40 @@
             .nav-links.open { display: flex; }
             .nav-toggle { display: block; }
             .section { padding: 1.75rem 1.25rem; }
+            .section-header h2 { font-size: 1.55rem; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
             footer { flex-direction: column; gap: 0.75rem; text-align: center; }
-            .pub-card { flex: 0 0 280px; }
+            .pub-ticker-wrapper { max-height: 460px; min-height: 340px; }
+            .pub-toolbar { gap: 0.75rem; }
+            .pub-controls { width: 100%; }
+            .pub-sort-wrap { width: 100%; }
+            .pub-sort-select { width: 100%; }
+            .pub-sort-wrap { gap: 0.45rem; }
+            .pub-sort-label { font-size: 0.9rem; }
+            .pub-count { font-size: 0.95rem; }
+            .pub-filter-btn { padding: 0.38rem 0.86rem; font-size: 0.93rem; }
             .pub-summary-popup { display: none !important; }
-            .pub-carousel-nav { display: none; }
             .diffusion-hint { display: none !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                transition-delay: 0ms !important;
+            }
+            body { scroll-behavior: auto !important; }
+            body::before,
+            .hero-bg,
+            .story-arrow,
+            #story-intro,
+            .story-fade,
+            .reveal,
+            #bubble-canvas {
+                animation: none !important;
+            }
+            #bubble-canvas { display: none; }
         }
 
         /* ═══════════════════════ SCROLLBAR ═══════════════════════ */
@@ -881,7 +974,7 @@
         <div class="story-content">
             <img class="story-photo story-fade" src="images/profile.jpg" alt="Junsu Kim">
             <h2 class="story-heading story-fade story-fade-delay">Junsu Kim</h2>
-            <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.82rem; letter-spacing:0.03em;">
+            <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; letter-spacing:0.03em;">
                 Combined MS-PhD · UNIST AI Graduate School
             </p>
             <p class="story-sub story-fade story-fade-delay-2" style="margin-top:0.75rem; max-width:460px;">
@@ -924,10 +1017,10 @@
                     <div class="story-pub-stat-label">Highlight</div>
                 </div>
             </div>
-            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted);">
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:1rem; font-size:1rem; color:var(--text-muted);">
                 CVPR · ECCV · AAAI · CVPR-W · ECCV-W
             </p>
-            <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+            <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
         </div>
     </div>
 
@@ -953,7 +1046,7 @@
                     <span class="story-tl-info"><span class="story-tl-role">B.S. in ICE</span> <span class="story-tl-org">· Pukyong National Univ.</span></span>
                 </div>
             </div>
-            <a href="#experience" class="story-more story-fade story-fade-delay-2">View details <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+            <a href="#experience" class="story-more story-fade story-fade-delay-2">View details <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
         </div>
     </div>
 
@@ -992,20 +1085,20 @@
     <div class="nav-inner">
         <a href="#" class="nav-logo">Junsu Kim</a>
         <div class="nav-right">
-            <ul class="nav-links">
+            <ul class="nav-links" id="primary-nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#awards">Awards</a></li>
                 <li><a href="#activities">Activities</a></li>
                 <li><a href="#gallery">Gallery</a></li>
-                <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank">CV ↗</a></li>
+                <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer">CV ↗</a></li>
             </ul>
             <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
                 <i class="fas fa-moon theme-icon-light"></i>
                 <i class="fas fa-sun theme-icon-dark"></i>
             </button>
-            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+            <button id="navToggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav-links">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -1030,23 +1123,23 @@
                 <p class="hero-subtitle reveal reveal-delay-2">Combined MS-PhD · UNIST AI Graduate School</p>
                 <p class="hero-bio reveal reveal-delay-2">
                     I am a Combined MS/PhD student in the AI Graduate School (AIGS) at UNIST, advised by
-                    <a href="https://sites.google.com/site/bsrvision00/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Prof. Seungryul Baek</a>.
+                    <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer" style="color: var(--text-primary); font-weight: 550;">Prof. Seungryul Baek</a>.
                     My research spans computer vision, continual learning, open-world object detection, and
                     vision-language models, with a particular focus on integrating these into robotics and
                     foundation models such as diffusion models.
                 </p>
                 <p class="hero-bio reveal reveal-delay-3" style="margin-top: -0.25rem;">
                     Previously, I interned at <strong>NAVER AI Lab</strong>, mentored by
-                    <a href="https://sites.google.com/site/dyhan0920/" target="_blank" style="color: var(--text-primary); font-weight: 550;">Dongyoon Han</a>,
+                    <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer" style="color: var(--text-primary); font-weight: 550;">Dongyoon Han</a>,
                     and served as an <strong>NVIDIA DLI Ambassador</strong>.
                 </p>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link shimmer-btn"><i class="fas fa-envelope"></i> Email</a>
-                    <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-graduation-cap"></i> Scholar</a>
-                    <a href="https://github.com/jjunsss" target="_blank" class="hero-link shimmer-btn"><i class="fab fa-github"></i> GitHub</a>
-                    <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" class="hero-link shimmer-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    <a href="https://blog.naver.com/jjunsss" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-pen-nib"></i> Blog</a>
-                    <a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" class="hero-link shimmer-btn"><i class="fas fa-file-alt"></i> CV</a>
+                    <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fas fa-graduation-cap"></i> Scholar</a>
+                    <a href="https://github.com/jjunsss" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fab fa-github"></i> GitHub</a>
+                    <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://blog.naver.com/jjunsss" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fas fa-pen-nib"></i> Blog</a>
+                    <a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fas fa-file-alt"></i> CV</a>
                 </div>
             </div>
         </div>
@@ -1088,22 +1181,32 @@
     </div>
 
     <!-- Filters -->
-    <div class="pub-filters reveal">
-        <button class="pub-filter-btn active" data-filter="all">All</button>
-        <button class="pub-filter-btn" data-filter="main">Main Venue</button>
-        <button class="pub-filter-btn" data-filter="workshop">Workshop</button>
-        <button class="pub-filter-btn" data-filter="arxiv">ArXiv</button>
+    <div class="pub-toolbar reveal">
+        <div class="pub-controls">
+            <div class="pub-filters">
+                <button class="pub-filter-btn active" data-filter="all" aria-pressed="true">All</button>
+                <button class="pub-filter-btn" data-filter="main" aria-pressed="false">Main Venue</button>
+                <button class="pub-filter-btn" data-filter="workshop" aria-pressed="false">Workshop</button>
+                <button class="pub-filter-btn" data-filter="arxiv" aria-pressed="false">ArXiv</button>
+            </div>
+            <label class="pub-sort-wrap">
+                <span class="pub-sort-label">Sort</span>
+                <select id="pubSort" class="pub-sort-select" aria-label="Sort publications">
+                    <option value="newest" selected>Latest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="title">Title A→Z</option>
+                </select>
+            </label>
+        </div>
+        <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers</p>
     </div>
 
-    <!-- Carousel -->
-    <div class="pub-carousel-wrapper reveal">
-        <button class="pub-carousel-nav prev" onclick="scrollCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
-        <button class="pub-carousel-nav next" onclick="scrollCarousel(1)"><i class="fas fa-chevron-right"></i></button>
-
-        <div class="pub-carousel" id="pubCarousel">
+    <!-- Publication feed (auto ticker) -->
+    <div class="pub-ticker-wrapper reveal">
+        <div class="pub-ticker-track" id="pubTickerTrack">
 
             <!-- SDDGR — CVPR 2024 Highlight -->
-            <div class="pub-card highlight" data-venue="main">
+            <div class="pub-card highlight" data-venue="main" data-year="2024">
                 <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight — Top 2.8%</div>
                 <div class="pub-meta">
                     <span class="pub-venue top">CVPR 2024</span>
@@ -1113,7 +1216,7 @@
                 <div class="pub-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, H. Cho, J. Kim, Y. Tiruneh, S. Baek</div>
                 <div class="pub-links">
-                    <a href="https://arxiv.org/abs/2402.17323" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://arxiv.org/abs/2402.17323" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1129,7 +1232,7 @@
             </div>
 
             <!-- B-RIGHT — BMVC 2025 -->
-            <div class="pub-card" data-venue="main">
+            <div class="pub-card" data-venue="main" data-year="2025">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">BMVC 2025</span>
@@ -1138,7 +1241,7 @@
                 <div class="pub-title">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing</div>
                 <div class="pub-authors"><span class="me">J. Kim*</span>, Y. Jang*, H. Kim, E. Lee, E. Kim, S. Baek, J. Yoo</div>
                 <div class="pub-links">
-                    <a href="https://arxiv.org/abs/2501.16724" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://arxiv.org/abs/2501.16724" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1150,7 +1253,7 @@
             </div>
 
             <!-- FSCIL Synthetic — ICCV-W 2025 -->
-            <div class="pub-card" data-venue="workshop">
+            <div class="pub-card" data-venue="workshop" data-year="2025">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -1159,7 +1262,7 @@
                 <div class="pub-title">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in Few-Shot Class-Incremental Learning</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, S. Baek</div>
                 <div class="pub-links">
-                    <a href="https://www.arxiv.org/pdf/2507.13739" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://www.arxiv.org/pdf/2507.13739" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1171,7 +1274,7 @@
             </div>
 
             <!-- RPE — ICCV-W 2025 -->
-            <div class="pub-card" data-venue="workshop">
+            <div class="pub-card" data-venue="workshop" data-year="2025">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -1180,8 +1283,8 @@
                 <div class="pub-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, N. Kim, J. Lee, I. Park, D. Han†, S. Baek†</div>
                 <div class="pub-links">
-                    <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
+                    <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1193,7 +1296,7 @@
             </div>
 
             <!-- Diffusion FSCIL — ArXiv -->
-            <div class="pub-card" data-venue="arxiv">
+            <div class="pub-card" data-venue="arxiv" data-year="2025">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2025</span>
@@ -1202,7 +1305,7 @@
                 <div class="pub-title">Beyond Synthetic Replays: Turning Diffusion Features into Few-Shot Class-Incremental Learning Knowledge</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han†, S. Baek†</div>
                 <div class="pub-links">
-                    <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1214,7 +1317,7 @@
             </div>
 
             <!-- VLM-PL — CVPR-W 2024 -->
-            <div class="pub-card" data-venue="workshop">
+            <div class="pub-card" data-venue="workshop" data-year="2024">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">CVPR-W 2024</span>
@@ -1223,7 +1326,7 @@
                 <div class="pub-title">VLM-PL: Advanced Pseudo Labeling Approach for Class Incremental Object Detection with Vision-Language Model</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, J. Kim, J. Cha, S. Baek</div>
                 <div class="pub-links">
-                    <a href="https://arxiv.org/abs/2403.05346" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://arxiv.org/abs/2403.05346" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1235,7 +1338,7 @@
             </div>
 
             <!-- ICASSP 2024 -->
-            <div class="pub-card" data-venue="main">
+            <div class="pub-card" data-venue="main" data-year="2024">
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">ICASSP 2024</span>
@@ -1244,7 +1347,7 @@
                 <div class="pub-title">Class-Wise Buffer Management for Incremental Object Detection: An Effective Buffer Training Strategy</div>
                 <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, Y. Tiruneh, J. On, J. Song, S. Choi, S. Baek</div>
                 <div class="pub-links">
-                    <a href="https://arxiv.org/abs/2312.09139" target="_blank" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://arxiv.org/abs/2312.09139" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
@@ -1433,12 +1536,12 @@
 
 <!-- ════════════════════════ FOOTER ════════════════════════ -->
 <footer>
-    <p>&copy; 2025 Junsu Kim · Built with care, together with <a href="https://claude.ai" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 500;">Claude</a></p>
+    <p>&copy; 2025 Junsu Kim · Built with care, together with <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 500;">Claude</a></p>
     <div class="footer-links">
         <a href="mailto:jjunsssk@unist.ac.kr" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="https://github.com/jjunsss" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
+        <a href="https://github.com/jjunsss" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
     </div>
 </footer>
 
@@ -1452,8 +1555,17 @@
         localStorage.setItem('theme', next);
     }
     (function() {
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+            html.setAttribute('data-theme', savedTheme);
+            return;
+        }
+
         const h = new Date().getHours();
-        document.documentElement.setAttribute('data-theme', (h >= 18 || h < 6) ? 'dark' : 'light');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const timeBasedTheme = (h >= 18 || h < 6) ? 'dark' : 'light';
+        html.setAttribute('data-theme', prefersDark.matches ? 'dark' : timeBasedTheme);
     })();
 
     // ═══════════════════ STORYTELLING INTRO ═══════════════════
@@ -1463,11 +1575,12 @@
         const nav = document.getElementById('navbar');
         if (!intro || !nav) return;
 
+        const introSeen = localStorage.getItem('story-intro-seen') === '1';
         const panels = intro.querySelectorAll('.story-panel');
         let introDone = false;
 
         // Hash navigation: skip intro entirely
-        if (window.location.hash && window.location.hash !== '#') {
+        if ((window.location.hash && window.location.hash !== '#') || introSeen) {
             intro.classList.add('done');
             nav.classList.remove('nav-hidden');
             if (skipBtn) skipBtn.classList.add('hidden');
@@ -1517,6 +1630,7 @@
             document.body.style.overflow = '';
             nav.classList.remove('nav-hidden');
             if (skipBtn) skipBtn.classList.add('hidden');
+            localStorage.setItem('story-intro-seen', '1');
         }
 
         // Detect when user scrolls past last panel inside intro
@@ -1590,52 +1704,219 @@
     }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Mobile nav close
+    // Mobile nav interactions
+    const navLinks = document.querySelector('.nav-links');
+    const navToggle = document.getElementById('navToggle');
+    if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+        link.addEventListener('click', () => {
+            if (navLinks) navLinks.classList.remove('open');
+            if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+        });
     });
 
     // Summary Popup Logic
     document.querySelectorAll('.pub-summary-trigger').forEach(trigger => {
         const popup = trigger.querySelector('.pub-summary-popup');
         if (!popup) return;
+
+        trigger.setAttribute('tabindex', '0');
+        trigger.setAttribute('role', 'button');
+        trigger.setAttribute('aria-haspopup', 'dialog');
+        trigger.setAttribute('aria-expanded', 'false');
         
         document.body.appendChild(popup);
         
-        trigger.addEventListener('mouseenter', () => {
+        const showPopup = () => {
             const rect = trigger.getBoundingClientRect();
             popup.style.top = (window.scrollY + rect.top - 10) + 'px';
             popup.style.left = (window.scrollX + rect.left + rect.width / 2) + 'px';
             popup.classList.add('show');
-        });
-        
-        trigger.addEventListener('mouseleave', () => {
+            trigger.setAttribute('aria-expanded', 'true');
+        };
+        const hidePopup = () => {
             popup.classList.remove('show');
+            trigger.setAttribute('aria-expanded', 'false');
+        };
+
+        trigger.addEventListener('mouseenter', showPopup);
+        trigger.addEventListener('focus', showPopup);
+        trigger.addEventListener('mouseleave', hidePopup);
+        trigger.addEventListener('blur', hidePopup);
+        trigger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (popup.classList.contains('show')) {
+                    hidePopup();
+                } else {
+                    showPopup();
+                }
+            } else if (e.key === 'Escape') {
+                hidePopup();
+            }
         });
     });
 
-    // Publication filters
-    document.querySelectorAll('.pub-filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.pub-filter-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const filter = this.dataset.filter;
-            document.querySelectorAll('.pub-card').forEach(card => {
-                if (filter === 'all' || card.dataset.venue === filter) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
+    // Improve image loading
+    document.querySelectorAll('img').forEach(img => {
+        const isPrimaryImage = img.classList.contains('hero-photo') || img.classList.contains('story-photo');
+        img.setAttribute('loading', isPrimaryImage ? 'eager' : 'lazy');
+        img.setAttribute('decoding', 'async');
+    });
+
+    // Publication filters + sorting
+    const pubCountEl = document.getElementById('pubCount');
+    const pubTickerTrack = document.getElementById('pubTickerTrack');
+    const pubCards = Array.from(document.querySelectorAll('.pub-card'));
+    const pubFilterBtns = Array.from(document.querySelectorAll('.pub-filter-btn'));
+    const pubSortSelect = document.getElementById('pubSort');
+    let activePubFilter = 'all';
+    let activePubSort = pubSortSelect ? pubSortSelect.value : 'newest';
+    let pubTickerRaf = null;
+
+    function parsePublicationYear(card) {
+        const textYear = card.dataset.year || card.querySelector('.pub-year')?.textContent || '0';
+        const year = parseInt(textYear, 10);
+        return Number.isNaN(year) ? 0 : year;
+    }
+
+    function sortPublicationCards(cards, sortMode) {
+        const sorted = [...cards];
+        if (sortMode === 'oldest') {
+            sorted.sort((a, b) => parsePublicationYear(a) - parsePublicationYear(b));
+        } else if (sortMode === 'title') {
+            sorted.sort((a, b) => {
+                const at = a.querySelector('.pub-title')?.textContent?.trim().toLowerCase() || '';
+                const bt = b.querySelector('.pub-title')?.textContent?.trim().toLowerCase() || '';
+                return at.localeCompare(bt);
+            });
+        } else {
+            sorted.sort((a, b) => parsePublicationYear(b) - parsePublicationYear(a));
+        }
+        return sorted;
+    }
+
+    function updatePublicationCount(filter, visibleCount) {
+        const total = visibleCount ?? pubCards.filter(card => filter === 'all' || card.dataset.venue === filter).length;
+        const totalLabel = `${total} paper${total === 1 ? '' : 's'}`;
+        if (!pubCountEl) return;
+
+        const label = filter === 'all'
+            ? 'all'
+            : filter === 'main' ? 'main venue'
+            : filter === 'workshop' ? 'workshop'
+            : 'arxiv';
+
+        pubCountEl.textContent = `Showing ${totalLabel} in ${label}`;
+        if (filter === 'all') {
+            pubCountEl.textContent = `Showing ${totalLabel}`;
+        }
+    }
+
+    function sanitizeCloneForTicker(cardNode) {
+        const cloned = cardNode.cloneNode(true);
+        cloned.classList.add('ticker-clone');
+        cloned.setAttribute('aria-hidden', 'true');
+        cloned.setAttribute('tabindex', '-1');
+        cloned.querySelectorAll('a, .pub-summary-trigger, [tabindex], .pub-summary-popup').forEach(el => {
+            el.setAttribute('tabindex', '-1');
+        });
+        return cloned;
+    }
+
+    function startPublicationTicker(visibleCards) {
+        if (!pubTickerTrack) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || visibleCards.length <= 1) {
+            pubTickerTrack.style.animation = 'none';
+            pubTickerTrack.style.transform = 'translateY(0)';
+            pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
+            return;
+        }
+
+        // Reset animation so JS can recalc distance.
+        pubTickerTrack.style.animation = 'none';
+        pubTickerTrack.style.transform = 'translateY(0)';
+        pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
+
+        requestAnimationFrame(() => {
+            const cycleHeight = Math.ceil(pubTickerTrack.scrollHeight / 2);
+            if (!cycleHeight) return;
+            const duration = Math.max(14, Math.min(45, cycleHeight / 45));
+            pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight}px`);
+            pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration}s`);
+            requestAnimationFrame(() => {
+                pubTickerTrack.style.animation = 'pub-ticker-marquee var(--pub-ticker-duration) linear infinite';
             });
         });
+    }
+
+    function applyPublicationFilter(filter = activePubFilter) {
+        activePubFilter = filter;
+        const visibleCards = [];
+
+        pubCards.forEach(card => {
+            const match = filter === 'all' || card.dataset.venue === filter;
+            if (match) visibleCards.push(card);
+        });
+
+        const sortedVisible = sortPublicationCards(visibleCards, activePubSort);
+        const visibleSet = new Set(sortedVisible);
+        pubCards.forEach(card => card.classList.toggle('hidden', !visibleSet.has(card)));
+
+        if (pubTickerTrack) {
+            pubTickerTrack.innerHTML = '';
+            sortedVisible.forEach(card => pubTickerTrack.appendChild(card));
+            if (sortedVisible.length > 1) {
+                sortedVisible.forEach(card => pubTickerTrack.appendChild(sanitizeCloneForTicker(card)));
+            }
+            if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
+            pubTickerRaf = requestAnimationFrame(() => {
+                startPublicationTicker(sortedVisible);
+                pubTickerRaf = null;
+            });
+        }
+
+        updatePublicationCount(filter, sortedVisible.length);
+    }
+
+    pubFilterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+            if (!filter) return;
+
+            activePubFilter = filter;
+            pubFilterBtns.forEach(b => {
+                const isActive = b === this;
+                b.classList.toggle('active', isActive);
+                b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+            applyPublicationFilter(filter);
+        });
     });
 
-    // Carousel scroll
-    function scrollCarousel(dir) {
-        const carousel = document.getElementById('pubCarousel');
-        const cardWidth = carousel.querySelector('.pub-card')?.offsetWidth || 340;
-        carousel.scrollBy({ left: dir * (cardWidth + 16), behavior: 'smooth' });
+    if (pubSortSelect) {
+        pubSortSelect.addEventListener('change', function() {
+            activePubSort = this.value;
+            applyPublicationFilter(activePubFilter);
+        });
     }
+
+    applyPublicationFilter('all');
+
+    window.addEventListener('resize', () => {
+        if (pubTickerRaf) return;
+        if (activePubFilter) {
+            pubTickerRaf = requestAnimationFrame(() => {
+                applyPublicationFilter(activePubFilter);
+                pubTickerRaf = null;
+            });
+        }
+    });
 
     // ═══════════════════════ DIFFUSION DENOISING EFFECT ═══════════════════════
     (function() {
@@ -1643,6 +1924,11 @@
         const stepLabel = document.getElementById('diffusionStep');
         const wrap = document.getElementById('diffusionWrap');
         if (!canvas || !stepLabel || !wrap) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            canvas.style.opacity = 0;
+            stepLabel.classList.add('hidden');
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
 
@@ -1823,6 +2109,13 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.gallery-diffusion').forEach(canvas => {
+                canvas.style.opacity = 0;
+            });
+            return;
+        }
+
         // Pre-render noise on all gallery canvases immediately (visible as static noise)
         document.querySelectorAll('[data-diffuse]').forEach(item => {
             const c = item.querySelector('.gallery-diffusion');
@@ -1922,6 +2215,9 @@
     (function() {
         const canvas = document.getElementById('bubble-canvas');
         if (!canvas) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
 
         const ctx = canvas.getContext('2d');
         const bubbles = [];
