@@ -222,6 +222,45 @@
         }
         .story-stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
 
+        /* Explore Full Portfolio 버튼 */
+        .story-enter-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin-top: 2.5rem; padding: 0.85rem 2.2rem;
+            font-size: 1rem; font-weight: 550; letter-spacing: 0.02em;
+            color: #fff; background: var(--accent);
+            border-radius: 100px; transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .story-enter-btn:hover {
+            background: var(--accent-hover); color: #fff;
+            transform: translateY(-2px); box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.35);
+        }
+
+        /* 논문 제목 롤링 */
+        .story-pub-roller {
+            margin-top: 1.25rem; height: 2.4em; overflow: hidden;
+            position: relative; max-width: 540px; margin-left: auto; margin-right: auto;
+        }
+        .story-pub-roller-inner {
+            display: flex; flex-direction: column;
+            animation: pub-roll 18s ease-in-out infinite;
+        }
+        .story-pub-roller-item {
+            height: 2.4em; display: flex; align-items: center; justify-content: center;
+            font-size: 0.82rem; color: var(--text-secondary); line-height: 1.35;
+            padding: 0 1rem; text-align: center;
+        }
+        @keyframes pub-roll {
+            0%, 11% { transform: translateY(0); }
+            14.28%, 25.28% { transform: translateY(-2.4em); }
+            28.56%, 39.56% { transform: translateY(-4.8em); }
+            42.84%, 53.84% { transform: translateY(-7.2em); }
+            57.12%, 68.12% { transform: translateY(-9.6em); }
+            71.4%, 82.4% { transform: translateY(-12em); }
+            85.68%, 97% { transform: translateY(-14.4em); }
+            100% { transform: translateY(0); }
+        }
+
         .story-fade {
             opacity: 0; transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -231,18 +270,6 @@
         .story-fade-delay-2 { transition-delay: 0.4s; }
         .story-fade-delay-3 { transition-delay: 0.6s; }
 
-        .story-scroll-cue { margin-top: 2rem; display: flex; justify-content: center; }
-        .story-arrow {
-            width: 20px; height: 20px;
-            border-right: 2px solid var(--text-muted);
-            border-bottom: 2px solid var(--text-muted);
-            transform: rotate(45deg);
-            animation: story-bounce 2s ease-in-out infinite;
-        }
-        @keyframes story-bounce {
-            0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.3; }
-            50% { transform: rotate(45deg) translate(5px, 5px); opacity: 1; }
-        }
         #story-skip {
             position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
             background: var(--bg-card); border: 1px solid var(--border);
@@ -897,6 +924,8 @@
             .story-photo { width: 90px; height: 112px; }
             .story-pub-stats { gap: 1.25rem; }
             .story-pub-stat-num { font-size: clamp(1.5rem, 5vw, 2rem); }
+            .story-pub-roller-item { font-size: 0.72rem; padding: 0 0.5rem; }
+            .story-enter-btn { font-size: 0.9rem; padding: 0.75rem 1.8rem; }
             .story-tl-period { min-width: 75px; font-size: 0.84rem; }
             .story-stat-row { gap: 1.5rem; }
             #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.88rem; }
@@ -993,33 +1022,42 @@
     <div class="story-panel">
         <div class="story-content">
             <h2 class="story-heading story-fade">Publications</h2>
-            <div class="story-pub-stats story-fade story-fade-delay">
+            <!-- Citation: 크게 상단 -->
+            <div class="story-fade story-fade-delay" style="margin-top:0.75rem;">
+                <div class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="108">0</div>
+                <div class="story-pub-stat-label" style="font-size:0.9rem;">Citations</div>
+            </div>
+            <!-- 나머지 통계: 작게 하단 -->
+            <div class="story-pub-stats story-fade story-fade-delay" style="margin-top:1.5rem;">
                 <div class="story-pub-stat">
                     <div class="story-pub-stat-num story-countup" data-target="7">0</div>
-                    <div class="story-pub-stat-label">Total Papers</div>
+                    <div class="story-pub-stat-label">Papers</div>
                 </div>
                 <div class="story-pub-stat">
                     <div class="story-pub-stat-num story-countup" data-target="3">0</div>
-                    <div class="story-pub-stat-label">Main Venues</div>
+                    <div class="story-pub-stat-label">Conferences</div>
                 </div>
                 <div class="story-pub-stat">
                     <div class="story-pub-stat-num story-countup" data-target="3">0</div>
                     <div class="story-pub-stat-label">Workshops</div>
                 </div>
-            </div>
-            <div class="story-pub-stats story-fade story-fade-delay-2" style="margin-top:1rem;">
                 <div class="story-pub-stat">
-                    <div class="story-pub-stat-num gold story-countup" data-target="108">0</div>
-                    <div class="story-pub-stat-label">Citations</div>
-                </div>
-                <div class="story-pub-stat">
-                    <div class="story-pub-stat-num gold story-countup" data-target="1">0</div>
+                    <div class="story-pub-stat-num story-countup" data-target="1">0</div>
                     <div class="story-pub-stat-label">Highlight</div>
                 </div>
             </div>
-            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:1rem; font-size:1rem; color:var(--text-muted);">
-                CVPR · ECCV · AAAI · CVPR-W · ECCV-W
-            </p>
+            <!-- 논문 제목 자동 롤링 -->
+            <div class="story-pub-roller story-fade story-fade-delay-2">
+                <div class="story-pub-roller-inner">
+                    <div class="story-pub-roller-item">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection · <strong>CVPR 2024</strong></div>
+                    <div class="story-pub-roller-item">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing · <strong>BMVC 2025</strong></div>
+                    <div class="story-pub-roller-item">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in FSCIL · <strong>ICCV 2025 Workshop</strong></div>
+                    <div class="story-pub-roller-item">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark · <strong>CVPR 2025 Workshop</strong></div>
+                    <div class="story-pub-roller-item">Beyond Synthetic Replays: Turning Diffusion Features into FSCIL Knowledge · <strong>ICASSP 2025</strong></div>
+                    <div class="story-pub-roller-item">VLM-PL: Advanced Pseudo Labeling for Class Incremental Object Detection · <strong>CVPR 2024 Workshop</strong></div>
+                    <div class="story-pub-roller-item">Class-Wise Buffer Management for Incremental Object Detection · <strong>ArXiv 2024</strong></div>
+                </div>
+            </div>
             <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
         </div>
     </div>
@@ -1068,12 +1106,9 @@
                     <div class="story-stat-label">Invited Talks</div>
                 </div>
             </div>
-            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:2.5rem; color:var(--text-muted);">
-                Scroll to explore my full portfolio
-            </p>
-            <div class="story-scroll-cue story-fade story-fade-delay-3">
-                <div class="story-arrow"></div>
-            </div>
+            <a href="#about" id="story-enter" class="story-enter-btn story-fade story-fade-delay-2">
+                Explore Full Portfolio <i class="fas fa-arrow-down" style="font-size:0.85rem;"></i>
+            </a>
         </div>
     </div>
 
@@ -1573,6 +1608,7 @@
         const intro = document.getElementById('story-intro');
         const skipBtn = document.getElementById('story-skip');
         const nav = document.getElementById('navbar');
+        const introMainEntry = document.getElementById('about');
         if (!intro || !nav) return;
 
         const introSeen = localStorage.getItem('story-intro-seen') === '1';
@@ -1608,16 +1644,19 @@
                     if (!e.isIntersecting) return;
                     const el = e.target;
                     const target = parseInt(el.dataset.target);
-                    const dur = 1600, st = performance.now();
-                    function step(now) {
-                        const p = Math.min((now - st) / dur, 1);
-                        el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
-                        if (p < 1) requestAnimationFrame(step); else el.textContent = target;
+                    const dur = target > 50 ? 1800 : 800;
+                    let startTime = 0;
+                    function step(ts) {
+                        if (!startTime) startTime = ts;
+                        const p = Math.min((ts - startTime) / dur, 1);
+                        const eased = 1 - Math.pow(1 - p, 2);
+                        el.textContent = Math.round(eased * target);
+                        if (p < 1) requestAnimationFrame(step);
                     }
                     requestAnimationFrame(step);
                     countObs.unobserve(el);
                 });
-            }, { threshold: 0.8, rootMargin: '-20% 0px -20% 0px', root: introDone ? null : intro });
+            }, { threshold: 0.5, root: introDone ? null : intro });
             countEls.forEach(el => countObs.observe(el));
         }
 
@@ -1633,17 +1672,12 @@
             localStorage.setItem('story-intro-seen', '1');
         }
 
-        // Detect when user scrolls past last panel inside intro
-        if (!introDone) {
-            intro.addEventListener('scroll', () => {
-                const lastPanel = panels[panels.length - 1];
-                const panelBottom = lastPanel.offsetTop + lastPanel.offsetHeight;
-                const scrollBottom = intro.scrollTop + intro.clientHeight;
-                if (scrollBottom >= panelBottom - 5) {
-                    // Small delay so the last panel is seen fully
-                    setTimeout(exitIntro, 400);
-                }
-            }, { passive: true });
+        function jumpToMainContent() {
+            exitIntro();
+            if (!introMainEntry) return;
+            requestAnimationFrame(() => {
+                introMainEntry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
         }
 
         // Keyboard navigation: ArrowDown/Up, Space, PageDown/Up to move panels
@@ -1656,8 +1690,6 @@
             function goToPanel(idx) {
                 const clamped = Math.max(0, Math.min(idx, panels.length - 1));
                 panels[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // If going beyond last panel, exit
-                if (idx >= panels.length) setTimeout(exitIntro, 600);
             }
 
             document.addEventListener('keydown', (e) => {
@@ -1673,16 +1705,15 @@
             });
         }
 
-        // Skip button
-        if (skipBtn) {
-            skipBtn.addEventListener('click', () => {
-                exitIntro();
-                setTimeout(() => {
-                    const hero = document.getElementById('about');
-                    if (hero) hero.scrollIntoView({ behavior: 'smooth' });
-                }, 50);
+        // "Explore Full Portfolio" button + Skip button → exit intro
+        const enterBtn = document.getElementById('story-enter');
+        [enterBtn, skipBtn].forEach(btn => {
+            if (!btn) return;
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                jumpToMainContent();
             });
-        }
+        });
     })();
 
     // Navbar scroll
