@@ -89,7 +89,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; scroll-snap-type: y proximity; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -129,10 +129,20 @@
         a:hover { color: var(--accent-hover); }
 
         /* ═══════════════════════ STORYTELLING INTRO ═══════════════════════ */
-        #story-intro { position: relative; z-index: 1; }
+        #story-intro {
+            position: relative; z-index: 1;
+            height: 100vh; overflow: hidden;
+        }
+        #story-intro.active {
+            overflow-y: auto; scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
+        #story-intro.active::-webkit-scrollbar { display: none; }
+        #story-intro.done { height: auto; overflow: visible; }
         .story-panel {
             height: 100vh; display: flex; align-items: center; justify-content: center;
-            position: relative; scroll-snap-align: start;
+            position: relative; scroll-snap-align: start; scroll-snap-stop: always;
         }
         .story-content { text-align: center; max-width: 720px; padding: 2rem; }
         .story-heading {
@@ -1446,12 +1456,28 @@
         const nav = document.getElementById('navbar');
         if (!intro || !nav) return;
 
-        // Story fade observer
+        const panels = intro.querySelectorAll('.story-panel');
+        let introDone = false;
+
+        // Hash navigation: skip intro entirely
+        if (window.location.hash && window.location.hash !== '#') {
+            intro.classList.add('done');
+            nav.classList.remove('nav-hidden');
+            if (skipBtn) skipBtn.classList.add('hidden');
+            introDone = true;
+        } else {
+            // Lock body scroll, activate intro scroll container
+            intro.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            nav.classList.add('nav-hidden');
+        }
+
+        // Story fade observer (inside intro scroll container)
         const storyObs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if (e.isIntersecting) { e.target.classList.add('visible'); storyObs.unobserve(e.target); }
             });
-        }, { threshold: 0.3, rootMargin: '0px 0px -15% 0px' });
+        }, { threshold: 0.3, rootMargin: '0px 0px -15% 0px', root: introDone ? null : intro });
         document.querySelectorAll('.story-fade').forEach(el => storyObs.observe(el));
 
         // Story citation count-up
@@ -1470,34 +1496,70 @@
                     requestAnimationFrame(step);
                     citObs.unobserve(e.target);
                 });
-            }, { threshold: 1.0, rootMargin: '-35% 0px -35% 0px' });
+            }, { threshold: 1.0, rootMargin: '-35% 0px -35% 0px', root: introDone ? null : intro });
             citObs.observe(storyCit);
         }
 
-        // Navbar visibility
-        function updateNav() {
-            const introBottom = intro.offsetTop + intro.offsetHeight;
-            const mid = window.scrollY + window.innerHeight * 0.5;
-            const inIntro = mid < introBottom;
-            nav.classList.toggle('nav-hidden', inIntro);
-            if (skipBtn) skipBtn.classList.toggle('hidden', !inIntro);
+        // Exit intro → unlock body scroll
+        function exitIntro() {
+            if (introDone) return;
+            introDone = true;
+            intro.classList.remove('active');
+            intro.classList.add('done');
+            document.body.style.overflow = '';
+            nav.classList.remove('nav-hidden');
+            if (skipBtn) skipBtn.classList.add('hidden');
         }
-        nav.classList.add('nav-hidden');
-        window.addEventListener('scroll', updateNav, { passive: true });
-        updateNav();
+
+        // Detect when user scrolls past last panel inside intro
+        if (!introDone) {
+            intro.addEventListener('scroll', () => {
+                const lastPanel = panels[panels.length - 1];
+                const panelBottom = lastPanel.offsetTop + lastPanel.offsetHeight;
+                const scrollBottom = intro.scrollTop + intro.clientHeight;
+                if (scrollBottom >= panelBottom - 5) {
+                    // Small delay so the last panel is seen fully
+                    setTimeout(exitIntro, 400);
+                }
+            }, { passive: true });
+        }
+
+        // Keyboard navigation: ArrowDown/Up, Space, PageDown/Up to move panels
+        if (!introDone) {
+            function getCurrentPanel() {
+                const st = intro.scrollTop;
+                const vh = intro.clientHeight;
+                return Math.round(st / vh);
+            }
+            function goToPanel(idx) {
+                const clamped = Math.max(0, Math.min(idx, panels.length - 1));
+                panels[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // If going beyond last panel, exit
+                if (idx >= panels.length) setTimeout(exitIntro, 600);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (introDone) return;
+                const cur = getCurrentPanel();
+                if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+                    e.preventDefault();
+                    goToPanel(cur + 1);
+                } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+                    e.preventDefault();
+                    goToPanel(cur - 1);
+                }
+            });
+        }
 
         // Skip button
         if (skipBtn) {
             skipBtn.addEventListener('click', () => {
-                const hero = document.getElementById('about');
-                if (hero) hero.scrollIntoView({ behavior: 'smooth' });
+                exitIntro();
+                setTimeout(() => {
+                    const hero = document.getElementById('about');
+                    if (hero) hero.scrollIntoView({ behavior: 'smooth' });
+                }, 50);
             });
-        }
-
-        // Hash navigation: skip intro
-        if (window.location.hash && window.location.hash !== '#') {
-            nav.classList.remove('nav-hidden');
-            if (skipBtn) skipBtn.classList.add('hidden');
         }
     })();
 
