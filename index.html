@@ -323,6 +323,47 @@
         }
         #story-skip:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.45); }
         #story-skip.hidden { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .story-scroll-hint {
+            position: fixed;
+            left: 50%;
+            bottom: 1.8rem;
+            transform: translateX(-50%);
+            z-index: 998;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border-radius: 999px;
+            padding: 0.52rem 0.92rem 0.52rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 560;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.28s ease, transform 0.28s ease, border-color var(--transition), color var(--transition);
+            animation: story-scroll-pulse 1.65s ease-in-out infinite;
+        }
+        .story-scroll-hint i { font-size: 0.92rem; }
+        .story-scroll-hint:hover {
+            border-color: rgba(var(--accent-rgb), 0.42);
+            color: var(--text-primary);
+            transform: translateX(-50%) translateY(-2px);
+        }
+        .story-scroll-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(8px);
+        }
+        @keyframes story-scroll-pulse {
+            0%, 100% { box-shadow: var(--shadow-sm); }
+            50% { box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.18); }
+        }
         nav.nav-hidden {
             transform: translateY(-100%); opacity: 0; pointer-events: none;
             transition: transform 0.4s ease, opacity 0.4s ease;
@@ -1034,6 +1075,7 @@
             .story-tl-info { font-size: 0.93rem; }
             .story-stat-row { gap: 1.5rem; }
             #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.88rem; }
+            .story-scroll-hint { bottom: 1.3rem; font-size: 0.72rem; padding: 0.48rem 0.8rem 0.48rem 0.88rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
@@ -1108,6 +1150,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             body { scroll-behavior: auto !important; }
+            .story-scroll-hint { animation: none; }
         }
 
         /* ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??SCROLLBAR ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??*/
@@ -1266,6 +1309,9 @@
     </div>
 
     <button id="story-skip">Skip <i class="fas fa-angle-double-down"></i></button>
+    <button id="story-scroll-hint" class="story-scroll-hint" type="button" aria-label="Scroll down to next panel">
+        <span>Scroll down</span><i class="fas fa-angle-down"></i>
+    </button>
 </div>
 
 <!-- ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?NAVIGATION ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?-->
@@ -1824,6 +1870,7 @@
     (function() {
         const intro = document.getElementById('story-intro');
         const skipBtn = document.getElementById('story-skip');
+        const scrollHint = document.getElementById('story-scroll-hint');
         const nav = document.getElementById('navbar');
         if (!intro || !nav) return;
 
@@ -1839,6 +1886,13 @@
             window.scrollTo(0, 0);
             intro.scrollTop = 0;
         });
+
+        function updateScrollHint(idx) {
+            if (!scrollHint) return;
+            const isLastPanel = idx >= panels.length - 1;
+            scrollHint.classList.toggle('hidden', introDone || isLastPanel);
+        }
+        updateScrollHint(0);
 
         // Story fade observer (inside intro scroll container)
         const storyObs = new IntersectionObserver((entries) => {
@@ -1881,6 +1935,7 @@
             document.body.style.overflow = '';
             nav.classList.remove('nav-hidden');
             if (skipBtn) skipBtn.classList.add('hidden');
+            if (scrollHint) scrollHint.classList.add('hidden');
             // Bypass html scroll-behavior:smooth ??force instant
             document.documentElement.style.scrollBehavior = 'auto';
             window.scrollTo(0, 0);
@@ -1896,6 +1951,7 @@
                 const clamped = Math.max(0, Math.min(idx, panels.length - 1));
                 if (clamped === currentIdx && idx === currentIdx) return;
                 currentIdx = clamped;
+                updateScrollHint(currentIdx);
                 isScrolling = true;
                 intro.scrollTo({ top: clamped * intro.clientHeight, behavior: 'smooth' });
                 setTimeout(() => { isScrolling = false; }, 600);
@@ -1905,6 +1961,7 @@
             intro.addEventListener('scrollend', () => {
                 if (!isScrolling) {
                     currentIdx = Math.round(intro.scrollTop / intro.clientHeight);
+                    updateScrollHint(currentIdx);
                 }
             });
             // Fallback for browsers without scrollend
@@ -1914,6 +1971,7 @@
                 clearTimeout(scrollTimer);
                 scrollTimer = setTimeout(() => {
                     currentIdx = Math.round(intro.scrollTop / intro.clientHeight);
+                    updateScrollHint(currentIdx);
                 }, 150);
             }, { passive: true });
 
@@ -1927,6 +1985,13 @@
                     goToPanel(currentIdx - 1);
                 }
             });
+
+            if (scrollHint) {
+                scrollHint.addEventListener('click', () => {
+                    if (introDone || isScrolling) return;
+                    goToPanel(currentIdx + 1);
+                });
+            }
         }
 
         // "Explore Full Portfolio" button + Skip button ??exit intro
