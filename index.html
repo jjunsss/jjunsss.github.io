@@ -1482,7 +1482,7 @@
                 <select id="pubSort" class="pub-sort-select" aria-label="Sort publications">
                     <option value="newest" selected>Latest</option>
                     <option value="oldest">Oldest</option>
-                    <option value="title">Title A???/option>
+                    <option value="title">Title A-Z</option>
                 </select>
             </label>
         </div>
@@ -1572,7 +1572,7 @@
                     <span class="pub-year">2025</span>
                 </div>
                 <div class="pub-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
-                <div class="pub-authors"><span class="me">J. Kim</span>, N. Kim, J. Lee, I. Park, D. Han?? S. Baek??/div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, N. Kim, J. Lee, I. Park, D. Han, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
@@ -1594,7 +1594,7 @@
                     <span class="pub-year">2025</span>
                 </div>
                 <div class="pub-title">Beyond Synthetic Replays: Turning Diffusion Features into Few-Shot Class-Incremental Learning Knowledge</div>
-                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han?? S. Baek??/div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <span class="pub-summary-trigger">
@@ -2142,12 +2142,27 @@
     // Publication filters + sorting
     const pubCountEl = document.getElementById('pubCount');
     const pubTickerTrack = document.getElementById('pubTickerTrack');
+    const pubTickerWrapper = document.querySelector('.pub-ticker-wrapper');
     const pubCards = Array.from(document.querySelectorAll('.pub-card'));
     const pubFilterBtns = Array.from(document.querySelectorAll('.pub-filter-btn'));
     const pubSortSelect = document.getElementById('pubSort');
+    let tickerToggle = document.getElementById('pubTickerToggle');
     let activePubFilter = 'all';
     let activePubSort = pubSortSelect ? pubSortSelect.value : 'newest';
     let pubTickerRaf = null;
+    let isUserPausedTicker = false;
+    let isHoverPausedTicker = false;
+
+    function updateTickerPauseState() {
+      if (!pubTickerTrack) return;
+      const shouldPause = isUserPausedTicker || isHoverPausedTicker;
+      pubTickerTrack.classList.toggle('ticker-paused', shouldPause);
+      if (!tickerToggle) return;
+      tickerToggle.innerHTML = shouldPause
+        ? '<i class="fas fa-play"></i>'
+        : '<i class="fas fa-pause"></i>';
+      tickerToggle.setAttribute('aria-label', shouldPause ? 'Play ticker' : 'Pause ticker');
+    }
 
     function parsePublicationYear(card) {
         const textYear = card.dataset.year || card.querySelector('.pub-year')?.textContent || '0';
@@ -2220,14 +2235,15 @@
         }
 
         requestAnimationFrame(() => {
-            const cycleHeight = measureTickerCycleHeight(visibleCards.length);
-            if (!cycleHeight) return;
-            const duration = Math.max(12, Math.min(65, cycleHeight / 60));
-            pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight.toFixed(2)}px`);
-            pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration.toFixed(2)}s`);
-            requestAnimationFrame(() => {
-                pubTickerTrack.classList.add('ticking');
-            });
+          const cycleHeight = measureTickerCycleHeight(visibleCards.length);
+          if (!cycleHeight) return;
+          const duration = Math.max(12, Math.min(65, cycleHeight / 60));
+          pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight.toFixed(2)}px`);
+          pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration.toFixed(2)}s`);
+          requestAnimationFrame(() => {
+            pubTickerTrack.classList.add('ticking');
+            updateTickerPauseState();
+          });
         });
     }
 
@@ -2250,7 +2266,7 @@
             if (sortedVisible.length > 1) {
                 sortedVisible.forEach(card => pubTickerTrack.appendChild(sanitizeCloneForTicker(card)));
             }
-            if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
+    if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
             pubTickerRaf = requestAnimationFrame(() => {
                 startPublicationTicker(sortedVisible);
                 pubTickerRaf = null;
@@ -2285,15 +2301,30 @@
     applyPublicationFilter('all');
 
     // Ticker pause/play toggle
-    const tickerToggle = document.getElementById('pubTickerToggle');
     if (tickerToggle && pubTickerTrack) {
+        updateTickerPauseState();
         tickerToggle.addEventListener('click', () => {
-            const paused = pubTickerTrack.classList.toggle('ticker-paused');
-            tickerToggle.innerHTML = paused
-                ? '<i class="fas fa-play"></i>'
-                : '<i class="fas fa-pause"></i>';
-            tickerToggle.setAttribute('aria-label', paused ? 'Play ticker' : 'Pause ticker');
+            isUserPausedTicker = !isUserPausedTicker;
+            updateTickerPauseState();
         });
+    }
+
+    if (pubTickerWrapper && pubTickerTrack) {
+        pubTickerWrapper.addEventListener('mouseenter', () => {
+            isHoverPausedTicker = true;
+            updateTickerPauseState();
+        });
+
+        pubTickerWrapper.addEventListener('mouseleave', () => {
+            isHoverPausedTicker = false;
+            updateTickerPauseState();
+        });
+
+        // Prioritize mouse wheel over auto ticker animation while interacting.
+        pubTickerWrapper.addEventListener('wheel', () => {
+            isHoverPausedTicker = true;
+            updateTickerPauseState();
+        }, { passive: true });
     }
 
     window.addEventListener('resize', () => {
