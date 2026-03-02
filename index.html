@@ -171,26 +171,19 @@
             font-size: 0.8rem; color: var(--text-secondary); font-weight: 450;
             background: rgba(var(--accent-rgb), 0.04);
         }
-        .story-citation {
-            font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700;
-            color: var(--accent); font-family: 'Playfair Display', serif;
-            line-height: 1; margin: 0.75rem 0 0.25rem;
+        .story-pub-stats {
+            display: flex; justify-content: center; gap: 2rem;
+            flex-wrap: wrap; margin-top: 1.5rem;
         }
-        .story-citation-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 450; }
-        .story-pub {
-            text-align: left; padding: 0.85rem 1rem;
-            border: 1px solid var(--border); border-radius: var(--radius-sm);
-            max-width: 500px; margin: 0.5rem auto;
-            background: rgba(var(--accent-rgb), 0.02);
-            transition: var(--transition);
+        .story-pub-stat { text-align: center; min-width: 80px; }
+        .story-pub-stat-num {
+            font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700;
+            font-family: 'Playfair Display', serif; line-height: 1;
+            color: var(--accent);
         }
-        .story-pub:hover { border-color: var(--accent); transform: translateY(-1px); }
-        .story-pub-venue {
-            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.05em; color: var(--venue-top); margin-bottom: 0.25rem;
-        }
-        .story-pub-title {
-            font-size: 0.82rem; font-weight: 500; color: var(--text-primary); line-height: 1.4;
+        .story-pub-stat-num.gold { color: var(--gold); }
+        .story-pub-stat-label {
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 450;
         }
         .story-tl { max-width: 480px; margin: 1.25rem auto 0; text-align: left; }
         .story-tl-item {
@@ -838,7 +831,8 @@
             .story-heading { font-size: clamp(1.4rem, 6vw, 2rem); }
             .story-content { padding: 1.5rem; }
             .story-photo { width: 90px; height: 112px; }
-            .story-pub { padding: 0.75rem; }
+            .story-pub-stats { gap: 1.25rem; }
+            .story-pub-stat-num { font-size: clamp(1.4rem, 5vw, 2rem); }
             .story-tl-period { min-width: 75px; font-size: 0.65rem; }
             .story-stat-row { gap: 1.5rem; }
             #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.72rem; }
@@ -902,24 +896,37 @@
         </div>
     </div>
 
-    <!-- Panel 2: Publications + Citations -->
+    <!-- Panel 2: Publications Stats -->
     <div class="story-panel">
         <div class="story-content">
             <h2 class="story-heading story-fade">Publications</h2>
-            <div class="story-fade story-fade-delay">
-                <div class="story-citation"><span class="story-citation-number" data-target="108">0</span><span style="font-size:0.6em; opacity:0.7;">+</span></div>
-                <div class="story-citation-label">Total Citations</div>
-            </div>
-            <div class="story-fade story-fade-delay-2" style="margin-top:1.25rem;">
-                <div class="story-pub">
-                    <div class="story-pub-venue">CVPR 2024 · Highlight (Top 2.8%)</div>
-                    <div class="story-pub-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+            <div class="story-pub-stats story-fade story-fade-delay">
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="7">0</div>
+                    <div class="story-pub-stat-label">Total Papers</div>
                 </div>
-                <div class="story-pub">
-                    <div class="story-pub-venue">ECCV 2024</div>
-                    <div class="story-pub-title">DOSOD: Dense Open-Set Object Detection with Vision-Language Model</div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="3">0</div>
+                    <div class="story-pub-stat-label">Main Venues</div>
+                </div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="3">0</div>
+                    <div class="story-pub-stat-label">Workshops</div>
                 </div>
             </div>
+            <div class="story-pub-stats story-fade story-fade-delay-2" style="margin-top:1rem;">
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num gold story-countup" data-target="108">0</div>
+                    <div class="story-pub-stat-label">Citations</div>
+                </div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num gold story-countup" data-target="1">0</div>
+                    <div class="story-pub-stat-label">Highlight</div>
+                </div>
+            </div>
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted);">
+                CVPR · ECCV · AAAI · CVPR-W · ECCV-W
+            </p>
             <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
         </div>
     </div>
@@ -1480,24 +1487,25 @@
         }, { threshold: 0.3, rootMargin: '0px 0px -15% 0px', root: introDone ? null : intro });
         document.querySelectorAll('.story-fade').forEach(el => storyObs.observe(el));
 
-        // Story citation count-up
-        const storyCit = document.querySelector('.story-citation-number');
-        if (storyCit) {
-            const target = parseInt(storyCit.dataset.target);
-            const citObs = new IntersectionObserver((entries) => {
+        // Story count-up (all .story-countup elements)
+        const countEls = document.querySelectorAll('.story-countup');
+        if (countEls.length) {
+            const countObs = new IntersectionObserver((entries) => {
                 entries.forEach(e => {
                     if (!e.isIntersecting) return;
-                    const dur = 1800, st = performance.now();
+                    const el = e.target;
+                    const target = parseInt(el.dataset.target);
+                    const dur = 1600, st = performance.now();
                     function step(now) {
                         const p = Math.min((now - st) / dur, 1);
-                        storyCit.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
-                        if (p < 1) requestAnimationFrame(step); else storyCit.textContent = target;
+                        el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * target);
+                        if (p < 1) requestAnimationFrame(step); else el.textContent = target;
                     }
                     requestAnimationFrame(step);
-                    citObs.unobserve(e.target);
+                    countObs.unobserve(el);
                 });
-            }, { threshold: 1.0, rootMargin: '-35% 0px -35% 0px', root: introDone ? null : intro });
-            citObs.observe(storyCit);
+            }, { threshold: 0.8, rootMargin: '-20% 0px -20% 0px', root: introDone ? null : intro });
+            countEls.forEach(el => countObs.observe(el));
         }
 
         // Exit intro → unlock body scroll
