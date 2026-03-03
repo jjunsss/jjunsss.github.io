@@ -146,6 +146,229 @@
             scrollbar-width: none; -ms-overflow-style: none;
         }
         #story-intro.active::-webkit-scrollbar { display: none; }
+        /* intro hidden via display:none after exit */
+        .story-panel {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; scroll-snap-align: start; scroll-snap-stop: always;
+        }
+        .story-content { text-align: center; max-width: 720px; padding: 2rem; }
+        .story-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.05rem, 5.3vw, 3.45rem);
+            font-weight: 500; color: var(--text-primary);
+            line-height: 1.3; margin-bottom: 1rem; letter-spacing: -0.02em;
+        }
+        .story-sub {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary); line-height: 1.7;
+            max-width: 500px; margin: 0 auto;
+        }
+        .story-photo {
+            width: 120px; height: 150px; border-radius: var(--radius);
+            object-fit: cover; margin: 0 auto 1.5rem; display: block;
+            border: 3px solid var(--border); box-shadow: var(--shadow-md);
+        }
+        .story-tags {
+            display: flex; justify-content: center; flex-wrap: nowrap;
+            gap: 0.5rem; margin-top: 1.25rem;
+        }
+        .story-tag {
+            display: inline-block; padding: 0.35rem 1rem;
+            border: 1px solid var(--border); border-radius: 100px;
+            font-size: 0.95rem; color: var(--text-secondary); font-weight: 450;
+            background: rgba(var(--accent-rgb), 0.04);
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+        .story-pub-stats {
+            display: flex; justify-content: center; gap: 2rem;
+            flex-wrap: wrap; margin-top: 1.5rem;
+        }
+        .story-pub-stat { text-align: center; min-width: 80px; }
+        .story-pub-stat-num {
+            font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700;
+            font-family: 'Playfair Display', serif; line-height: 1;
+            color: var(--accent);
+        }
+        .story-pub-stat-num.gold {
+            background: linear-gradient(135deg, #f59e0b, #f97316, #ec4899, #7c3aed);
+            background-size: 220% 220%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 6s ease infinite;
+        }
+        .story-pub-stat-label {
+            font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 450;
+        }
+        .story-tl { max-width: 480px; margin: 1.25rem auto 0; text-align: left; }
+        .story-tl-item {
+            display: flex; align-items: baseline; gap: 0.75rem;
+            padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);
+        }
+        .story-tl-item:last-child { border-bottom: none; }
+        .story-tl-period {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
+            color: var(--text-muted); white-space: nowrap; min-width: 90px;
+        }
+        .story-tl-info { font-size: 1rem; }
+        .story-tl-role { font-weight: 550; color: var(--text-primary); }
+        .story-tl-org { color: var(--text-secondary); font-size: 0.93rem; }
+        .story-more {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            margin-top: 1.5rem; font-size: 1rem; font-weight: 500;
+            color: var(--accent); transition: var(--transition);
+        }
+        .story-more:hover { gap: 0.6rem; }
+        .story-stat-row {
+            display: flex; justify-content: center; gap: 2.5rem;
+            margin: 1.25rem 0; flex-wrap: wrap;
+        }
+        .story-stat { text-align: center; }
+        .story-stat-num {
+            font-size: 1.8rem; font-weight: 700; color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+        .story-stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
+        .story-quote {
+            margin: 0.9rem auto 0;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+            line-height: 1.55;
+            color: var(--text-primary);
+            letter-spacing: 0.01em;
+            white-space: normal;
+        }
+        .story-quote-author {
+            margin-top: 0.35rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* Explore Full Portfolio ?????? */
+        .story-enter-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin-top: 1.45rem; padding: 0.85rem 2.2rem;
+            font-size: 1rem; font-weight: 550; letter-spacing: 0.02em;
+            color: #fff; background: var(--accent);
+            border-radius: 100px; transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .story-enter-btn:hover {
+            background: var(--accent-hover); color: #fff;
+            transform: translateY(-2px); box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.35);
+        }
+
+        /* ??????????? */
+        .story-pub-roller {
+            margin-top: 1.5rem; height: 4.8em; overflow: hidden;
+            position: relative; max-width: 620px; margin-left: auto; margin-right: auto;
+            border-left: 2px solid var(--accent); padding-left: 1rem;
+        }
+        .story-pub-roller-inner {
+            display: flex; flex-direction: column;
+            gap: 0;
+            will-change: transform;
+            --story-roll-distance: 0px;
+            --story-roll-duration: 18s;
+        }
+        .story-pub-roller-inner.ticking {
+            animation: story-pub-marquee var(--story-roll-duration) linear infinite;
+        }
+        .story-pub-roller:hover .story-pub-roller-inner.ticking,
+        .story-pub-roller:focus-within .story-pub-roller-inner.ticking {
+            animation-play-state: paused;
+        }
+        .story-pub-roller-item {
+            height: 4.8em; display: flex; flex-direction: column; justify-content: center;
+            text-align: left; padding: 0 0.5rem; gap: 0.25rem;
+        }
+        .story-pub-roller-item.story-roll-clone { pointer-events: none; }
+        .story-pub-roller-title {
+            font-size: 0.88rem; font-weight: 600; color: var(--text-primary);
+            line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2;
+            -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .story-pub-roller-meta {
+            font-size: 0.75rem; color: var(--text-muted); font-weight: 450;
+        }
+        .story-pub-roller-meta strong { color: var(--accent); font-weight: 600; }
+        @keyframes story-pub-marquee {
+            from { transform: translateY(0); }
+            to { transform: translateY(calc(-1 * var(--story-roll-distance))); }
+        }
+
+        .story-fade {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .story-fade.visible { opacity: 1; transform: translateY(0); }
+        .story-fade-delay { transition-delay: 0.2s; }
+        .story-fade-delay-2 { transition-delay: 0.4s; }
+        .story-fade-delay-3 { transition-delay: 0.6s; }
+
+        #story-skip {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+            background: var(--accent); border: 2px solid var(--accent);
+            border-radius: 100px; padding: 0.6rem 1.5rem;
+            font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600;
+            color: #fff; cursor: pointer; letter-spacing: 0.02em;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.35);
+            display: flex; align-items: center; gap: 0.4rem;
+            transition: all 0.3s ease;
+        }
+        #story-skip:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.45); }
+        #story-skip.hidden { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .story-scroll-hint {
+            position: fixed;
+            left: 50%;
+            bottom: 1.8rem;
+            transform: translateX(-50%);
+            z-index: 998;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border-radius: 999px;
+            padding: 0.52rem 0.92rem 0.52rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 560;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: opacity 0.28s ease, transform 0.28s ease, border-color var(--transition), color var(--transition);
+            animation: story-scroll-pulse 1.65s ease-in-out infinite;
+        }
+        .story-scroll-hint i { font-size: 0.92rem; }
+        .story-scroll-hint:hover {
+            border-color: rgba(var(--accent-rgb), 0.42);
+            color: var(--text-primary);
+            transform: translateX(-50%) translateY(-2px);
+        }
+        .story-scroll-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(8px);
+        }
+        @keyframes story-scroll-pulse {
+            0%, 100% { box-shadow: var(--shadow-sm); }
+            50% { box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.18); }
+        }
+        nav.nav-hidden {
+            transform: translateY(-100%); opacity: 0; pointer-events: none;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
         /* === NAVIGATION === */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -264,7 +487,70 @@
             display: block; box-shadow: var(--shadow-lg); border: 3px solid var(--bg-card);
         }
 
-        /* Internship callout */
+        /* Diffusion canvas overlay */
+        .diffusion-canvas {
+            position: absolute;
+            top: 3px; left: 3px;
+            width: calc(100% - 6px); height: calc(100% - 6px);
+            border-radius: calc(var(--radius) - 2px);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .diffusion-step {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.85);
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            z-index: 6;
+            letter-spacing: 0.04em;
+            transition: opacity 0.5s ease;
+        }
+
+        .diffusion-step.hidden { opacity: 0; }
+
+        .diffusion-hint {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 0.6rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            cursor: pointer;
+        }
+        .diffusion-hint.visible { opacity: 1; }
+        .diffusion-hint:hover { color: var(--accent); }
+
+        /* Gallery diffusion canvas */
+        .gallery-item { position: relative; }
+        .gallery-diffusion {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            border-radius: inherit;
+        }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 500;
+            letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 0.3rem;
+        }
+        .hero-subtitle {
+            font-size: 1.16rem; color: var(--accent); font-weight: 550;
+            margin-bottom: 1.25rem; letter-spacing: 0.01em;
+        }
+        .hero-bio {
+            color: var(--bio-color); font-size: 1.08rem; line-height: 1.78;
+            max-width: 580px; margin-bottom: 1rem;
+        }
+
         .internship-callout {
             max-width: 820px;
             margin: 0 auto 1.4rem;
@@ -320,6 +606,76 @@
             background: var(--accent-hover);
             box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
         }
+        .hero-bio a {
+            font-weight: 550;
+            text-decoration-color: rgba(var(--accent-rgb), 0.3);
+            text-underline-offset: 2px;
+        }
+        .hero-bio a:hover { text-decoration-color: var(--accent); }
+
+        .citation-stat {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.35rem;
+            margin-bottom: 1.25rem;
+            padding: 0.55rem 0.95rem;
+            border-radius: 999px;
+            border: 1px solid rgba(var(--gold-rgb), 0.28);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.12), rgba(var(--accent-rgb), 0.08));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), var(--shadow-xs);
+        }
+        .citation-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.05rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), #ef4444, var(--accent));
+            background-size: 200% 200%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
+        }
+        .citation-plus {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.55rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f59e0b, #f97316, #7c3aed);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
+        }
+        .citation-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 550;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-left: 0.2rem;
+        }
+        [data-theme="dark"] .citation-stat {
+            border-color: rgba(var(--gold-rgb), 0.38);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.14), rgba(var(--accent-rgb), 0.12));
+        }
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-links {
+            display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1.5rem;
+        }
+        .hero-link {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.45rem 0.95rem; border-radius: 100px; font-size: 0.92rem; font-weight: 500;
+            text-decoration: none; transition: var(--transition);
+            border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card);
+        }
+        .hero-link:hover {
+            border-color: var(--accent); color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
+            transform: translateY(-1px);
+        }
+        .hero-link i { font-size: 0.88rem; }
 
         /* === NEWS === */
         .news-bar { max-width: 1120px; margin: 0 auto 3rem; padding: 0 2rem; }
@@ -337,6 +693,56 @@
         }
         .news-badge.new { background: var(--accent-light); color: var(--accent); }
         .news-badge.highlight { background: var(--gold-light); color: var(--gold); }
+
+        /* ???? Fire effect on hover ???? */
+        @keyframes fire-flicker {
+            0%, 100% { transform: scaleY(1) translateY(0); opacity: 0.9; }
+            25% { transform: scaleY(1.2) translateY(-1px) scaleX(0.95); opacity: 1; }
+            50% { transform: scaleY(0.9) translateY(1px) scaleX(1.05); opacity: 0.85; }
+            75% { transform: scaleY(1.1) translateY(-0.5px); opacity: 0.95; }
+        }
+        @keyframes fire-particle {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-18px) scale(0); opacity: 0; }
+        }
+        @keyframes fire-glow-pulse {
+            0%, 100% { box-shadow: 0 0 4px rgba(255,100,0,0.3), 0 0 8px rgba(255,60,0,0.15); }
+            50% { box-shadow: 0 0 8px rgba(255,100,0,0.5), 0 0 16px rgba(255,60,0,0.25), 0 -2px 20px rgba(255,160,0,0.15); }
+        }
+        .news-badge,
+        .pub-highlight-badge {
+            animation: fire-flicker 0.4s ease-in-out infinite, fire-glow-pulse 0.8s ease-in-out infinite;
+            background: linear-gradient(to top, #ff4500, #ff8c00, #ffd700);
+            color: #fff;
+            text-shadow: 0 0 4px rgba(255,200,0,0.6);
+        }
+        .news-badge::before,
+        .pub-highlight-badge::before,
+        .news-badge::after,
+        .pub-highlight-badge::after {
+            content: ''; position: absolute; border-radius: 50%;
+            animation: fire-particle 0.6s ease-out infinite;
+            pointer-events: none;
+        }
+        .news-badge::before,
+        .pub-highlight-badge::before {
+            width: 4px; height: 4px; background: #ff6a00;
+            top: -2px; left: 20%; animation-delay: 0s;
+        }
+        .news-badge::after,
+        .pub-highlight-badge::after {
+            width: 3px; height: 3px; background: #ffd700;
+            top: -2px; right: 25%; animation-delay: 0.25s;
+        }
+        .news-text { color: var(--text-secondary); line-height: 1.5; }
+        .news-text strong { color: var(--text-primary); font-weight: 600; }
+        .story-sub,
+        .hero-bio,
+        .news-text,
+        .pub-title,
+        .pub-authors {
+            overflow-wrap: anywhere;
+        }
 
         /* === SECTIONS === */
         .section { max-width: 1120px; margin: 0 auto; padding: 2.5rem 2rem; }
@@ -467,6 +873,69 @@
             border-color: rgba(var(--accent-rgb), 0.3);
         }
 
+        /* Highlight card (CVPR Highlight etc.) */
+        .pub-card.highlight {
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--bg-card), var(--bg-card)),
+                              linear-gradient(135deg, var(--gold), var(--accent), var(--gold));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+        }
+        .pub-card.highlight::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--accent), var(--gold));
+            background-size: 200% 100%;
+            animation: shimmer 3s ease infinite;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .pub-card.highlight .pub-highlight-label {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.5rem;
+        }
+        .pub-highlight-label { display: none; }
+
+        .pub-meta { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; flex-wrap: wrap; }
+        .pub-venue {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 550;
+            padding: 0.18rem 0.55rem; border-radius: 100px; letter-spacing: 0.03em;
+        }
+        .pub-venue.top { background: var(--venue-top-bg); color: var(--venue-top); }
+        .pub-venue.workshop { background: var(--venue-workshop-bg); color: var(--venue-workshop); }
+        .pub-venue.arxiv { background: var(--bg-secondary); color: var(--text-muted); }
+        .pub-venue.domestic { background: var(--gold-light); color: var(--gold); }
+
+        .pub-year { font-size: 0.94rem; color: var(--text-muted); font-weight: 450; }
+        .pub-highlight-badge {
+            font-size: 0.8rem; font-weight: 700; color: var(--gold);
+            background: var(--gold-light); padding: 0.15rem 0.5rem;
+            border-radius: 100px; letter-spacing: 0.02em;
+            position: relative; cursor: default; transition: var(--transition);
+        }
+        .pub-title {
+            font-weight: 600; font-size: 1.14rem; line-height: 1.45;
+            margin-bottom: 0.3rem; color: var(--text-primary);
+            display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .pub-authors {
+            font-size: 1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 0.5rem;
+        }
+        .pub-authors .me { color: var(--accent); font-weight: 600; }
+        .pub-links { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+        .pub-link {
+            font-size: 0.9rem; font-weight: 550; padding: 0.35rem 0.72rem;
+            border-radius: 100px; text-decoration: none; border: 1px solid var(--border);
+            color: var(--text-secondary); transition: var(--transition);
+            pointer-events: auto;
+            display: inline-flex; align-items: center; gap: 0.2rem;
+        }
+        .pub-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
+
         /* === SUMMARY TOOLTIP === */
         .pub-summary-trigger {
             position: relative;
@@ -516,6 +985,48 @@
         }
         .pub-summary-text {
             font-size: 0.93rem; color: var(--text-secondary); line-height: 1.5;
+        }
+
+        /* Photo lightbox */
+        .photo-lightbox {
+            position: fixed; inset: 0; z-index: 10000;
+            background: rgba(0,0,0,0.75);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
+            cursor: zoom-out;
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        }
+        .photo-lightbox.show { opacity: 1; pointer-events: auto; }
+        .photo-lightbox img {
+            max-width: 90vw; max-height: 85vh;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            transform: scale(0.92); transition: transform 0.3s ease;
+        }
+        .photo-lightbox.show img { transform: scale(1); }
+        .photo-btn {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            margin-top: 0.4rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 0.82rem; font-weight: 500;
+            cursor: pointer; transition: var(--transition);
+        }
+        .photo-btn:hover {
+            color: var(--accent); border-color: var(--accent); background: var(--accent-light);
+        }
+        .photo-btn i { font-size: 0.72rem; }
+
+        /* Hidden cards by filter */
+        .pub-card.hidden {
+            display: none;
+        }
+        .pub-card.ticker-clone {
+            pointer-events: none;
         }
 
         /* === TIMELINE === */
@@ -752,7 +1263,149 @@
 <!-- === STORYTELLING INTRO === -->
 <div id="story-intro">
 
-    <!-- === SDDGR === -->
+    <!-- Panel 1: Who I Am -->
+    <div class="story-panel">
+        <div class="story-content">
+            <img class="story-photo story-fade" src="images/profile.jpg" alt="Junsu Kim">
+            <h2 class="story-heading story-fade story-fade-delay">Junsu Kim</h2>
+            <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; letter-spacing:0.03em;">
+                Combined MS-PhD &middot; UNIST AI Graduate School
+            </p>
+            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:0.75rem; max-width:520px;">
+                Exploring continual &amp; incremental learning, open-world detection, and vision-language foundation models.
+            </p>
+            <div class="story-tags story-fade story-fade-delay-3">
+                <span class="story-tag">Computer Vision</span>
+                <span class="story-tag">Continual Learning</span>
+                <span class="story-tag">Foundation Models</span>
+                <span class="story-tag">Vision-Language</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel 2: Publications Stats -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Publications</h2>
+            <div class="story-fade story-fade-delay" style="margin-top:0.75rem;">
+                <div style="display:inline;"><span class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="111">0</span><span class="story-pub-stat-num gold" style="font-size:clamp(2rem,6vw,3rem);">+</span></div>
+                <div class="story-pub-stat-label" style="font-size:0.9rem;">Citations</div>
+            </div>
+            <div class="story-pub-stats story-fade story-fade-delay" style="margin-top:1.5rem;">
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="13">0</div>
+                    <div class="story-pub-stat-label">Papers</div>
+                </div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="3">0</div>
+                    <div class="story-pub-stat-label">Conferences</div>
+                </div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="3">0</div>
+                    <div class="story-pub-stat-label">Workshops</div>
+                </div>
+                <div class="story-pub-stat">
+                    <div class="story-pub-stat-num story-countup" data-target="1">0</div>
+                    <div class="story-pub-stat-label">Highlight</div>
+                </div>
+            </div>
+            <div class="story-pub-roller story-fade story-fade-delay-2">
+                <div class="story-pub-roller-inner">
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>CVPR 2024 Highlight</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized HOI Testing</div>
+                        <div class="story-pub-roller-meta">Co-First Author &middot; <strong>BMVC 2025</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in FSCIL</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>ICCV 2025 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>ICCV 2025 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Beyond Synthetic Replays: Turning Diffusion Features into FSCIL Knowledge</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>ArXiv 2025</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">VLM-PL: Advanced Pseudo Labeling for Class Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>CVPR 2024 Workshop</strong></div>
+                    </div>
+                    <div class="story-pub-roller-item">
+                        <div class="story-pub-roller-title">Class-Wise Buffer Management for Incremental Object Detection</div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>ArXiv 2024</strong></div>
+                    </div>
+                </div>
+            </div>
+            <a href="#publications" class="story-more story-fade story-fade-delay-3">View all publications <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
+        </div>
+    </div>
+
+    <!-- Panel 3: Education & Experience -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Education & Experience</h2>
+            <div class="story-tl story-fade story-fade-delay">
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2023 &ndash; Present</span>
+                    <span class="story-tl-info"><span class="story-tl-role">MS-PhD in AI</span> <span class="story-tl-org">&middot; UNIST</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2024 &ndash; 2025</span>
+                    <span class="story-tl-info"><span class="story-tl-role">AI Research Intern</span> <span class="story-tl-org">&middot; NAVER AI Lab</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2022 &ndash; 2025</span>
+                    <span class="story-tl-info"><span class="story-tl-role">NVIDIA AI Ambassador</span> <span class="story-tl-org">&middot; DLI Program</span></span>
+                </div>
+                <div class="story-tl-item">
+                    <span class="story-tl-period">2016 &ndash; 2022</span>
+                    <span class="story-tl-info"><span class="story-tl-role">B.S. in ICE</span> <span class="story-tl-org">&middot; Pukyong National Univ.</span></span>
+                </div>
+            </div>
+            <a href="#experience" class="story-more story-fade story-fade-delay-2">View details <i class="fas fa-arrow-right" style="font-size:0.9rem;"></i></a>
+        </div>
+    </div>
+
+    <!-- Panel 4: Awards + Activities + Explore -->
+    <div class="story-panel">
+        <div class="story-content">
+            <h2 class="story-heading story-fade">Awards & Activities</h2>
+            <div class="story-stat-row story-fade story-fade-delay">
+                <div class="story-stat">
+                    <div class="story-stat-num">5+</div>
+                    <div class="story-stat-label">Awards</div>
+                </div>
+                <div class="story-stat">
+                    <div class="story-stat-num">4</div>
+                    <div class="story-stat-label">Venues Reviewed</div>
+                </div>
+                <div class="story-stat">
+                    <div class="story-stat-num">3</div>
+                    <div class="story-stat-label">Invited Talks</div>
+                </div>
+            </div>
+            <p class="story-quote story-fade story-fade-delay-2">
+                "Shoot for the moon. Even if you miss, you'll land among the stars."
+            </p>
+            <p class="story-quote-author story-fade story-fade-delay-2">- Norman Vincent Peale</p>
+            <a href="#about" id="story-enter" class="story-enter-btn story-fade story-fade-delay-2">
+                Explore Full Portfolio <i class="fas fa-arrow-down" style="font-size:0.85rem;"></i>
+            </a>
+        </div>
+    </div>
+
+    <button id="story-skip">Skip <i class="fas fa-angle-double-down"></i></button>
+    <button id="story-scroll-hint" class="story-scroll-hint" type="button" aria-label="Scroll down to next panel">
+        <span>Scroll down</span><i class="fas fa-angle-down"></i>
+    </button>
+</div>
+
+<!-- === NAVIGATION === -->
 <nav id="navbar">
     <div class="nav-inner">
         <a href="#" class="nav-logo">Junsu Kim</a>
@@ -914,7 +1567,215 @@
     })();
     </script>
 
-    <!-- === IEIE S === -->
+    <!-- Filters -->
+    <div class="pub-toolbar reveal">
+        <div class="pub-controls">
+            <div class="pub-filters">
+                <button class="pub-filter-btn active" data-filter="all" aria-pressed="true">All</button>
+                <button class="pub-filter-btn" data-filter="main" aria-pressed="false">Main Venue</button>
+                <button class="pub-filter-btn" data-filter="workshop" aria-pressed="false">Workshop</button>
+                <button class="pub-filter-btn" data-filter="arxiv" aria-pressed="false">ArXiv</button>
+                <button class="pub-filter-btn" data-filter="domestic" aria-pressed="false">Domestic</button>
+            </div>
+            <label class="pub-sort-wrap">
+                <span class="pub-sort-label">Sort</span>
+                <select id="pubSort" class="pub-sort-select" aria-label="Sort publications">
+                    <option value="newest" selected>Latest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+            </label>
+        </div>
+        <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers (+6 domestic)</p>
+    </div>
+
+    <!-- Publication feed (auto ticker) -->
+    <div class="pub-ticker-wrapper reveal">
+        <button class="pub-ticker-toggle" id="pubTickerToggle" aria-label="Pause ticker" title="Pause / Play">
+            <i class="fas fa-pause"></i>
+        </button>
+        <div class="pub-ticker-track" id="pubTickerTrack">
+
+            <!-- SDDGR ??CVPR 2024 Highlight -->
+            <div class="pub-card highlight" data-venue="main" data-year="2024">
+                <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight &middot; Top 2.8%</div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">CVPR 2024</span>
+                    <span class="pub-highlight-badge">&middot; Highlight</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">SDDGR: Stable Diffusion-based Deep Generative Replay for Class Incremental Object Detection</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, H. Cho, J. Kim, Y. Tiruneh, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2402.17323" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img">
+                                <img src="images/papers/sddgr.png" alt="SDDGR Figure">
+                            </div>
+                            <div class="pub-summary-text">
+                                Proposes using Stable Diffusion as a generative replay mechanism for class incremental object detection, effectively mitigating catastrophic forgetting while maintaining high-quality synthetic data generation.
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- B-RIGHT ??BMVC 2025 -->
+            <div class="pub-card" data-venue="main" data-year="2025">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">BMVC 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">B-RIGHT: Benchmark Re-evaluation for Integrity in Generalized Human-Object Interaction Testing</div>
+                <div class="pub-authors"><span class="me">J. Kim*</span>, Y. Jang*, H. Kim, E. Lee, E. Kim, S. Baek, J. Yoo</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2501.16724" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/bright.png" alt="B-RIGHT Figure"></div>
+                            <div class="pub-summary-text">A systematic re-evaluation of existing HOI benchmarks, revealing integrity issues and proposing new evaluation protocols for generalized human-object interaction testing.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- FSCIL Synthetic ??ICCV-W 2025 -->
+            <div class="pub-card" data-venue="workshop" data-year="2025">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">ICCV-W 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Can Synthetic Images Conquer Forgetting? Beyond Unexplored Doubts in Few-Shot Class-Incremental Learning</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/pdf/2507.13739" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/fscil-synthetic.png" alt="FSCIL Synthetic Figure"></div>
+                            <div class="pub-summary-text">Investigates whether synthetic image generation can effectively address catastrophic forgetting in few-shot class-incremental learning, challenging common assumptions in the field.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- RPE ??ICCV-W 2025 -->
+            <div class="pub-card" data-venue="workshop" data-year="2025">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">ICCV-W 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Revisiting Reliability in the Reasoning-based Pose Estimation Benchmark</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, N. Kim, J. Lee, I. Park, D. Han, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/rpe.png" alt="RPE Figure"></div>
+                            <div class="pub-summary-text">Critically examines the reliability of reasoning-based pose estimation benchmarks, identifying systematic biases and proposing refined evaluation metrics.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Diffusion FSCIL ??ArXiv -->
+            <div class="pub-card" data-venue="arxiv" data-year="2025">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue arxiv">ArXiv 2025</span>
+                    <span class="pub-year">2025</span>
+                </div>
+                <div class="pub-title">Beyond Synthetic Replays: Turning Diffusion Features into Few-Shot Class-Incremental Learning Knowledge</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/diffusion-fscil.png" alt="Diffusion FSCIL Figure"></div>
+                            <div class="pub-summary-text">Bridges diffusion models with few-shot class incremental learning, leveraging generative priors to overcome data scarcity and catastrophic forgetting simultaneously.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- VLM-PL ??CVPR-W 2024 -->
+            <div class="pub-card" data-venue="workshop" data-year="2024">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue workshop">CVPR-W 2024</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">VLM-PL: Advanced Pseudo Labeling Approach for Class Incremental Object Detection with Vision-Language Model</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, J. Kim, J. Cha, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2403.05346" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/vlmpl.png" alt="VLM-PL Figure"></div>
+                            <div class="pub-summary-text">Leverages vision-language models for advanced pseudo labeling in class incremental object detection, improving detection accuracy on novel classes without forgetting.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- ICASSP 2024 -->
+            <div class="pub-card" data-venue="main" data-year="2024">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue top">ICASSP 2024</span>
+                    <span class="pub-year">2024</span>
+                </div>
+                <div class="pub-title">Class-Wise Buffer Management for Incremental Object Detection: An Effective Buffer Training Strategy</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, Y. Tiruneh, J. On, J. Song, S. Choi, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/abs/2312.09139" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <span class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                        <div class="pub-summary-popup">
+                            <div class="pub-summary-img"><img src="images/papers/icassp.png" alt="ICASSP Figure"></div>
+                            <div class="pub-summary-text">Introduces a class-wise buffer management strategy for incremental object detection that optimizes exemplar selection and training to balance old and new class performance.</div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+            <!-- ── Domestic Papers ── -->
+
+            <!-- IEIE Summer 2023 -->
+            <div class="pub-card" data-venue="domestic" data-year="2023">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">IEIE Summer 2023</span>
+                    <span class="pub-year">2023</span>
+                </div>
+                <div class="pub-title">Reducing Data Imbalance for Object Detection</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, J. On, Y. Tiruneh, J. Song, S. Choi, S. Baek</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- JKAIA 2022 -->
+            <div class="pub-card" data-venue="domestic" data-year="2022">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">JKAIA 2022</span>
+                    <span class="pub-year">2022</span>
+                </div>
+                <div class="pub-title">Temporal MANO-Based Video Hand Pose and Shape Estimation</div>
+                <div class="pub-authors">H. Park, <span class="me">J. Kim</span>, J. Kim, S. Baek</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- IEIE Fall 2021 — Best Paper -->
             <div class="pub-card highlight" data-venue="domestic" data-year="2021">
                 <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
                 <div class="pub-meta">
@@ -926,7 +1787,19 @@
                 <div class="pub-links"></div>
             </div>
 
-            <!-- === KICS S === -->
+            <!-- KICS Summer 2021 — Best Paper -->
+            <div class="pub-card highlight" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">KICS Summer 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">Deep Learning-Based Self-Driving Systems for Swarm Vehicles</div>
+                <div class="pub-authors">H. Kim, <span class="me">J. Kim</span>, I. Lee, H. Lee</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- IEMEK ICT 2021 — Best Paper -->
             <div class="pub-card highlight" data-venue="domestic" data-year="2021">
                 <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
                 <div class="pub-meta">
@@ -938,7 +1811,23 @@
                 <div class="pub-links"></div>
             </div>
 
-            <!-- === EDUCATION & EXPERIENCE === -->
+            <!-- KICS Winter 2021 -->
+            <div class="pub-card" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">KICS Winter 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">AI-Enabled Low-Complexity Autonomous Driving Using TensorRT</div>
+                <div class="pub-authors">H. Kim, <span class="me">J. Kim</span>, I. Lee, H. Lee</div>
+                <div class="pub-links"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- === EDUCATION & EXPERIENCE === -->
 <section class="section" id="experience">
     <div class="two-col">
         <div>
@@ -1122,6 +2011,11 @@
         <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
     </div>
 </footer>
+
+<!-- Photo Lightbox -->
+<div id="nvidiaLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
+    <img src="images/NVIDIA_AI_AMB.png" alt="NVIDIA AI Ambassador" onclick="event.stopPropagation()">
+</div>
 
 <!-- === SCRIPTS === -->
 <script>
@@ -2003,7 +2897,7 @@
             rebuildStars();
         });
 
-        // Star color temperatures
+        // Star color temperatures ????
         const STAR_COLORS = [
             { r: 155, g: 176, b: 255 }, // blue-white (hot, O/B type)
             { r: 170, g: 191, b: 255 }, // blue-white
@@ -2014,7 +2908,7 @@
             { r: 255, g: 204, b: 111 }, // amber (cool K type)
         ];
 
-        // Star layers
+        // Star layers ????
         // Layer 0: far background - many tiny dim static dots
         // Layer 1: mid field - medium stars with gentle twinkle
         // Layer 2: foreground - few bright stars with glow + sparkle
@@ -2075,7 +2969,7 @@
         }
         rebuildStars();
 
-        // Star drawing per layer
+        // Star drawing per layer ????
         function drawStarL0(s, time, alphaScale) {
             const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
             const op = s.baseOpacity * (0.5 + 0.5 * t) * alphaScale;
@@ -2245,7 +3139,7 @@
 
         animId = requestAnimationFrame(animate);
 
-        // Scroll interaction
+        // Scroll interaction ????
         window.addEventListener('scroll', () => {
             const currentY = window.scrollY;
             const delta = currentY - lastScrollY;
