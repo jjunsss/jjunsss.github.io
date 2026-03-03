@@ -565,12 +565,23 @@
             line-height: 1.6;
             text-wrap: pretty;
             animation: callout-glow 3s ease-in-out infinite alternate;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.12rem;
         }
         .internship-callout .callout-copy {
             display: block;
+            width: 100%;
             max-width: min(100%, 98ch);
             margin: 0 auto;
             text-wrap: balance;
+        }
+        .internship-callout .callout-cta-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 0.45rem;
         }
         @keyframes callout-glow {
             0%   { box-shadow: var(--shadow-sm), 0 0 10px rgba(var(--accent-rgb), 0.04); }
@@ -599,7 +610,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
-            margin-top: 0.45rem;
+            margin-top: 0;
             padding: 0.32rem 0.85rem;
             border-radius: 100px;
             background: var(--accent);
@@ -1530,9 +1541,11 @@
 
 <div class="internship-callout reveal">
     <span class="callout-badge">Open&nbsp;to&nbsp;Opportunities</span>
-    <strong>Actively Seeking AI Research Internships</strong>
+    <strong>Actively Searching AI Research Internships</strong>
     <span class="callout-copy">With roughly two years until graduation, I have been closely following and building expertise in 2D/3D representation, continual learning for VLM/LLM/OVOD/detectors, and large-scale vision-language &amp; diffusion models. I am eager to join a team pushing the frontier of these fields or turning them into practical, real-world&nbsp;research.</span>
-    <a href="mailto:jjunsssk@unist.ac.kr" class="callout-cta shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
+    <div class="callout-cta-row">
+        <a href="mailto:jjunsssk@unist.ac.kr" class="callout-cta shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
+    </div>
 </div>
 
 <!-- === INTERESTS === -->
