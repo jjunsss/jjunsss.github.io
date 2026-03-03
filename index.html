@@ -563,6 +563,7 @@
             color: var(--text-secondary);
             font-size: 0.92rem;
             line-height: 1.6;
+            text-wrap: pretty;
             animation: callout-glow 3s ease-in-out infinite alternate;
         }
         @keyframes callout-glow {
@@ -1028,6 +1029,10 @@
         .pub-card.ticker-clone {
             pointer-events: none;
         }
+        .pub-card.ticker-clone a,
+        .pub-card.ticker-clone .pub-summary-trigger {
+            pointer-events: auto;
+        }
 
         /* === TIMELINE === */
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
@@ -1168,7 +1173,7 @@
             .story-tl-period { min-width: 72px; font-size: 0.8rem; }
             .story-tl-info { font-size: 0.93rem; }
             .story-stat-row { gap: 1.5rem; }
-            #story-skip { bottom: 1.5rem; right: 1.5rem; font-size: 0.88rem; }
+            #story-skip { top: 1.5rem; bottom: auto; right: 1.5rem; font-size: 0.84rem; padding: 0.5rem 1.2rem; }
             .story-scroll-hint { bottom: 1.3rem; font-size: 0.72rem; padding: 0.48rem 0.8rem 0.48rem 0.88rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
@@ -2118,7 +2123,11 @@
             // Bypass html scroll-behavior:smooth - force instant
             document.documentElement.style.scrollBehavior = 'auto';
             window.scrollTo(0, 0);
-            requestAnimationFrame(() => { document.documentElement.style.scrollBehavior = ''; });
+            requestAnimationFrame(() => {
+                document.documentElement.style.scrollBehavior = '';
+                // Recalculate ticker after layout settles (intro may have blocked measurement)
+                window.dispatchEvent(new Event('resize'));
+            });
         }
 
         // Keyboard navigation: ArrowDown/Up, Space, PageDown/Up to move panels
@@ -2219,64 +2228,74 @@
         });
     });
 
-    // Summary Popup Logic
-    // Summary popup — click to toggle
+    // Summary Popup Logic — event delegation so cloned ticker cards also work
     const allSummaryPopups = [];
     document.querySelectorAll('.pub-summary-trigger').forEach(trigger => {
         const popup = trigger.querySelector('.pub-summary-popup');
         if (!popup) return;
 
+        const idx = allSummaryPopups.length;
         trigger.setAttribute('tabindex', '0');
         trigger.setAttribute('role', 'button');
         trigger.setAttribute('aria-haspopup', 'dialog');
         trigger.setAttribute('aria-expanded', 'false');
+        trigger.setAttribute('data-summary-idx', String(idx));
 
         document.body.appendChild(popup);
         allSummaryPopups.push({ trigger, popup });
-
-        const showPopup = () => {
-            // Close all other popups first
-            allSummaryPopups.forEach(({ trigger: t, popup: p }) => {
-                if (p !== popup) {
-                    p.classList.remove('show');
-                    t.setAttribute('aria-expanded', 'false');
-                }
-            });
-            const rect = trigger.getBoundingClientRect();
-            popup.style.top = (window.scrollY + rect.top - 10) + 'px';
-            popup.style.left = (window.scrollX + rect.left + rect.width / 2) + 'px';
-            popup.classList.add('show');
-            trigger.setAttribute('aria-expanded', 'true');
-        };
-        const hidePopup = () => {
-            popup.classList.remove('show');
-            trigger.setAttribute('aria-expanded', 'false');
-        };
-        const togglePopup = () => {
-            if (popup.classList.contains('show')) hidePopup();
-            else showPopup();
-        };
-
-        trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            togglePopup();
-        });
-        popup.addEventListener('click', (e) => e.stopPropagation());
-        trigger.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                togglePopup();
-            } else if (e.key === 'Escape') {
-                hidePopup();
-            }
-        });
     });
-    // Close popup when clicking outside
-    document.addEventListener('click', () => {
+
+    function closeAllSummaryPopups() {
         allSummaryPopups.forEach(({ trigger, popup }) => {
             popup.classList.remove('show');
             trigger.setAttribute('aria-expanded', 'false');
         });
+    }
+
+    function toggleSummaryPopup(idx, anchorEl) {
+        if (idx < 0 || idx >= allSummaryPopups.length) return;
+        const { trigger: origTrigger, popup } = allSummaryPopups[idx];
+
+        if (popup.classList.contains('show')) {
+            popup.classList.remove('show');
+            origTrigger.setAttribute('aria-expanded', 'false');
+            return;
+        }
+        // Close all others first
+        allSummaryPopups.forEach(({ trigger: t, popup: p }, i) => {
+            if (i !== idx) { p.classList.remove('show'); t.setAttribute('aria-expanded', 'false'); }
+        });
+        const rect = anchorEl.getBoundingClientRect();
+        popup.style.top = (window.scrollY + rect.top - 10) + 'px';
+        popup.style.left = (window.scrollX + rect.left + rect.width / 2) + 'px';
+        popup.classList.add('show');
+        origTrigger.setAttribute('aria-expanded', 'true');
+    }
+
+    // Delegated click: works for both original and cloned ticker triggers
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.pub-summary-trigger');
+        if (trigger) {
+            e.stopPropagation();
+            const idx = parseInt(trigger.getAttribute('data-summary-idx'), 10);
+            if (!isNaN(idx)) toggleSummaryPopup(idx, trigger);
+            return;
+        }
+        if (!e.target.closest('.pub-summary-popup')) closeAllSummaryPopups();
+    });
+
+    // Delegated keyboard: Enter/Space toggle, Escape close
+    document.addEventListener('keydown', (e) => {
+        const trigger = e.target.closest('.pub-summary-trigger');
+        if (trigger) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const idx = parseInt(trigger.getAttribute('data-summary-idx'), 10);
+                if (!isNaN(idx)) toggleSummaryPopup(idx, trigger);
+            } else if (e.key === 'Escape') {
+                closeAllSummaryPopups();
+            }
+        }
     });
 
     // Close lightbox on Escape
