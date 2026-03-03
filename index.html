@@ -1256,6 +1256,7 @@
             }
             .pub-card:hover { transform: none; }
             .pub-ticker-toggle { top: auto; bottom: 0.5rem; right: 0.75rem; }
+            .pub-ticker-toggle { display: none; }
             .pub-toolbar { gap: 0.75rem; }
             .pub-controls { width: 100%; }
             .pub-sort-wrap { width: 100%; gap: 0.45rem; }
@@ -2425,6 +2426,7 @@
     // Mobile horizontal carousel state
     const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
     let isMobileTicker = mobileMediaQuery.matches;
+    const MOBILE_AUTO_SCROLL_ENABLED = false;
     let mobileScrollRaf = null;
     let mobileScrollPaused = false;
     let mobileUserInteracting = false;
@@ -2453,8 +2455,8 @@
       const shouldPause = isUserPausedTicker || isHoverPausedTicker;
       // Desktop: CSS animation pause
       pubTickerTrack.classList.toggle('ticker-paused', shouldPause);
-      // Mobile: sync JS scroll pause with user toggle
-      if (mobileMediaQuery.matches) {
+      // Mobile: sync to JS control only when auto scroll is enabled
+      if (mobileMediaQuery.matches && MOBILE_AUTO_SCROLL_ENABLED) {
           if (isUserPausedTicker) {
               mobileScrollPaused = true;
               if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
@@ -2591,6 +2593,7 @@
     }
 
     function startMobileHorizontalScroll(visibleCards) {
+        if (!MOBILE_AUTO_SCROLL_ENABLED) return;
         stopMobileHorizontalScroll();
         if (!pubTickerWrapper || visibleCards.length <= 1) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -2623,6 +2626,14 @@
 
         // Mobile: horizontal JS scroll
         if (mobileMediaQuery.matches) {
+            if (!MOBILE_AUTO_SCROLL_ENABLED) {
+                if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+                mobileScrollPaused = false;
+                pubTickerTrack.classList.remove('ticking');
+                pubTickerTrack.style.removeProperty('transform');
+                pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
+                return;
+            }
             pubTickerTrack.classList.remove('ticking');
             pubTickerTrack.style.removeProperty('transform');
             pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
@@ -2748,16 +2759,19 @@
         // Mobile: touch pause/resume for horizontal carousel
         let touchMoved = false;
         const beginInteraction = () => {
+            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
             if (!mobileMediaQuery.matches) return;
             touchMoved = false;
             beginMobileUserInteraction();
         };
         const endInteraction = () => {
+            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
             if (!mobileMediaQuery.matches) return;
             const delay = touchMoved ? 2500 : 3000;
             endMobileUserInteraction(delay);
         };
         const cancelInteraction = () => {
+            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
             if (!mobileMediaQuery.matches) return;
             endMobileUserInteraction(1800);
         };
@@ -2801,7 +2815,7 @@
 
         // Mobile: pause 4s when tapping interactive elements (Paper link, etc.)
         pubTickerWrapper.addEventListener('click', (e) => {
-            if (!mobileMediaQuery.matches) return;
+            if (!mobileMediaQuery.matches || !MOBILE_AUTO_SCROLL_ENABLED) return;
             if (e.target.closest('.pub-link')) {
                 pauseMobileScrollTemporarily(4000);
             }
