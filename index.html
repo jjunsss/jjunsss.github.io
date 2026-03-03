@@ -1215,7 +1215,30 @@
                 font-size: 0.71rem;
                 letter-spacing: 0.07em;
             }
-            .pub-ticker-wrapper { max-height: 72vh; min-height: 300px; }
+            /* Mobile horizontal carousel overrides */
+            .pub-ticker-wrapper {
+                max-height: none; min-height: auto;
+                overflow-x: auto; overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+                scrollbar-width: none;
+            }
+            .pub-ticker-wrapper::-webkit-scrollbar { display: none; }
+            .pub-ticker-track {
+                flex-direction: row; flex-wrap: nowrap;
+                gap: 0.75rem;
+                animation: none !important;
+                transform: none !important;
+                will-change: auto;
+                padding: 0.5rem 0;
+            }
+            .pub-card {
+                min-width: 82vw; max-width: 82vw; width: 82vw;
+                flex-shrink: 0; scroll-snap-align: center;
+                padding: 1.1rem 1.05rem;
+            }
+            .pub-card:hover { transform: none; }
+            .pub-ticker-toggle { top: auto; bottom: 0.5rem; right: 0.75rem; }
             .pub-toolbar { gap: 0.75rem; }
             .pub-controls { width: 100%; }
             .pub-sort-wrap { width: 100%; gap: 0.45rem; }
@@ -1228,7 +1251,6 @@
                 white-space: normal;
                 padding-top: 0;
             }
-            .pub-card { padding: 1.1rem 1.05rem; }
             .pub-title { font-size: 1rem; line-height: 1.42; }
             .pub-authors { font-size: 0.9rem; line-height: 1.5; }
             .pub-link { font-size: 0.86rem; }
@@ -1504,6 +1526,7 @@
     <span class="callout-badge">Open to Opportunities</span>
     <strong>Actively Seeking AI Research Internships</strong>
     <span>With roughly two years until graduation, I have been closely following and building expertise in 2D/3D representation, continual learning for VLM/LLM/OVOD/detectors, and large-scale vision-language &amp; diffusion models. I am eager to join a team pushing the frontier of these fields or turning them into practical, real-world research.</span>
+    <a href="mailto:jjunsssk@unist.ac.kr" class="callout-cta shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
 </div>
 
 <!-- === INTERESTS === -->
@@ -2380,6 +2403,15 @@
     let wheelPauseTimer = null;
     const WHEEL_PAUSE_DELAY = 260;
 
+    // Mobile horizontal carousel state
+    const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
+    let isMobileTicker = mobileMediaQuery.matches;
+    let mobileScrollRaf = null;
+    let mobileScrollPaused = false;
+    let mobileScrollResumeTimer = null;
+    let mobileScrollOutOfView = false;
+    const MOBILE_SCROLL_SPEED = 0.6;
+
     function setHoverPause(paused) {
         isHoverPausedTicker = paused;
         updateTickerPauseState();
@@ -2399,12 +2431,23 @@
     function updateTickerPauseState() {
       if (!pubTickerTrack) return;
       const shouldPause = isUserPausedTicker || isHoverPausedTicker;
+      // Desktop: CSS animation pause
       pubTickerTrack.classList.toggle('ticker-paused', shouldPause);
+      // Mobile: sync JS scroll pause with user toggle
+      if (mobileMediaQuery.matches) {
+          if (isUserPausedTicker) {
+              mobileScrollPaused = true;
+              if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+          } else if (!mobileScrollResumeTimer) {
+              mobileScrollPaused = false;
+          }
+      }
       if (!tickerToggle) return;
-      tickerToggle.innerHTML = shouldPause
+      const showPause = mobileMediaQuery.matches ? isUserPausedTicker : shouldPause;
+      tickerToggle.innerHTML = showPause
         ? '<i class="fas fa-play"></i>'
         : '<i class="fas fa-pause"></i>';
-      tickerToggle.setAttribute('aria-label', shouldPause ? 'Play ticker' : 'Pause ticker');
+      tickerToggle.setAttribute('aria-label', showPause ? 'Play ticker' : 'Pause ticker');
     }
 
     function parsePublicationYear(card) {
@@ -2472,8 +2515,74 @@
         return cardsHeight + gap * Math.max(firstCycleCards.length - 1, 0);
     }
 
+    function measureTickerCycleWidth(cardCount) {
+        if (!pubTickerTrack || cardCount <= 0) return 0;
+        const firstCycleCards = Array.from(pubTickerTrack.children).slice(0, cardCount);
+        if (!firstCycleCards.length) return 0;
+        const trackStyle = getComputedStyle(pubTickerTrack);
+        const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0') || 0;
+        const cardsWidth = firstCycleCards.reduce((sum, card) => sum + card.getBoundingClientRect().width, 0);
+        return cardsWidth + gap * Math.max(firstCycleCards.length - 1, 0);
+    }
+
+    function stopMobileHorizontalScroll() {
+        if (mobileScrollRaf) { cancelAnimationFrame(mobileScrollRaf); mobileScrollRaf = null; }
+        if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+        mobileScrollPaused = false;
+        if (pubTickerWrapper) pubTickerWrapper.scrollLeft = 0;
+    }
+
+    function pauseMobileScrollTemporarily(delayMs) {
+        mobileScrollPaused = true;
+        if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
+        mobileScrollResumeTimer = setTimeout(() => {
+            mobileScrollResumeTimer = null;
+            mobileScrollPaused = false;
+        }, delayMs);
+    }
+
+    function startMobileHorizontalScroll(visibleCards) {
+        stopMobileHorizontalScroll();
+        if (!pubTickerWrapper || visibleCards.length <= 1) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        requestAnimationFrame(() => {
+            const cycleWidth = measureTickerCycleWidth(visibleCards.length);
+            if (!cycleWidth) return;
+            const trackStyle = getComputedStyle(pubTickerTrack);
+            const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0') || 0;
+            const cycleWidthWithGap = cycleWidth + gap;
+            let lastTime = performance.now();
+
+            function scrollStep(timestamp) {
+                const delta = timestamp - lastTime;
+                lastTime = timestamp;
+                if (!mobileScrollPaused && !isUserPausedTicker && !mobileScrollOutOfView) {
+                    pubTickerWrapper.scrollLeft += MOBILE_SCROLL_SPEED * delta;
+                    if (pubTickerWrapper.scrollLeft >= cycleWidthWithGap) {
+                        pubTickerWrapper.scrollLeft -= cycleWidthWithGap;
+                    }
+                }
+                mobileScrollRaf = requestAnimationFrame(scrollStep);
+            }
+            mobileScrollRaf = requestAnimationFrame(scrollStep);
+        });
+    }
+
     function startPublicationTicker(visibleCards) {
         if (!pubTickerTrack) return;
+
+        // Mobile: horizontal JS scroll
+        if (mobileMediaQuery.matches) {
+            pubTickerTrack.classList.remove('ticking');
+            pubTickerTrack.style.removeProperty('transform');
+            pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
+            startMobileHorizontalScroll(visibleCards);
+            return;
+        }
+
+        // Desktop: vertical CSS animation
+        stopMobileHorizontalScroll();
         pubTickerTrack.classList.remove('ticking');
         pubTickerTrack.style.transform = 'translateY(0)';
         pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
@@ -2562,11 +2671,8 @@
     }
 
     if (pubTickerWrapper && pubTickerTrack) {
-        // All hover/mouse-based pause logic is desktop-only.
-        // On mobile (no hover), touch events emulate mouse events unreliably
-        // and can leave the ticker permanently paused.
+        // Desktop: hover/mouse-based pause logic
         const hasHover = window.matchMedia('(hover: hover)').matches;
-
         if (hasHover) {
             pubTickerWrapper.addEventListener('mouseenter', () => {
                 if (wheelPauseTimer) { clearTimeout(wheelPauseTimer); wheelPauseTimer = null; }
@@ -2579,27 +2685,72 @@
             pubTickerWrapper.addEventListener('pointerdown', () => {
                 setHoverPause(true);
             }, { passive: true });
-        }
-
-        pubTickerWrapper.addEventListener('focusin', () => {
-            setHoverPause(true);
-        });
-        pubTickerWrapper.addEventListener('focusout', (e) => {
-            if (!pubTickerWrapper.contains(e.relatedTarget)) {
-                setHoverPause(false);
-            }
-        });
-
-        // Wheel (desktop only — mobile scroll should not pause ticker)
-        if (hasHover) {
             pubTickerWrapper.addEventListener('wheel', (e) => {
                 pauseTickerTemporarilyAfterWheel();
                 e.stopPropagation();
             }, { passive: true });
         }
+
+        pubTickerWrapper.addEventListener('focusin', () => setHoverPause(true));
+        pubTickerWrapper.addEventListener('focusout', (e) => {
+            if (!pubTickerWrapper.contains(e.relatedTarget)) setHoverPause(false);
+        });
+
+        // Mobile: touch pause/resume for horizontal carousel
+        let touchMoved = false;
+        pubTickerWrapper.addEventListener('touchstart', () => {
+            if (!mobileMediaQuery.matches) return;
+            touchMoved = false;
+            mobileScrollPaused = true;
+            if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+        }, { passive: true });
+
+        pubTickerWrapper.addEventListener('touchmove', () => {
+            if (!mobileMediaQuery.matches) return;
+            touchMoved = true;
+        }, { passive: true });
+
+        pubTickerWrapper.addEventListener('touchend', () => {
+            if (!mobileMediaQuery.matches) return;
+            const delay = touchMoved ? 2000 : 3000;
+            if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
+            mobileScrollResumeTimer = setTimeout(() => {
+                mobileScrollResumeTimer = null;
+                mobileScrollPaused = false;
+            }, delay);
+        }, { passive: true });
+
+        pubTickerWrapper.addEventListener('touchcancel', () => {
+            if (!mobileMediaQuery.matches) return;
+            if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
+            mobileScrollResumeTimer = setTimeout(() => {
+                mobileScrollResumeTimer = null;
+                mobileScrollPaused = false;
+            }, 1500);
+        }, { passive: true });
+
+        // Mobile: pause 4s when tapping interactive elements (Paper link, etc.)
+        pubTickerWrapper.addEventListener('click', (e) => {
+            if (!mobileMediaQuery.matches) return;
+            if (e.target.closest('.pub-link')) {
+                pauseMobileScrollTemporarily(4000);
+            }
+        });
     }
 
+    // Resize: detect mobile<->desktop transitions
     window.addEventListener('resize', () => {
+        const wasMobile = isMobileTicker;
+        isMobileTicker = mobileMediaQuery.matches;
+        if (wasMobile !== isMobileTicker) {
+            if (!isMobileTicker) stopMobileHorizontalScroll();
+            if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
+            pubTickerRaf = requestAnimationFrame(() => {
+                applyPublicationFilter(activePubFilter);
+                pubTickerRaf = null;
+            });
+            return;
+        }
         if (pubTickerRaf) return;
         if (activePubFilter) {
             pubTickerRaf = requestAnimationFrame(() => {
@@ -2609,8 +2760,7 @@
         }
     });
 
-    // Reinitialize ticker when publication section enters viewport
-    // (handles cases where initial measurement during intro was incorrect)
+    // One-shot: reinitialize ticker when publication section first enters viewport
     if (pubTickerWrapper) {
         const tickerVisObs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
@@ -2621,6 +2771,20 @@
             });
         }, { threshold: 0.1 });
         tickerVisObs.observe(pubTickerWrapper);
+
+        // Persistent: mobile auto-scroll pause when out of viewport
+        const mobileTickerVisObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (mobileMediaQuery.matches) {
+                    mobileScrollOutOfView = !e.isIntersecting;
+                    if (e.isIntersecting) {
+                        if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+                        mobileScrollPaused = false;
+                    }
+                }
+            });
+        }, { threshold: 0.05 });
+        mobileTickerVisObs.observe(pubTickerWrapper);
     }
 
     // === DIFFUSION DENOISING EFFECT ===
