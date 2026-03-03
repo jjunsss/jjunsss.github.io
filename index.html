@@ -873,6 +873,7 @@
         .pub-venue.top { background: var(--venue-top-bg); color: var(--venue-top); }
         .pub-venue.workshop { background: var(--venue-workshop-bg); color: var(--venue-workshop); }
         .pub-venue.arxiv { background: var(--bg-secondary); color: var(--text-muted); }
+        .pub-venue.domestic { background: var(--gold-light); color: var(--gold); }
 
         .pub-year { font-size: 0.94rem; color: var(--text-muted); font-weight: 450; }
         .pub-highlight-badge {
@@ -904,12 +905,13 @@
         .pub-summary-trigger {
             position: relative;
             font-size: 0.9rem; font-weight: 550;
-            padding: 0.2rem 0.5rem; border-radius: 100px;
-            border: 1px solid var(--border); color: var(--text-muted);
+            padding: 0.35rem 0.72rem; border-radius: 100px;
+            border: 1px solid var(--border); color: var(--text-secondary);
             cursor: pointer; transition: var(--transition);
             display: inline-flex; align-items: center; gap: 0.2rem;
             user-select: none;
             pointer-events: auto;
+            text-decoration: none;
         }
         .pub-summary-trigger:hover {
             color: var(--accent); border-color: var(--accent); background: var(--accent-light);
@@ -1224,7 +1226,7 @@
             <!-- ?????룔꺈????? ????? ????떷?????β뼯爰??-->
             <div class="story-pub-stats story-fade story-fade-delay" style="margin-top:1.5rem;">
                 <div class="story-pub-stat">
-                    <div class="story-pub-stat-num story-countup" data-target="7">0</div>
+                    <div class="story-pub-stat-num story-countup" data-target="13">0</div>
                     <div class="story-pub-stat-label">Papers</div>
                 </div>
                 <div class="story-pub-stat">
@@ -1499,6 +1501,7 @@
                 <button class="pub-filter-btn" data-filter="main" aria-pressed="false">Main Venue</button>
                 <button class="pub-filter-btn" data-filter="workshop" aria-pressed="false">Workshop</button>
                 <button class="pub-filter-btn" data-filter="arxiv" aria-pressed="false">ArXiv</button>
+                <button class="pub-filter-btn" data-filter="domestic" aria-pressed="false">Domestic</button>
             </div>
             <label class="pub-sort-wrap">
                 <span class="pub-sort-label">Sort</span>
@@ -1509,7 +1512,7 @@
                 </select>
             </label>
         </div>
-        <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers</p>
+        <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers (+6 domestic)</p>
     </div>
 
     <!-- Publication feed (auto ticker) -->
@@ -1531,7 +1534,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, H. Cho, J. Kim, Y. Tiruneh, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://arxiv.org/abs/2402.17323" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img">
@@ -1556,7 +1559,7 @@
                 <div class="pub-authors"><span class="me">J. Kim*</span>, Y. Jang*, H. Kim, E. Lee, E. Kim, S. Baek, J. Yoo</div>
                 <div class="pub-links">
                     <a href="https://arxiv.org/abs/2501.16724" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/bright.png" alt="B-RIGHT Figure"></div>
@@ -1577,7 +1580,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/pdf/2507.13739" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/fscil-synthetic.png" alt="FSCIL Synthetic Figure"></div>
@@ -1599,7 +1602,7 @@
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/pdf/2507.13314" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
                     <a href="https://github.com/jjunsss/RPE-Refined" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/rpe.png" alt="RPE Figure"></div>
@@ -1620,7 +1623,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, D. Han, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://www.arxiv.org/abs/2503.23402" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/diffusion-fscil.png" alt="Diffusion FSCIL Figure"></div>
@@ -1641,7 +1644,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, Y. Ku, J. Kim, J. Cha, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://arxiv.org/abs/2403.05346" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/vlmpl.png" alt="VLM-PL Figure"></div>
@@ -1662,7 +1665,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, Y. Tiruneh, J. On, J. Song, S. Choi, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://arxiv.org/abs/2312.09139" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
-                    <span class="pub-summary-trigger">
+                    <span class="pub-summary-trigger shimmer-btn">
                         <i class="fas fa-eye"></i> Summary
                         <div class="pub-summary-popup">
                             <div class="pub-summary-img"><img src="images/papers/icassp.png" alt="ICASSP Figure"></div>
@@ -1670,6 +1673,80 @@
                         </div>
                     </span>
                 </div>
+            </div>
+
+            <!-- ── Domestic Papers ── -->
+
+            <!-- IEIE Summer 2023 -->
+            <div class="pub-card" data-venue="domestic" data-year="2023">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">IEIE Summer 2023</span>
+                    <span class="pub-year">2023</span>
+                </div>
+                <div class="pub-title">Reducing Data Imbalance for Object Detection</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, S. Hong, C. Kim, J. Kim, J. On, Y. Tiruneh, J. Song, S. Choi, S. Baek</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- JKAIA 2022 -->
+            <div class="pub-card" data-venue="domestic" data-year="2022">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">JKAIA 2022</span>
+                    <span class="pub-year">2022</span>
+                </div>
+                <div class="pub-title">Temporal MANO-Based Video Hand Pose and Shape Estimation</div>
+                <div class="pub-authors">H. Park, <span class="me">J. Kim</span>, J. Kim, S. Baek</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- IEIE Fall 2021 — Best Paper -->
+            <div class="pub-card highlight" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">IEIE Fall 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">Multi-Task Learning Approach to Autonomous Driving Techniques</div>
+                <div class="pub-authors">I. Lee, <span class="me">J. Kim</span>, H. Lee, Y. Kim, D. Lee, H. Lee</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- KICS Summer 2021 — Best Paper -->
+            <div class="pub-card highlight" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">KICS Summer 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">Deep Learning-Based Self-Driving Systems for Swarm Vehicles</div>
+                <div class="pub-authors">H. Kim, <span class="me">J. Kim</span>, I. Lee, H. Lee</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- IEMEK ICT 2021 — Best Paper -->
+            <div class="pub-card highlight" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"><i class="fas fa-trophy"></i> Best Paper Award</div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">IEMEK ICT 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">AI Edge Server Design for Swarm Vehicular Networks</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, H. Kim, I. Lee, H. Lee</div>
+                <div class="pub-links"></div>
+            </div>
+
+            <!-- KICS Winter 2021 -->
+            <div class="pub-card" data-venue="domestic" data-year="2021">
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue domestic">KICS Winter 2021</span>
+                    <span class="pub-year">2021</span>
+                </div>
+                <div class="pub-title">AI-Enabled Low-Complexity Autonomous Driving Using TensorRT</div>
+                <div class="pub-authors">H. Kim, <span class="me">J. Kim</span>, I. Lee, H. Lee</div>
+                <div class="pub-links"></div>
             </div>
 
         </div>
@@ -2070,6 +2147,8 @@
     });
 
     // Summary Popup Logic
+    // Summary popup — click to toggle
+    const allSummaryPopups = [];
     document.querySelectorAll('.pub-summary-trigger').forEach(trigger => {
         const popup = trigger.querySelector('.pub-summary-popup');
         if (!popup) return;
@@ -2078,10 +2157,18 @@
         trigger.setAttribute('role', 'button');
         trigger.setAttribute('aria-haspopup', 'dialog');
         trigger.setAttribute('aria-expanded', 'false');
-        
+
         document.body.appendChild(popup);
-        
+        allSummaryPopups.push({ trigger, popup });
+
         const showPopup = () => {
+            // Close all other popups first
+            allSummaryPopups.forEach(({ trigger: t, popup: p }) => {
+                if (p !== popup) {
+                    p.classList.remove('show');
+                    t.setAttribute('aria-expanded', 'false');
+                }
+            });
             const rect = trigger.getBoundingClientRect();
             popup.style.top = (window.scrollY + rect.top - 10) + 'px';
             popup.style.left = (window.scrollX + rect.left + rect.width / 2) + 'px';
@@ -2092,22 +2179,30 @@
             popup.classList.remove('show');
             trigger.setAttribute('aria-expanded', 'false');
         };
+        const togglePopup = () => {
+            if (popup.classList.contains('show')) hidePopup();
+            else showPopup();
+        };
 
-        trigger.addEventListener('mouseenter', showPopup);
-        trigger.addEventListener('focus', showPopup);
-        trigger.addEventListener('mouseleave', hidePopup);
-        trigger.addEventListener('blur', hidePopup);
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePopup();
+        });
+        popup.addEventListener('click', (e) => e.stopPropagation());
         trigger.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                if (popup.classList.contains('show')) {
-                    hidePopup();
-                } else {
-                    showPopup();
-                }
+                togglePopup();
             } else if (e.key === 'Escape') {
                 hidePopup();
             }
+        });
+    });
+    // Close popup when clicking outside
+    document.addEventListener('click', () => {
+        allSummaryPopups.forEach(({ trigger, popup }) => {
+            popup.classList.remove('show');
+            trigger.setAttribute('aria-expanded', 'false');
         });
     });
 
@@ -2234,19 +2329,24 @@
     }
 
     function updatePublicationCount(filter, visibleCount) {
-        const total = visibleCount ?? pubCards.filter(card => filter === 'all' || card.dataset.venue === filter).length;
+        const total = visibleCount ?? pubCards.filter(card => {
+            const v = card.dataset.venue;
+            return filter === 'all' ? v !== 'domestic' : v === filter;
+        }).length;
         const totalLabel = `${total} paper${total === 1 ? '' : 's'}`;
         if (!pubCountEl) return;
 
-        const label = filter === 'all'
-            ? 'all'
+        const domesticCount = pubCards.filter(c => c.dataset.venue === 'domestic').length;
+        const label = filter === 'all' ? 'all'
             : filter === 'main' ? 'main venue'
             : filter === 'workshop' ? 'workshop'
+            : filter === 'domestic' ? 'domestic'
             : 'arxiv';
 
-        pubCountEl.textContent = `Showing ${totalLabel} in ${label}`;
         if (filter === 'all') {
-            pubCountEl.textContent = `Showing ${totalLabel}`;
+            pubCountEl.textContent = `Showing ${totalLabel} (+${domesticCount} domestic)`;
+        } else {
+            pubCountEl.textContent = `Showing ${totalLabel} in ${label}`;
         }
     }
 
@@ -2299,7 +2399,10 @@
         const visibleCards = [];
 
         pubCards.forEach(card => {
-            const match = filter === 'all' || card.dataset.venue === filter;
+            const venue = card.dataset.venue;
+            const match = filter === 'all'
+                ? venue !== 'domestic'
+                : venue === filter;
             if (match) visibleCards.push(card);
         });
 
