@@ -836,9 +836,11 @@
         .pub-ticker-track.ticking {
             animation: pub-ticker-marquee var(--pub-ticker-duration) linear infinite;
         }
-        .pub-ticker-wrapper:hover .pub-ticker-track.ticking,
-        .pub-ticker-wrapper:focus-within .pub-ticker-track.ticking {
-            animation-play-state: paused;
+        @media (hover: hover) {
+            .pub-ticker-wrapper:hover .pub-ticker-track.ticking,
+            .pub-ticker-wrapper:focus-within .pub-ticker-track.ticking {
+                animation-play-state: paused;
+            }
         }
         .pub-ticker-list {
             display: flex; flex-direction: column; gap: 0.95rem;
@@ -2487,6 +2489,7 @@
           pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight.toFixed(2)}px`);
           pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration.toFixed(2)}s`);
           requestAnimationFrame(() => {
+            pubTickerTrack.style.removeProperty('transform');
             pubTickerTrack.classList.add('ticking');
             updateTickerPauseState();
           });
@@ -2595,6 +2598,14 @@
         pubTickerWrapper.addEventListener('pointerdown', () => {
             setHoverPause(true);
         }, { passive: true });
+
+        // Unpause after touch ends (mobile doesn't reliably fire mouseleave)
+        pubTickerWrapper.addEventListener('pointerup', () => {
+            setHoverPause(false);
+        }, { passive: true });
+        pubTickerWrapper.addEventListener('pointercancel', () => {
+            setHoverPause(false);
+        }, { passive: true });
     }
 
     window.addEventListener('resize', () => {
@@ -2606,6 +2617,20 @@
             });
         }
     });
+
+    // Reinitialize ticker when publication section enters viewport
+    // (handles cases where initial measurement during intro was incorrect)
+    if (pubTickerWrapper) {
+        const tickerVisObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    tickerVisObs.disconnect();
+                    requestAnimationFrame(() => applyPublicationFilter(activePubFilter));
+                }
+            });
+        }, { threshold: 0.1 });
+        tickerVisObs.observe(pubTickerWrapper);
+    }
 
     // === DIFFUSION DENOISING EFFECT ===
     (function() {
