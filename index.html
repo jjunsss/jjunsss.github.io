@@ -2562,50 +2562,41 @@
     }
 
     if (pubTickerWrapper && pubTickerTrack) {
-        pubTickerWrapper.addEventListener('mouseenter', () => {
-            if (wheelPauseTimer) {
-                clearTimeout(wheelPauseTimer);
-                wheelPauseTimer = null;
-            }
-            setHoverPause(true);
-        });
+        // All hover/mouse-based pause logic is desktop-only.
+        // On mobile (no hover), touch events emulate mouse events unreliably
+        // and can leave the ticker permanently paused.
+        const hasHover = window.matchMedia('(hover: hover)').matches;
 
-        pubTickerWrapper.addEventListener('mouseleave', () => {
-            if (wheelPauseTimer) {
-                clearTimeout(wheelPauseTimer);
-                wheelPauseTimer = null;
-            }
-            setHoverPause(false);
-        });
+        if (hasHover) {
+            pubTickerWrapper.addEventListener('mouseenter', () => {
+                if (wheelPauseTimer) { clearTimeout(wheelPauseTimer); wheelPauseTimer = null; }
+                setHoverPause(true);
+            });
+            pubTickerWrapper.addEventListener('mouseleave', () => {
+                if (wheelPauseTimer) { clearTimeout(wheelPauseTimer); wheelPauseTimer = null; }
+                setHoverPause(false);
+            });
+            pubTickerWrapper.addEventListener('pointerdown', () => {
+                setHoverPause(true);
+            }, { passive: true });
+        }
 
         pubTickerWrapper.addEventListener('focusin', () => {
             setHoverPause(true);
         });
-
         pubTickerWrapper.addEventListener('focusout', (e) => {
             if (!pubTickerWrapper.contains(e.relatedTarget)) {
                 setHoverPause(false);
             }
         });
 
-        // Wheel should have priority over auto movement.
-        pubTickerWrapper.addEventListener('wheel', (e) => {
-            pauseTickerTemporarilyAfterWheel();
-            e.stopPropagation();
-        }, { passive: true });
-
-        // Pause immediately on click/touch target interaction.
-        pubTickerWrapper.addEventListener('pointerdown', () => {
-            setHoverPause(true);
-        }, { passive: true });
-
-        // Unpause after touch ends (mobile doesn't reliably fire mouseleave)
-        pubTickerWrapper.addEventListener('pointerup', () => {
-            setHoverPause(false);
-        }, { passive: true });
-        pubTickerWrapper.addEventListener('pointercancel', () => {
-            setHoverPause(false);
-        }, { passive: true });
+        // Wheel (desktop only — mobile scroll should not pause ticker)
+        if (hasHover) {
+            pubTickerWrapper.addEventListener('wheel', (e) => {
+                pauseTickerTemporarilyAfterWheel();
+                e.stopPropagation();
+            }, { passive: true });
+        }
     }
 
     window.addEventListener('resize', () => {
