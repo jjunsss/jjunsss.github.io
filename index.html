@@ -988,6 +988,40 @@
             font-size: 0.93rem; color: var(--text-secondary); line-height: 1.5;
         }
 
+        /* Photo lightbox */
+        .photo-lightbox {
+            position: fixed; inset: 0; z-index: 10000;
+            background: rgba(0,0,0,0.75);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
+            cursor: zoom-out;
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        }
+        .photo-lightbox.show { opacity: 1; pointer-events: auto; }
+        .photo-lightbox img {
+            max-width: 90vw; max-height: 85vh;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            transform: scale(0.92); transition: transform 0.3s ease;
+        }
+        .photo-lightbox.show img { transform: scale(1); }
+        .photo-btn {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            margin-top: 0.4rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 0.82rem; font-weight: 500;
+            cursor: pointer; transition: var(--transition);
+        }
+        .photo-btn:hover {
+            color: var(--accent); border-color: var(--accent); background: var(--accent-light);
+        }
+        .photo-btn i { font-size: 0.72rem; }
+
         /* Hidden cards by filter */
         .pub-card.hidden {
             display: none;
@@ -1837,6 +1871,7 @@
                     <div class="timeline-title">NVIDIA AI Ambassador</div>
                     <div class="timeline-org">NVIDIA DLI Program</div>
                     <div class="timeline-detail">Leader, NVIDIA &middot; MODULABS Foundation Models Lab</div>
+                    <button class="photo-btn" onclick="document.getElementById('nvidiaLightbox').classList.add('show')"><i class="fas fa-camera"></i> View Photo</button>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-period">2022 &ndash; 2023</div>
@@ -1980,6 +2015,11 @@
         <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a>
     </div>
 </footer>
+
+<!-- Photo Lightbox -->
+<div id="nvidiaLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
+    <img src="images/NVIDIA_AI_AMB.png" alt="NVIDIA AI Ambassador" onclick="event.stopPropagation()">
+</div>
 
 <!-- ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?SCRIPTS ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?-->
 <script>
@@ -2243,6 +2283,13 @@
             popup.classList.remove('show');
             trigger.setAttribute('aria-expanded', 'false');
         });
+    });
+
+    // Close lightbox on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.photo-lightbox.show').forEach(lb => lb.classList.remove('show'));
+        }
     });
 
     // Improve image loading
