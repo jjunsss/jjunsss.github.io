@@ -553,23 +553,59 @@
 
         .internship-callout {
             max-width: 1120px;
-            margin: 0 auto 1.4rem;
-            padding: 1.05rem 1.1rem;
+            margin: 0 auto 1.8rem;
+            padding: 1.2rem 1.4rem;
             border-radius: var(--radius-md);
-            border: 1px solid rgba(var(--accent-rgb), 0.35);
-            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.14), rgba(var(--gold-rgb), 0.11));
-            box-shadow: var(--shadow-md);
+            border: 1.5px solid rgba(var(--accent-rgb), 0.4);
+            background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.12), rgba(var(--gold-rgb), 0.09));
+            box-shadow: var(--shadow-md), 0 0 20px rgba(var(--accent-rgb), 0.08);
             text-align: center;
             color: var(--text-secondary);
             font-size: 0.99rem;
             line-height: 1.65;
+            animation: callout-glow 3s ease-in-out infinite alternate;
+        }
+        @keyframes callout-glow {
+            0%   { box-shadow: var(--shadow-md), 0 0 12px rgba(var(--accent-rgb), 0.06); }
+            100% { box-shadow: var(--shadow-md), 0 0 24px rgba(var(--accent-rgb), 0.18); }
+        }
+        .internship-callout .callout-badge {
+            display: inline-block;
+            padding: 0.18rem 0.65rem;
+            border-radius: 100px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 0.55rem;
         }
         .internship-callout strong {
             display: block;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.3rem;
             color: var(--accent);
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            font-weight: 650;
             letter-spacing: 0.01em;
+        }
+        .internship-callout .callout-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.6rem;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.92rem;
+            font-weight: 550;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .internship-callout .callout-cta:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
         }
         .hero-bio a {
             font-weight: 550;
@@ -1427,6 +1463,14 @@
     </div>
 </div>
 
+<div class="internship-callout reveal">
+    <span class="callout-badge">Open to Opportunities</span>
+    <strong>Actively Seeking AI Research Internships</strong>
+    <span>I am eager to contribute to real-world research in computer vision, continual learning, and foundation models. If your team is building impactful AI, I would love to be part of it.</span>
+    <br>
+    <a href="mailto:jjunsssk@unist.ac.kr" class="callout-cta shimmer-btn"><i class="fas fa-envelope"></i> Get in Touch</a>
+</div>
+
 <!-- ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?INTERESTS ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?-->
 <!-- ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?PUBLICATIONS ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?-->
 <section class="section" id="publications">
@@ -1926,11 +1970,6 @@
 </section>
 
 <!-- ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?FOOTER ??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴??沃섎봿沅졾럴?-->
-
-<div class="internship-callout reveal">
-    <strong>Seeking AI Research Internship Opportunities</strong>
-    <span>I am fully committed to pursuing an AI Research Internship and want to contribute to real-world research in computer vision, continual learning, and foundation models. If your team is building impactful AI, I am very motivated to be part of it and grow through it.</span>
-</div>
 
 <footer>
     <p>&copy; 2025 Junsu Kim &middot; Built with care, together with <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; font-weight: 500;">Claude</a></p>
