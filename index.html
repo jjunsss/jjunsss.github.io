@@ -2408,6 +2408,7 @@
     let isMobileTicker = mobileMediaQuery.matches;
     let mobileScrollRaf = null;
     let mobileScrollPaused = false;
+    let mobileUserInteracting = false;
     let mobileScrollResumeTimer = null;
     let mobileScrollOutOfView = false;
     const MOBILE_SCROLL_SPEED = 0.6;
@@ -2528,11 +2529,40 @@
     function stopMobileHorizontalScroll() {
         if (mobileScrollRaf) { cancelAnimationFrame(mobileScrollRaf); mobileScrollRaf = null; }
         if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
+        mobileUserInteracting = false;
         mobileScrollPaused = false;
         if (pubTickerWrapper) pubTickerWrapper.scrollLeft = 0;
     }
 
+    function beginMobileUserInteraction() {
+        if (!mobileMediaQuery.matches) return;
+        mobileUserInteracting = true;
+        mobileScrollPaused = true;
+        if (mobileScrollResumeTimer) {
+            clearTimeout(mobileScrollResumeTimer);
+            mobileScrollResumeTimer = null;
+        }
+    }
+
+    function endMobileUserInteraction(delayMs = 2200) {
+        if (!mobileMediaQuery.matches) return;
+        const resumeMs = Math.max(0, delayMs);
+        mobileUserInteracting = false;
+        if (mobileScrollResumeTimer) {
+            clearTimeout(mobileScrollResumeTimer);
+            mobileScrollResumeTimer = null;
+        }
+        mobileScrollResumeTimer = setTimeout(() => {
+            mobileScrollResumeTimer = null;
+            if (!mobileUserInteracting && !isUserPausedTicker) {
+                mobileScrollPaused = false;
+            }
+        }, resumeMs);
+    }
+
     function pauseMobileScrollTemporarily(delayMs) {
+        if (!mobileMediaQuery.matches) return;
+        mobileUserInteracting = false;
         mobileScrollPaused = true;
         if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
         mobileScrollResumeTimer = setTimeout(() => {
@@ -2557,7 +2587,7 @@
             function scrollStep(timestamp) {
                 const delta = timestamp - lastTime;
                 lastTime = timestamp;
-                if (!mobileScrollPaused && !isUserPausedTicker && !mobileScrollOutOfView) {
+                if (!mobileScrollPaused && !mobileUserInteracting && !isUserPausedTicker && !mobileScrollOutOfView) {
                     pubTickerWrapper.scrollLeft += MOBILE_SCROLL_SPEED * delta;
                     if (pubTickerWrapper.scrollLeft >= cycleWidthWithGap) {
                         pubTickerWrapper.scrollLeft -= cycleWidthWithGap;
@@ -2698,35 +2728,56 @@
 
         // Mobile: touch pause/resume for horizontal carousel
         let touchMoved = false;
-        pubTickerWrapper.addEventListener('touchstart', () => {
+        const beginInteraction = () => {
             if (!mobileMediaQuery.matches) return;
             touchMoved = false;
-            mobileScrollPaused = true;
-            if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
-        }, { passive: true });
+            beginMobileUserInteraction();
+        };
+        const endInteraction = () => {
+            if (!mobileMediaQuery.matches) return;
+            const delay = touchMoved ? 2500 : 3000;
+            endMobileUserInteraction(delay);
+        };
+        const cancelInteraction = () => {
+            if (!mobileMediaQuery.matches) return;
+            endMobileUserInteraction(1800);
+        };
+
+        pubTickerWrapper.addEventListener('touchstart', beginInteraction, { passive: true });
 
         pubTickerWrapper.addEventListener('touchmove', () => {
             if (!mobileMediaQuery.matches) return;
             touchMoved = true;
+            beginMobileUserInteraction();
         }, { passive: true });
 
-        pubTickerWrapper.addEventListener('touchend', () => {
+        pubTickerWrapper.addEventListener('touchend', endInteraction, { passive: true });
+
+        pubTickerWrapper.addEventListener('touchcancel', cancelInteraction, { passive: true });
+
+        // Pointer-based gesture support (mobile/tablet touch + pen)
+        pubTickerWrapper.addEventListener('pointerdown', (event) => {
             if (!mobileMediaQuery.matches) return;
-            const delay = touchMoved ? 2000 : 3000;
-            if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
-            mobileScrollResumeTimer = setTimeout(() => {
-                mobileScrollResumeTimer = null;
-                mobileScrollPaused = false;
-            }, delay);
+            if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+            touchMoved = false;
+            beginMobileUserInteraction();
         }, { passive: true });
 
-        pubTickerWrapper.addEventListener('touchcancel', () => {
+        pubTickerWrapper.addEventListener('pointermove', (event) => {
             if (!mobileMediaQuery.matches) return;
-            if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
-            mobileScrollResumeTimer = setTimeout(() => {
-                mobileScrollResumeTimer = null;
-                mobileScrollPaused = false;
-            }, 1500);
+            if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+            touchMoved = true;
+            beginMobileUserInteraction();
+        }, { passive: true });
+
+        pubTickerWrapper.addEventListener('pointerup', () => {
+            if (!mobileMediaQuery.matches) return;
+            endInteraction();
+        }, { passive: true });
+
+        pubTickerWrapper.addEventListener('pointercancel', () => {
+            if (!mobileMediaQuery.matches) return;
+            cancelInteraction();
         }, { passive: true });
 
         // Mobile: pause 4s when tapping interactive elements (Paper link, etc.)
