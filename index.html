@@ -6,6 +6,21 @@
     <title>Junsu Kim | AI Researcher</title>
     <meta name="description" content="Junsu Kim, Combined MS-PhD Student at UNIST AIGS. Research in computer vision, continual learning, and foundation models.">
 
+    <!-- Open Graph / LinkedIn / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jjunsss.github.io/">
+    <meta property="og:title" content="Junsu Kim | AI Researcher">
+    <meta property="og:description" content="Combined MS-PhD Student at UNIST AIGS. Research in 2D/3D representation, continual learning, and vision-language & diffusion models. CVPR Highlight, 13+ publications.">
+    <meta property="og:image" content="https://jjunsss.github.io/images/profile.jpg">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="500">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Junsu Kim | AI Researcher">
+    <meta name="twitter:description" content="Combined MS-PhD Student at UNIST AIGS. Research in 2D/3D representation, continual learning, and vision-language & diffusion models.">
+    <meta name="twitter:image" content="https://jjunsss.github.io/images/profile.jpg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -408,6 +423,12 @@
         .nav-toggle {
             display: none; background: none; border: none; font-size: 1.25rem;
             color: var(--text-primary); cursor: pointer; padding: 0.5rem;
+        }
+        .nav-menu-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+            display: inline-block;
+            user-select: none;
         }
 
         /* === RAINBOW SHIMMER === */
@@ -1471,7 +1492,7 @@
                 <i class="fas fa-sun theme-icon-dark"></i>
             </button>
             <button id="navToggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav-links">
-                <i class="fas fa-bars"></i>
+                <span class="nav-menu-icon" aria-hidden="true">&#9776;</span>
             </button>
         </div>
     </div>
@@ -2261,10 +2282,16 @@
     const navLinks = document.querySelector('.nav-links');
     const navToggle = document.getElementById('navToggle');
     if (navToggle && navLinks) {
+        const navMenuIcon = navToggle.querySelector('.nav-menu-icon');
+        const setNavMenuIcon = () => {
+            if (navMenuIcon) navMenuIcon.textContent = String.fromCharCode(9776);
+        };
         navToggle.addEventListener('click', () => {
             const isOpen = navLinks.classList.toggle('open');
             navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            setNavMenuIcon();
         });
+        setNavMenuIcon();
     }
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
@@ -2426,7 +2453,7 @@
     // Mobile horizontal carousel state
     const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
     let isMobileTicker = mobileMediaQuery.matches;
-    const MOBILE_AUTO_SCROLL_ENABLED = false;
+    const MOBILE_AUTO_SCROLL_ENABLED = true;
     let mobileScrollRaf = null;
     let mobileScrollPaused = false;
     let mobileUserInteracting = false;
