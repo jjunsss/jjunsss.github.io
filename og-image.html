@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    width: 1200px; height: 630px;
+    display: flex; align-items: center; justify-content: center;
+    background: #0a0a0a;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', monospace;
+    overflow: hidden;
+}
+.terminal {
+    width: 1080px; height: 530px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    border: 1px solid #333;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 80px rgba(79,70,229,0.08);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+.titlebar {
+    height: 44px; padding: 0 16px;
+    background: #16162a;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #2a2a4a;
+}
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #ffbd2e; }
+.dot-g { background: #28ca42; }
+.titlebar-text {
+    flex: 1; text-align: center;
+    color: #666; font-size: 13px; margin-right: 40px;
+}
+.body {
+    flex: 1; padding: 28px 36px;
+    display: flex; gap: 48px;
+}
+.left { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.line {
+    font-size: 17px; line-height: 2;
+    color: #e0e0e0;
+}
+.prompt { color: #28ca42; }
+.cmd { color: #818CF8; }
+.flag { color: #ffbd2e; }
+.output { color: #ccc; padding-left: 20px; }
+.highlight { color: #FBBF24; font-weight: 600; }
+.accent { color: #818CF8; }
+.dim { color: #666; }
+.right {
+    width: 300px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px;
+}
+.photo {
+    width: 160px; height: 200px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 2px solid #333;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.badges {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+}
+.badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.badge-accent { background: rgba(79,70,229,0.25); color: #818CF8; border: 1px solid rgba(79,70,229,0.4); }
+.badge-gold { background: rgba(217,119,6,0.2); color: #FBBF24; border: 1px solid rgba(217,119,6,0.35); }
+.url {
+    color: #555; font-size: 13px; letter-spacing: 0.02em;
+}
+.cursor {
+    display: inline-block; width: 10px; height: 20px;
+    background: #818CF8; border-radius: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle; margin-left: 4px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+<div class="terminal">
+    <div class="titlebar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span class="titlebar-text">junsu@research ~ </span>
+    </div>
+    <div class="body">
+        <div class="left">
+            <div class="line"><span class="prompt">$</span> <span class="cmd">whoami</span></div>
+            <div class="line output"><span class="highlight">Junsu Kim</span> <span class="dim">— AI Researcher</span></div>
+            <div class="line output"><span class="dim">Combined MS-PhD @</span> <span class="accent">UNIST AIGS</span></div>
+            <div class="line" style="height:12px"></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">cat</span> <span class="flag">research.yaml</span></div>
+            <div class="line output">2D/3D Representation</div>
+            <div class="line output">Continual Learning <span class="dim">(VLM/LLM/OVOD)</span></div>
+            <div class="line output">Vision-Language & Diffusion Models</div>
+            <div class="line" style="height:12px"></div>
+            <div class="line"><span class="prompt">$</span> <span class="cmd">ls</span> <span class="flag">--stats</span></div>
+            <div class="line output"><span class="highlight">13+</span> publications · <span class="highlight">★</span> CVPR Highlight</div>
+            <div class="line output"><span class="highlight">3×</span> Best Paper Awards</div>
+            <div class="line" style="height:8px"></div>
+            <div class="line"><span class="prompt">$</span> <span class="cursor"></span></div>
+        </div>
+        <div class="right">
+            <img class="photo" src="images/profile.jpg" alt="Junsu Kim">
+            <div class="badges">
+                <span class="badge badge-accent">Open to Internships</span>
+                <span class="badge badge-gold">NVIDIA AI Amb.</span>
+            </div>
+            <div class="url">jjunsss.github.io</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
