@@ -2627,7 +2627,7 @@
     // Mobile horizontal carousel state
     const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
     let isMobileTicker = mobileMediaQuery.matches;
-    const MOBILE_AUTO_SCROLL_ENABLED = true;
+    const MOBILE_AUTO_SCROLL_ENABLED = false;
     let mobileScrollRaf = null;
     let mobileScrollPaused = false;
     let mobileUserInteracting = false;
@@ -2885,7 +2885,7 @@
         if (pubTickerTrack) {
             pubTickerTrack.innerHTML = '';
             sortedVisible.forEach(card => pubTickerTrack.appendChild(card));
-            if (sortedVisible.length > 1) {
+            if (!mobileMediaQuery.matches && sortedVisible.length > 1) {
                 sortedVisible.forEach(card => pubTickerTrack.appendChild(sanitizeCloneForTicker(card)));
             }
     if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
