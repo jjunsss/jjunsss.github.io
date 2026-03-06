@@ -249,42 +249,34 @@
             color: var(--accent); transition: var(--transition);
         }
         .story-more:hover { gap: 0.6rem; }
-        .story-awards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
+        .story-awards-list {
             max-width: 620px;
             margin: 1.35rem auto 0;
-        }
-        .story-award-card {
-            position: relative;
-            overflow: hidden;
-            padding: 1.2rem 1.15rem 1.1rem;
+            padding: 0.55rem 1.15rem;
             border-radius: 22px;
             border: 1px solid rgba(var(--accent-rgb), 0.22);
             background:
-                linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(var(--accent-rgb), 0.14) 55%, rgba(15, 23, 42, 0.94) 100%);
+                linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(var(--accent-rgb), 0.1) 55%, rgba(15, 23, 42, 0.94) 100%);
             box-shadow:
                 0 18px 32px rgba(2, 6, 23, 0.34),
                 inset 0 1px 0 rgba(255, 255, 255, 0.06);
             text-align: left;
         }
-        .story-award-card::before {
-            content: '';
-            position: absolute;
-            inset: auto -18% -46% auto;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 70%);
-            pointer-events: none;
+        .story-awards-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 0.9rem;
+            align-items: start;
+            padding: 0.95rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.16);
         }
-        .story-award-kicker {
-            position: relative;
-            z-index: 1;
+        .story-awards-item:last-child { border-bottom: none; }
+        .story-awards-label {
             display: inline-flex;
             align-items: center;
-            padding: 0.18rem 0.56rem;
+            justify-content: center;
+            min-height: 28px;
+            padding: 0.18rem 0.58rem;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.06);
             color: #94A3B8;
@@ -292,51 +284,20 @@
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
+            white-space: nowrap;
         }
-        .story-award-value {
-            position: relative;
-            z-index: 1;
-            margin-top: 0.6rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(2.8rem, 6vw, 3.8rem);
-            font-weight: 700;
-            line-height: 0.95;
-            background: linear-gradient(135deg, #f59e0b, #fb7185, #818cf8);
-            background-size: 220% 220%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradient-shift 5s ease infinite;
-        }
-        .story-award-label {
-            position: relative;
-            z-index: 1;
-            margin-top: 0.5rem;
+        .story-awards-main {
             color: #F8FAFC;
-            font-size: 0.98rem;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: 0.01em;
-        }
-        .story-award-title {
-            position: relative;
-            z-index: 1;
-            margin-top: 0.72rem;
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.35rem, 3.2vw, 1.95rem);
-            font-weight: 600;
-            line-height: 1.18;
-            color: #F8FAFC;
+            line-height: 1.45;
             text-wrap: balance;
         }
-        .story-award-caption {
-            position: relative;
-            z-index: 1;
-            margin-top: 0.55rem;
+        .story-awards-meta {
+            margin-top: 0.18rem;
             color: #CBD5E1;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.84rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            font-size: 0.88rem;
+            line-height: 1.55;
         }
 
         /* Explore Full Portfolio ?????? */
@@ -1279,15 +1240,22 @@
             .story-tl-item { align-items: flex-start; }
             .story-tl-period { min-width: 72px; font-size: 0.8rem; }
             .story-tl-info { font-size: 0.93rem; }
-            .story-awards-grid {
-                grid-template-columns: 1fr;
-                gap: 0.8rem;
+            .story-awards-list {
                 margin-top: 1.15rem;
+                padding: 0.45rem 0.9rem;
+                border-radius: 18px;
             }
-            .story-award-card { padding: 1rem 0.95rem; border-radius: 18px; }
-            .story-award-value { font-size: clamp(2.5rem, 10vw, 3.2rem); }
-            .story-award-title { font-size: clamp(1.22rem, 5.2vw, 1.6rem); }
-            .story-award-caption { font-size: 0.78rem; }
+            .story-awards-item {
+                grid-template-columns: 1fr;
+                gap: 0.52rem;
+                padding: 0.8rem 0;
+            }
+            .story-awards-label {
+                justify-self: start;
+                font-size: 0.68rem;
+            }
+            .story-awards-main { font-size: 0.95rem; }
+            .story-awards-meta { font-size: 0.8rem; }
             #story-skip { top: 1.5rem; bottom: auto; right: 1.5rem; font-size: 0.84rem; padding: 0.5rem 1.2rem; }
             .story-scroll-hint { bottom: 1.3rem; font-size: 0.72rem; padding: 0.48rem 0.8rem 0.48rem 0.88rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
@@ -1386,10 +1354,9 @@
             .story-opportunity-badge { font-size: 0.66rem; }
             .story-opportunity-title { font-size: 1rem; }
             .story-opportunity-link { font-size: 0.75rem; padding: 0.42rem 0.78rem; }
-            .story-award-kicker { font-size: 0.66rem; }
-            .story-award-label { font-size: 0.9rem; }
-            .story-award-title { font-size: 1.12rem; }
-            .story-award-caption { font-size: 0.74rem; }
+            .story-awards-list { padding: 0.4rem 0.78rem; }
+            .story-awards-main { font-size: 0.9rem; }
+            .story-awards-meta { font-size: 0.76rem; }
             .pub-filter-btn { padding: 0.34rem 0.7rem; font-size: 0.84rem; }
             .pub-link { font-size: 0.82rem; padding: 0.28rem 0.58rem; }
             .citation-number { font-size: 1.54rem; }
@@ -1533,16 +1500,27 @@
     <div class="story-panel">
         <div class="story-content">
             <h2 class="story-heading story-fade">Awards & Activities</h2>
-            <div class="story-awards-grid story-fade story-fade-delay">
-                <div class="story-award-card">
-                    <div class="story-award-kicker">Summary</div>
-                    <div class="story-award-value">5</div>
-                    <div class="story-award-label">Awards</div>
+            <div class="story-awards-list story-fade story-fade-delay">
+                <div class="story-awards-item">
+                    <div class="story-awards-label">Awards</div>
+                    <div>
+                        <div class="story-awards-main">5 research and competition awards</div>
+                        <div class="story-awards-meta">From Outstanding Reviewer to Best Paper and competition prizes.</div>
+                    </div>
                 </div>
-                <div class="story-award-card">
-                    <div class="story-award-kicker">Recognition</div>
-                    <div class="story-award-title">Outstanding Reviewer</div>
-                    <div class="story-award-caption">BMVC 2025</div>
+                <div class="story-awards-item">
+                    <div class="story-awards-label">Recognition</div>
+                    <div>
+                        <div class="story-awards-main">Outstanding Reviewer at BMVC 2025</div>
+                        <div class="story-awards-meta">Professional service highlight across conference and journal reviewing.</div>
+                    </div>
+                </div>
+                <div class="story-awards-item">
+                    <div class="story-awards-label">Activity</div>
+                    <div>
+                        <div class="story-awards-main">Young Researcher, National Physical-AI Strategy Advisory Seminar</div>
+                        <div class="story-awards-meta">Invited activity with ETRI and NST in September 2025.</div>
+                    </div>
                 </div>
             </div>
             <a href="#about" id="story-enter" class="story-enter-btn story-fade story-fade-delay-2">
