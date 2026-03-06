@@ -1177,6 +1177,40 @@
         }
         .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
 
+        .closing-quote {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+        .closing-quote-card {
+            padding: 1.5rem 1.6rem 1.35rem;
+            border-radius: 22px;
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            background:
+                radial-gradient(circle at top, rgba(var(--accent-rgb), 0.12), transparent 55%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(15, 23, 42, 0.9));
+            box-shadow:
+                0 18px 36px rgba(2, 6, 23, 0.24),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .closing-quote-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.05rem, 2.3vw, 1.45rem);
+            line-height: 1.6;
+            color: #F8FAFC;
+            letter-spacing: 0.01em;
+            text-wrap: balance;
+        }
+        .closing-quote-author {
+            margin-top: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #94A3B8;
+        }
+
         /* === FOOTER === */
         footer {
             max-width: 1120px; margin: 2.5rem auto 0; padding: 2rem;
@@ -1279,6 +1313,9 @@
             .section-header { align-items: flex-end; gap: 0.75rem; }
             .section-header h2 { font-size: 1.4rem; white-space: normal; line-height: 1.2; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .closing-quote { padding: 0 1.25rem; }
+            .closing-quote-card { padding: 1.25rem 1.15rem 1.15rem; border-radius: 18px; }
+            .closing-quote-text { font-size: clamp(0.98rem, 4vw, 1.18rem); }
             footer { flex-direction: column; gap: 0.75rem; text-align: center; }
             .news-item { align-items: flex-start; }
             .news-badge { margin-top: 0.12rem; }
@@ -1347,6 +1384,9 @@
             .hero-link { padding: 0.38rem 0.74rem; font-size: 0.84rem; }
             .section { padding: 1.45rem 1rem; }
             .story-heading { font-size: clamp(1.45rem, 7.2vw, 1.95rem); }
+            .closing-quote { padding: 0 1rem; }
+            .closing-quote-card { padding: 1.05rem 0.95rem 1rem; }
+            .closing-quote-author { font-size: 0.74rem; }
             .story-opportunity-card {
                 margin-top: 0.85rem;
                 padding: 0.8rem 0.78rem 0.85rem;
@@ -2124,6 +2164,13 @@
             <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">ICASSP 2024 &middot; Seoul</div>
         </div>
+    </div>
+</section>
+
+<section class="closing-quote reveal" aria-label="Favorite quote">
+    <div class="closing-quote-card">
+        <p class="closing-quote-text">"Shoot for the moon. Even if you miss, you'll land among the stars."</p>
+        <p class="closing-quote-author">Norman Vincent Peale</p>
     </div>
 </section>
 
