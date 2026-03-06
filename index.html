@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,46 +29,6 @@
     <style>
         /* === DESIGN TOKENS === */
         :root {
-            --bg-primary: #F8F9FA;
-            --bg-secondary: #F1F3F5;
-            --bg-card: #FFFFFF;
-            --bg-card-hover: #FDFDFD;
-            --text-primary: #212529;
-            --text-secondary: #495057;
-            --text-muted: #9CA3AF;
-            --accent: #4F46E5;
-            --accent-rgb: 79, 70, 229;
-            --accent-light: #EEF2FF;
-            --accent-hover: #4338CA;
-            --gold: #D97706;
-            --gold-light: #FFFBEB;
-            --gold-rgb: 217, 119, 6;
-            --venue-top: #059669;
-            --venue-top-bg: #ECFDF5;
-            --venue-workshop: #7C3AED;
-            --venue-workshop-bg: #F5F3FF;
-            --border: #E5E7EB;
-            --border-light: #F3F4F6;
-            --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
-            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
-            --radius: 16px;
-            --radius-md: 12px;
-            --radius-sm: 8px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            --nav-bg: rgba(253, 252, 250, 0.82);
-            --gradient-hero: linear-gradient(135deg, #F0EDFF 0%, #FFF0F5 25%, #FFF8EB 50%, #EDFAF3 75%, #F0EDFF 100%);
-            --gradient-accent: linear-gradient(135deg, #4F46E5, #7C3AED);
-            --hero-pattern-opacity: 0.4;
-            --popup-bg: #FFFFFF;
-            --popup-border: #E5E7EB;
-            --bio-color: #6B4C3B;
-        }
-
-        [data-theme="dark"] {
             --bg-primary: #121212;
             --bg-secondary: #1E1E1E;
             --bg-card: #181818;
@@ -119,11 +79,11 @@
         body::before {
             content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
             background:
-                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(79,70,229,0.07) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(236,72,153,0.05) 0%, transparent 55%),
-                radial-gradient(ellipse 70% 50% at 50% 55%, rgba(217,119,6,0.04) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 45% at 15% 75%, rgba(5,150,105,0.05) 0%, transparent 55%),
-                radial-gradient(ellipse 50% 40% at 85% 85%, rgba(124,58,237,0.06) 0%, transparent 50%);
+                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(129,140,248,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(236,72,153,0.04) 0%, transparent 55%),
+                radial-gradient(ellipse 70% 50% at 50% 55%, rgba(251,191,36,0.03) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 45% at 15% 75%, rgba(52,211,153,0.04) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 40% at 85% 85%, rgba(167,139,250,0.05) 0%, transparent 50%);
             animation: bg-drift 25s ease-in-out infinite alternate;
         }
         @keyframes bg-drift {
@@ -131,15 +91,6 @@
             50% { transform: translate(-15px, 10px) scale(1.02); }
             100% { transform: translate(10px, -15px) scale(1); }
         }
-        [data-theme="dark"] body::before {
-            background:
-                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(129,140,248,0.06) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 30%, rgba(236,72,153,0.04) 0%, transparent 55%),
-                radial-gradient(ellipse 70% 50% at 50% 55%, rgba(251,191,36,0.03) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 45% at 15% 75%, rgba(52,211,153,0.04) 0%, transparent 55%),
-                radial-gradient(ellipse 50% 40% at 85% 85%, rgba(167,139,250,0.05) 0%, transparent 50%);
-        }
-
         a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--accent-hover); }
         a:focus-visible,
@@ -177,6 +128,50 @@
             font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--text-secondary); line-height: 1.7;
             max-width: 500px; margin: 0 auto;
+        }
+        .story-opportunity-card {
+            max-width: 540px;
+            margin: 1.15rem auto 0;
+            padding: 1rem 1.15rem 1.05rem;
+            border-radius: 22px;
+            border: 1px solid rgba(var(--accent-rgb), 0.34);
+            background:
+                linear-gradient(150deg, rgba(var(--accent-rgb), 0.16) 0%, rgba(var(--gold-rgb), 0.08) 52%, rgba(10, 14, 24, 0.92) 100%);
+            box-shadow:
+                0 18px 34px rgba(2, 6, 23, 0.34),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 0 28px rgba(var(--accent-rgb), 0.12);
+            text-align: center;
+        }
+        .story-opportunity-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.24rem 0.68rem;
+            border-radius: 999px;
+            background: rgba(var(--accent-rgb), 0.2);
+            color: #F5F7FF;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .story-opportunity-title {
+            margin-top: 0.7rem;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3.1vw, 1.85rem);
+            font-weight: 600;
+            line-height: 1.24;
+            letter-spacing: -0.02em;
+            color: #F8FAFC;
+            text-wrap: balance;
+        }
+        .story-opportunity-subline {
+            margin-top: 0.42rem;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: #CBD5E1;
+            letter-spacing: 0.01em;
         }
         .story-photo {
             width: 120px; height: 150px; border-radius: var(--radius);
@@ -235,38 +230,100 @@
             color: var(--accent); transition: var(--transition);
         }
         .story-more:hover { gap: 0.6rem; }
-        .story-stat-row {
-            display: flex; justify-content: center; gap: 2.5rem;
-            margin: 1.25rem 0; flex-wrap: wrap;
+        .story-awards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            max-width: 620px;
+            margin: 1.35rem auto 0;
         }
-        .story-stat { text-align: center; }
-        .story-stat-num {
-            font-size: 1.8rem; font-weight: 700; color: var(--gold);
-            font-family: 'Playfair Display', serif;
+        .story-award-card {
+            position: relative;
+            overflow: hidden;
+            padding: 1.2rem 1.15rem 1.1rem;
+            border-radius: 22px;
+            border: 1px solid rgba(var(--accent-rgb), 0.22);
+            background:
+                linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(var(--accent-rgb), 0.14) 55%, rgba(15, 23, 42, 0.94) 100%);
+            box-shadow:
+                0 18px 32px rgba(2, 6, 23, 0.34),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            text-align: left;
         }
-        .story-stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.15rem; }
-        .story-quote {
-            margin: 0.9rem auto 0;
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
-            line-height: 1.55;
-            color: var(--text-primary);
-            letter-spacing: 0.01em;
-            white-space: normal;
+        .story-award-card::before {
+            content: '';
+            position: absolute;
+            inset: auto -18% -46% auto;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.22), transparent 70%);
+            pointer-events: none;
         }
-        .story-quote-author {
-            margin-top: 0.35rem;
+        .story-award-kicker {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.18rem 0.56rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #94A3B8;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .story-award-value {
+            position: relative;
+            z-index: 1;
+            margin-top: 0.6rem;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            letter-spacing: 0.04em;
+            font-size: clamp(2.8rem, 6vw, 3.8rem);
+            font-weight: 700;
+            line-height: 0.95;
+            background: linear-gradient(135deg, #f59e0b, #fb7185, #818cf8);
+            background-size: 220% 220%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 5s ease infinite;
+        }
+        .story-award-label {
+            position: relative;
+            z-index: 1;
+            margin-top: 0.5rem;
+            color: #F8FAFC;
+            font-size: 0.98rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+        .story-award-title {
+            position: relative;
+            z-index: 1;
+            margin-top: 0.72rem;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.35rem, 3.2vw, 1.95rem);
+            font-weight: 600;
+            line-height: 1.18;
+            color: #F8FAFC;
+            text-wrap: balance;
+        }
+        .story-award-caption {
+            position: relative;
+            z-index: 1;
+            margin-top: 0.55rem;
+            color: #CBD5E1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.84rem;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
         /* Explore Full Portfolio ?????? */
         .story-enter-btn {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            margin-top: 1.45rem; padding: 0.85rem 2.2rem;
+            margin-top: 1.8rem; padding: 0.85rem 2.2rem;
             font-size: 1rem; font-weight: 550; letter-spacing: 0.02em;
             color: #fff; background: var(--accent);
             border-radius: 100px; transition: all 0.3s ease;
@@ -410,15 +467,6 @@
             padding: 0.38rem 0.75rem; border-radius: var(--radius-sm); transition: var(--transition);
         }
         .nav-links a:hover { color: var(--text-primary); background: var(--bg-secondary); }
-
-        .theme-toggle {
-            background: none; border: 1px solid var(--border); width: 36px; height: 36px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: var(--text-muted); transition: var(--transition); margin-left: 0.75rem; font-size: 0.95rem;
-        }
-        .theme-toggle:hover { color: var(--text-primary); border-color: var(--accent); background: var(--accent-light); }
-        [data-theme="dark"] .theme-icon-light { display: none; }
-        [data-theme="light"] .theme-icon-dark { display: none; }
 
         .nav-toggle {
             display: none; background: none; border: none; font-size: 1.25rem;
@@ -659,9 +707,9 @@
             margin-bottom: 1.25rem;
             padding: 0.55rem 0.95rem;
             border-radius: 999px;
-            border: 1px solid rgba(var(--gold-rgb), 0.28);
-            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.12), rgba(var(--accent-rgb), 0.08));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), var(--shadow-xs);
+            border: 1px solid rgba(var(--gold-rgb), 0.38);
+            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.14), rgba(var(--accent-rgb), 0.12));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow-xs);
         }
         .citation-number {
             font-family: 'JetBrains Mono', monospace;
@@ -690,10 +738,6 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             margin-left: 0.2rem;
-        }
-        [data-theme="dark"] .citation-stat {
-            border-color: rgba(var(--gold-rgb), 0.38);
-            background: linear-gradient(135deg, rgba(var(--gold-rgb), 0.14), rgba(var(--accent-rgb), 0.12));
         }
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
@@ -1189,6 +1233,14 @@
             .story-content { padding: 1.25rem; max-width: 100%; }
             .story-sub { font-size: 0.97rem; line-height: 1.62; }
             .story-photo { width: 90px; height: 112px; }
+            .story-opportunity-card {
+                max-width: 100%;
+                margin-top: 1rem;
+                padding: 0.9rem 0.9rem 0.95rem;
+                border-radius: 18px;
+            }
+            .story-opportunity-title { font-size: clamp(1.05rem, 4.4vw, 1.45rem); }
+            .story-opportunity-subline { font-size: 0.84rem; }
             .story-tags { flex-wrap: wrap; justify-content: center; }
             .story-tag {
                 font-size: 0.84rem;
@@ -1202,17 +1254,20 @@
             .story-pub-roller-item { height: 5em; }
             .story-pub-roller-title { font-size: 0.76rem; }
             .story-pub-roller-meta { font-size: 0.66rem; }
-            .story-quote {
-                font-size: clamp(0.94rem, 4.2vw, 1.04rem);
-                line-height: 1.52;
-                padding: 0 0.25rem;
-            }
             .story-enter-btn { font-size: 0.9rem; padding: 0.75rem 1.8rem; }
             .story-tl { max-width: 100%; }
             .story-tl-item { align-items: flex-start; }
             .story-tl-period { min-width: 72px; font-size: 0.8rem; }
             .story-tl-info { font-size: 0.93rem; }
-            .story-stat-row { gap: 1.5rem; }
+            .story-awards-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+                margin-top: 1.15rem;
+            }
+            .story-award-card { padding: 1rem 0.95rem; border-radius: 18px; }
+            .story-award-value { font-size: clamp(2.5rem, 10vw, 3.2rem); }
+            .story-award-title { font-size: clamp(1.22rem, 5.2vw, 1.6rem); }
+            .story-award-caption { font-size: 0.78rem; }
             #story-skip { top: 1.5rem; bottom: auto; right: 1.5rem; font-size: 0.84rem; padding: 0.5rem 1.2rem; }
             .story-scroll-hint { bottom: 1.3rem; font-size: 0.72rem; padding: 0.48rem 0.8rem 0.48rem 0.88rem; }
             .hero { padding: 6rem 1.25rem 2.5rem; }
@@ -1304,6 +1359,17 @@
             .hero-link { padding: 0.38rem 0.74rem; font-size: 0.84rem; }
             .section { padding: 1.45rem 1rem; }
             .story-heading { font-size: clamp(1.45rem, 7.2vw, 1.95rem); }
+            .story-opportunity-card {
+                margin-top: 0.85rem;
+                padding: 0.8rem 0.78rem 0.85rem;
+            }
+            .story-opportunity-badge { font-size: 0.66rem; }
+            .story-opportunity-title { font-size: 1rem; }
+            .story-opportunity-subline { font-size: 0.8rem; }
+            .story-award-kicker { font-size: 0.66rem; }
+            .story-award-label { font-size: 0.9rem; }
+            .story-award-title { font-size: 1.12rem; }
+            .story-award-caption { font-size: 0.74rem; }
             .pub-filter-btn { padding: 0.34rem 0.7rem; font-size: 0.84rem; }
             .pub-link { font-size: 0.82rem; padding: 0.28rem 0.58rem; }
             .citation-number { font-size: 1.54rem; }
@@ -1339,9 +1405,11 @@
             <p class="story-sub story-fade story-fade-delay" style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; letter-spacing:0.03em;">
                 Combined MS-PhD &middot; UNIST AI Graduate School
             </p>
-            <p class="story-sub story-fade story-fade-delay-2" style="margin-top:0.75rem; max-width:520px;">
-                Exploring continual &amp; incremental learning, open-world detection, and vision-language foundation models.
-            </p>
+            <div class="story-opportunity-card story-fade story-fade-delay-2">
+                <span class="story-opportunity-badge">Open to Opportunities</span>
+                <div class="story-opportunity-title">Seeking AI Research Internship Opportunities</div>
+                <div class="story-opportunity-subline">&#xD604;&#xC7AC;&#x20;&#xC778;&#xD134;&#xC2ED;&#x20;&#xAE30;&#xD68C;&#xB97C;&#x20;&#xCC3E;&#xACE0;&#x20;&#xC788;&#xC2B5;&#xB2C8;&#xB2E4;&#x2E;</div>
+            </div>
             <div class="story-tags story-fade story-fade-delay-3">
                 <span class="story-tag">Computer Vision</span>
                 <span class="story-tag">Continual Learning</span>
@@ -1443,24 +1511,18 @@
     <div class="story-panel">
         <div class="story-content">
             <h2 class="story-heading story-fade">Awards & Activities</h2>
-            <div class="story-stat-row story-fade story-fade-delay">
-                <div class="story-stat">
-                    <div class="story-stat-num">5+</div>
-                    <div class="story-stat-label">Awards</div>
+            <div class="story-awards-grid story-fade story-fade-delay">
+                <div class="story-award-card">
+                    <div class="story-award-kicker">Summary</div>
+                    <div class="story-award-value">5</div>
+                    <div class="story-award-label">Awards</div>
                 </div>
-                <div class="story-stat">
-                    <div class="story-stat-num">4</div>
-                    <div class="story-stat-label">Venues Reviewed</div>
-                </div>
-                <div class="story-stat">
-                    <div class="story-stat-num">3</div>
-                    <div class="story-stat-label">Invited Talks</div>
+                <div class="story-award-card">
+                    <div class="story-award-kicker">Recognition</div>
+                    <div class="story-award-title">Outstanding Reviewer</div>
+                    <div class="story-award-caption">BMVC 2025</div>
                 </div>
             </div>
-            <p class="story-quote story-fade story-fade-delay-2">
-                "Shoot for the moon. Even if you miss, you'll land among the stars."
-            </p>
-            <p class="story-quote-author story-fade story-fade-delay-2">- Norman Vincent Peale</p>
             <a href="#about" id="story-enter" class="story-enter-btn story-fade story-fade-delay-2">
                 Explore Full Portfolio <i class="fas fa-arrow-down" style="font-size:0.85rem;"></i>
             </a>
@@ -1487,10 +1549,6 @@
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer">CV</a></li>
             </ul>
-            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                <i class="fas fa-moon theme-icon-light"></i>
-                <i class="fas fa-sun theme-icon-dark"></i>
-            </button>
             <button id="navToggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-nav-links">
                 <span class="nav-menu-icon" aria-hidden="true">&#9776;</span>
             </button>
@@ -1564,7 +1622,7 @@
 <div class="internship-callout reveal">
     <span class="callout-badge">Open&nbsp;to&nbsp;Opportunities</span>
     <strong>Actively Searching AI Research Internships</strong>
-    <span class="callout-copy">With roughly two years until graduation, I have been closely following and building expertise in 2D/3D representation, continual learning for VLM/LLM/OVOD/detectors, and large-scale vision-language &amp; diffusion models. I am eager to join a team pushing the frontier of these fields or turning them into practical, real-world&nbsp;research.</span>
+    <span class="callout-copy">I am actively seeking AI research internship opportunities where I can work on practical research in industry, especially around 2D/3D representation, continual learning, and large-scale vision-language or diffusion models.</span>
     <div class="callout-cta-row">
         <a href="mailto:jjunsssk@unist.ac.kr" class="callout-cta shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
     </div>
@@ -2094,27 +2152,6 @@
         history.replaceState(null, '', window.location.pathname + window.location.search);
     }
     window.scrollTo(0, 0);
-
-    // Theme toggle
-    function toggleTheme() {
-        const html = document.documentElement;
-        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-    }
-    (function() {
-        const html = document.documentElement;
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light' || savedTheme === 'dark') {
-            html.setAttribute('data-theme', savedTheme);
-            return;
-        }
-
-        const h = new Date().getHours();
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        const timeBasedTheme = (h >= 18 || h < 6) ? 'dark' : 'light';
-        html.setAttribute('data-theme', prefersDark.matches ? 'dark' : timeBasedTheme);
-    })();
 
     // === STORYTELLING INTRO ===
     (function() {
@@ -2926,12 +2963,8 @@
         let animId = null;
         let startTime = null;
 
-        // Get theme-aware noise tint
         function getNoiseTint() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            return isDark
-                ? { r: 129, g: 140, b: 248, mix: 0.15 }  // indigo-400
-                : { r: 79, g: 70, b: 229, mix: 0.08 };   // indigo-600
+            return { r: 129, g: 140, b: 248, mix: 0.15 };
         }
 
         // Box-Muller for more realistic Gaussian noise
@@ -3059,10 +3092,7 @@
         }
 
         function getNoiseTint() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            return isDark
-                ? { r: 129, g: 140, b: 248, mix: 0.12 }
-                : { r: 79, g: 70, b: 229, mix: 0.06 };
+            return { r: 129, g: 140, b: 248, mix: 0.12 };
         }
 
         function drawGalleryNoise(ctx, w, h, intensity) {
@@ -3184,10 +3214,6 @@
         let isMobile = window.innerWidth <= 768;
         let targetFps = isMobile ? 14 : 30;
         let frameInterval = 1000 / targetFps;
-
-        function isDark() {
-            return document.documentElement.getAttribute('data-theme') === 'dark';
-        }
 
         function sizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
@@ -3358,16 +3384,16 @@
             ctx.fill();
         }
 
-        function drawConstellationLinks(time, dark) {
+        function drawConstellationLinks(time) {
             const brightStars = stars.filter(s => s.layer === 2);
             if (brightStars.length < 2) return;
 
-            const maxDistance = dark ? 220 : 190;
+            const maxDistance = 220;
             const maxConnectionsPerStar = 2;
             const connectionCount = new Map();
 
             ctx.save();
-            ctx.lineWidth = dark ? 0.7 : 0.55;
+            ctx.lineWidth = 0.7;
 
             for (let i = 0; i < brightStars.length; i++) {
                 const a = brightStars[i];
@@ -3385,7 +3411,7 @@
                     if (dist > maxDistance) continue;
 
                     const pulse = 0.65 + 0.35 * (Math.sin(time * 0.0011 + (a.twinklePhase + b.twinklePhase) * 0.5) * 0.5 + 0.5);
-                    const baseAlpha = dark ? 0.18 : 0.17;
+                    const baseAlpha = 0.18;
                     const alpha = (1 - dist / maxDistance) * baseAlpha * pulse;
                     if (alpha <= 0.01) continue;
 
@@ -3418,8 +3444,7 @@
 
             const w = window.innerWidth;
             const h = window.innerHeight;
-            const dark = isDark();
-            const alphaScale = dark ? 1 : 0.78;
+            const alphaScale = 1;
 
             smoothScrollForce += (scrollForce - smoothScrollForce) * 0.15;
             scrollForce *= 0.92;
@@ -3440,7 +3465,7 @@
                 else if (s.layer === 1) drawStarL1(s, time, alphaScale);
                 else drawStarL2(s, time, alphaScale);
             }
-            drawConstellationLinks(time, dark);
+            drawConstellationLinks(time);
 
             animId = requestAnimationFrame(animate);
         }
