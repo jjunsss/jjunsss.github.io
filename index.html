@@ -166,12 +166,31 @@
             color: #F8FAFC;
             text-wrap: balance;
         }
-        .story-opportunity-subline {
-            margin-top: 0.42rem;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            color: #CBD5E1;
-            letter-spacing: 0.01em;
+        .story-opportunity-actions {
+            margin-top: 0.9rem;
+            display: flex;
+            justify-content: center;
+        }
+        .story-opportunity-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.48rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(var(--accent-rgb), 0.34);
+            background: rgba(15, 23, 42, 0.72);
+            color: #F8FAFC;
+            font-size: 0.84rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            box-shadow: 0 10px 20px rgba(2, 6, 23, 0.24);
+            transition: var(--transition);
+        }
+        .story-opportunity-link:hover {
+            color: #fff;
+            border-color: rgba(var(--accent-rgb), 0.58);
+            background: rgba(var(--accent-rgb), 0.22);
+            transform: translateY(-1px);
         }
         .story-photo {
             width: 120px; height: 150px; border-radius: var(--radius);
@@ -1240,7 +1259,8 @@
                 border-radius: 18px;
             }
             .story-opportunity-title { font-size: clamp(1.05rem, 4.4vw, 1.45rem); }
-            .story-opportunity-subline { font-size: 0.84rem; }
+            .story-opportunity-actions { margin-top: 0.75rem; }
+            .story-opportunity-link { font-size: 0.79rem; padding: 0.44rem 0.88rem; }
             .story-tags { flex-wrap: wrap; justify-content: center; }
             .story-tag {
                 font-size: 0.84rem;
@@ -1365,7 +1385,7 @@
             }
             .story-opportunity-badge { font-size: 0.66rem; }
             .story-opportunity-title { font-size: 1rem; }
-            .story-opportunity-subline { font-size: 0.8rem; }
+            .story-opportunity-link { font-size: 0.75rem; padding: 0.42rem 0.78rem; }
             .story-award-kicker { font-size: 0.66rem; }
             .story-award-label { font-size: 0.9rem; }
             .story-award-title { font-size: 1.12rem; }
@@ -1408,7 +1428,9 @@
             <div class="story-opportunity-card story-fade story-fade-delay-2">
                 <span class="story-opportunity-badge">Open to Opportunities</span>
                 <div class="story-opportunity-title">Seeking AI Research Internship Opportunities</div>
-                <div class="story-opportunity-subline">&#xD604;&#xC7AC;&#x20;&#xC778;&#xD134;&#xC2ED;&#x20;&#xAE30;&#xD68C;&#xB97C;&#x20;&#xCC3E;&#xACE0;&#x20;&#xC788;&#xC2B5;&#xB2C8;&#xB2E4;&#x2E;</div>
+                <div class="story-opportunity-actions">
+                    <a href="mailto:jjunsssk@unist.ac.kr" class="story-opportunity-link shimmer-btn"><i class="fas fa-envelope"></i> Direct Contact</a>
+                </div>
             </div>
             <div class="story-tags story-fade story-fade-delay-3">
                 <span class="story-tag">Computer Vision</span>
