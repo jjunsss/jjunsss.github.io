@@ -210,14 +210,50 @@
             flex: 0 0 auto;
         }
         .story-pub-stats {
-            display: flex; justify-content: center; gap: 2rem;
+            display: flex; justify-content: center; gap: 0.9rem;
             flex-wrap: wrap; margin-top: 1.5rem;
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .story-pub-stat { text-align: center; min-width: 80px; }
+        .story-pub-stat {
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            min-width: 118px;
+            flex: 1 1 118px;
+            max-width: 140px;
+            padding: 0.8rem 0.85rem 0.78rem;
+            border-radius: 18px;
+            border: 1px solid rgba(var(--accent-rgb), 0.18);
+            background:
+                radial-gradient(circle at top, rgba(var(--accent-rgb), 0.18), transparent 58%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(15, 23, 42, 0.84));
+            box-shadow:
+                0 14px 26px rgba(2, 6, 23, 0.26),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        .story-pub-stat::after {
+            content: '';
+            position: absolute;
+            inset: auto -18% -38% auto;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--accent-rgb), 0.18), transparent 70%);
+            pointer-events: none;
+        }
         .story-pub-stat-num {
-            font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700;
+            position: relative;
+            z-index: 1;
+            font-size: clamp(1.95rem, 5vw, 2.9rem); font-weight: 700;
             font-family: 'Playfair Display', serif; line-height: 1;
-            color: var(--accent);
+            background: linear-gradient(135deg, #fbbf24, #fb7185, #818cf8);
+            background-size: 220% 220%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 5s ease infinite;
         }
         .story-pub-stat-num.gold {
             background: linear-gradient(135deg, #f59e0b, #f97316, #ec4899, #7c3aed);
@@ -228,7 +264,14 @@
             animation: gradient-shift 6s ease infinite;
         }
         .story-pub-stat-label {
-            font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem; font-weight: 450;
+            position: relative;
+            z-index: 1;
+            font-size: 0.76rem;
+            color: #CBD5E1;
+            margin-top: 0.42rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
         .story-tl-period {
             font-family: 'JetBrains Mono', monospace; font-size: 0.84rem;
@@ -1283,8 +1326,15 @@
                 white-space: normal;
                 text-align: center;
             }
-            .story-pub-stats { gap: 1.25rem; }
-            .story-pub-stat-num { font-size: clamp(1.5rem, 5vw, 2rem); }
+            .story-pub-stats { gap: 0.75rem; }
+            .story-pub-stat {
+                min-width: calc(50% - 0.4rem);
+                max-width: calc(50% - 0.4rem);
+                padding: 0.72rem 0.72rem 0.7rem;
+                border-radius: 16px;
+            }
+            .story-pub-stat-num { font-size: clamp(1.55rem, 5vw, 2.15rem); }
+            .story-pub-stat-label { font-size: 0.7rem; margin-top: 0.34rem; }
             .story-pub-roller {
                 max-width: 100%;
                 padding: 0.45rem 0.9rem 0.45rem 1rem;
@@ -1301,9 +1351,13 @@
                 padding: 0.45rem 0.9rem;
                 border-radius: 18px;
             }
-            .story-tl-item { align-items: flex-start; }
-            .story-tl-period { min-width: 72px; font-size: 0.8rem; }
-            .story-tl-info { font-size: 0.93rem; }
+            .story-tl-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.16rem;
+            }
+            .story-tl-period { min-width: 0; font-size: 0.78rem; }
+            .story-tl-info { font-size: 0.93rem; width: 100%; }
             .story-awards-list {
                 margin-top: 1.15rem;
                 padding: 0.45rem 0.9rem;
@@ -1414,6 +1468,12 @@
             .hero-link { padding: 0.38rem 0.74rem; font-size: 0.84rem; }
             .section { padding: 1.45rem 1rem; }
             .story-heading { font-size: clamp(1.45rem, 7.2vw, 1.95rem); }
+            .story-pub-stat {
+                min-width: 100%;
+                max-width: 100%;
+            }
+            .story-tl-period { font-size: 0.74rem; }
+            .story-tl-info { font-size: 0.9rem; }
             .closing-quote { padding: 0 1rem; }
             .closing-quote-card { padding: 1.05rem 0.95rem 1rem; }
             .closing-quote-author { font-size: 0.74rem; }
