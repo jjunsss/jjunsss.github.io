@@ -1543,7 +1543,7 @@
         <div class="story-content">
             <h2 class="story-heading story-fade">Publications</h2>
             <div class="story-fade story-fade-delay" style="margin-top:0.75rem;">
-                <div style="display:inline;"><span class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="111">0</span><span class="story-pub-stat-num gold" style="font-size:clamp(2rem,6vw,3rem);">+</span></div>
+                <div style="display:inline;"><span class="story-pub-stat-num gold story-countup" style="font-size:clamp(3rem,10vw,4.5rem);" data-target="114">0</span><span class="story-pub-stat-num gold" style="font-size:clamp(2rem,6vw,3rem);">+</span></div>
                 <div class="story-pub-stat-label" style="font-size:0.9rem;">Citations</div>
             </div>
             <div class="story-pub-stats story-fade story-fade-delay" style="margin-top:1.5rem;">
@@ -1649,7 +1649,7 @@
                     <div class="story-awards-label">Activity</div>
                     <div>
                         <div class="story-awards-main">Young Researcher, National Physical-AI Strategy Advisory Seminar</div>
-                        <div class="story-awards-meta">Invited activity with ETRI and NST in September 2025.</div>
+                        <div class="story-awards-meta">Invited activity with ETRI in September 2025.</div>
                     </div>
                 </div>
             </div>
@@ -1695,7 +1695,7 @@
                 <div class="hero-photo-wrap" id="diffusionWrap" title="Click to replay diffusion">
                     <img class="hero-photo" src="images/profile.jpg" alt="Junsu Kim">
                     <canvas id="diffusionCanvas" class="diffusion-canvas"></canvas>
-                    <div id="diffusionStep" class="diffusion-step">t=1000</div>
+                    <div id="diffusionStep" class="diffusion-step">t=480</div>
                 </div>
                 <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
             </div>
@@ -2179,7 +2179,7 @@
                 </div>
                 <div class="activity-card" style="margin-bottom: 0.75rem;">
                     <h4>Invited Activities</h4>
-                    <p>Young Researcher, National Physical-AI Strategy Advisory Seminar (ETRI & NST, Sep 2025)</p>
+                    <p>Young Researcher, National Physical-AI Strategy Advisory Seminar (Invited by ETRI, Sep 2025)</p>
                 </div>
                 <div class="activity-card">
                     <h4>Presentations</h4>
@@ -3095,8 +3095,9 @@
         }
         sizeCanvas();
 
-        const TOTAL_DURATION = 3000; // 3 seconds
-        const TOTAL_STEPS = 1000;    // diffusion timesteps t=1000 -> t=0
+        const TOTAL_DURATION = 2200;
+        const TOTAL_STEPS = 480;
+        const HINT_REVEAL_DELAY = TOTAL_DURATION + 800;
         let animId = null;
         let startTime = null;
 
@@ -3197,7 +3198,7 @@
             startTime = null;
             canvas.style.opacity = 1;
             stepLabel.classList.remove('hidden');
-            stepLabel.textContent = 't=1000';
+            stepLabel.textContent = `t=${TOTAL_STEPS}`;
             animId = requestAnimationFrame(animate);
         }
 
@@ -3206,13 +3207,13 @@
 
         // Show hint after first animation completes
         const hint = document.getElementById('diffusionHint');
-        setTimeout(() => { if (hint) hint.classList.add('visible'); }, 3800);
+        setTimeout(() => { if (hint) hint.classList.add('visible'); }, HINT_REVEAL_DELAY);
 
         // Click to replay
         wrap.addEventListener('click', () => {
             if (hint) hint.classList.remove('visible');
             startDiffusion();
-            setTimeout(() => { if (hint) hint.classList.add('visible'); }, 3800);
+            setTimeout(() => { if (hint) hint.classList.add('visible'); }, HINT_REVEAL_DELAY);
         });
 
         // Handle resize
@@ -3289,7 +3290,7 @@
             c.height = h * dpr;
             ctx.scale(dpr, dpr);
 
-            const duration = 2000;
+            const duration = 1400;
             let start = null;
             let anim = null;
 
@@ -3394,7 +3395,7 @@
                     layer: 0, x: Math.random() * w, y: Math.random() * h,
                     size: 0.5 + Math.random() * 1.2,
                     baseOpacity: 0.25 + Math.random() * 0.35,
-                    twinkleSpeed: 0.2 + Math.random() * 0.5,
+                    twinkleSpeed: 0.08 + Math.random() * 0.18,
                     twinklePhase: Math.random() * Math.PI * 2,
                     color: color,
                     vx: 0, vy: 0,
@@ -3405,12 +3406,13 @@
                     layer: 1, x: Math.random() * w, y: Math.random() * h,
                     size: 1.2 + Math.random() * 2.2,
                     baseOpacity: 0.45 + Math.random() * 0.35,
-                    twinkleSpeed: 0.4 + Math.random() * 1.2,
+                    twinkleSpeed: 0.22 + Math.random() * 0.65,
                     twinklePhase: Math.random() * Math.PI * 2,
                     color: color,
                     vx: (Math.random() - 0.5) * 0.04,
                     vy: (Math.random() - 0.5) * 0.03,
                     scrollFactor: 0.06,
+                    hasGlow: Math.random() < 0.42,
                 };
             } else {
                 return {
@@ -3442,8 +3444,7 @@
 
         // Star drawing per layer ????
         function drawStarL0(s, time, alphaScale) {
-            const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
-            const op = s.baseOpacity * (0.5 + 0.5 * t) * alphaScale;
+            const op = s.baseOpacity * alphaScale;
             ctx.beginPath();
             ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${s.color.r}, ${s.color.g}, ${s.color.b}, ${op})`;
@@ -3452,17 +3453,20 @@
 
         function drawStarL1(s, time, alphaScale) {
             const t = Math.sin(time * 0.001 * s.twinkleSpeed + s.twinklePhase);
-            const op = s.baseOpacity * (0.4 + 0.6 * (t * 0.5 + 0.5)) * alphaScale;
-            const sz = s.size * (0.8 + 0.2 * (t * 0.5 + 0.5));
+            const pulse = t * 0.5 + 0.5;
+            const op = s.baseOpacity * (0.72 + 0.28 * pulse) * alphaScale;
+            const sz = s.size * (0.92 + 0.08 * pulse);
             const { r, g, b } = s.color;
 
-            const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, sz * 5);
-            grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${op * 0.3})`);
-            grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, sz * 5, 0, Math.PI * 2);
-            ctx.fillStyle = grad;
-            ctx.fill();
+            if (s.hasGlow) {
+                const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, sz * 3.6);
+                grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${op * 0.22})`);
+                grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, sz * 3.6, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
 
             ctx.beginPath();
             ctx.arc(s.x, s.y, sz * 0.7, 0, Math.PI * 2);
