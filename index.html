@@ -1461,6 +1461,16 @@
             .pub-filter-btn { padding: 0.38rem 0.86rem; font-size: 0.93rem; }
             .pub-summary-popup { display: none !important; }
             .diffusion-hint { display: none !important; }
+            /* Timeline mobile fixes */
+            .timeline { padding-left: 1rem; }
+            .timeline-item { padding-left: 1rem; }
+            .timeline-item::before { left: -1rem; }
+            .timeline-period { font-size: 0.76rem; }
+            .timeline-title { font-size: 0.95rem; }
+            .timeline-org { font-size: 0.88rem; }
+            .timeline-detail { font-size: 0.86rem; }
+            .award-year { font-size: 0.76rem; width: 34px; }
+            .award-text { font-size: 0.88rem; }
         }
 
         @media (max-width: 480px) {
@@ -1592,7 +1602,7 @@
                     </div>
                     <div class="story-pub-roller-item">
                         <div class="story-pub-roller-title">Class-Wise Buffer Management for Incremental Object Detection</div>
-                        <div class="story-pub-roller-meta">First Author &middot; <strong>ArXiv 2024</strong></div>
+                        <div class="story-pub-roller-meta">First Author &middot; <strong>ICASSP 2024</strong></div>
                     </div>
                 </div>
             </div>
@@ -1766,7 +1776,7 @@
         <div class="section-line"></div>
     </div>
     <div class="citation-stat reveal">
-        <span class="citation-number" data-target="111">0</span><span class="citation-plus">+</span>
+        <span class="citation-number" data-target="114">0</span><span class="citation-plus">+</span>
         <span class="citation-label">Total Citations</span>
     </div>
     <script>
@@ -2169,21 +2179,25 @@
         </div>
         <div>
             <div class="section-header reveal">
-                <h2>Professional Service</h2>
+                <h2>Honored To</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="reveal">
-                <div class="activity-card" style="margin-bottom: 0.75rem;">
-                    <h4>Reviewer</h4>
-                    <p>AAAI 2025 &middot; <a href="https://bmvc2025.bmva.org" target="_blank" rel="noopener noreferrer">BMVC 2025 (Outstanding)</a> &middot; IEEE TMM &middot; IEEE TIP</p>
+            <div class="awards-list reveal">
+                <div class="award-item">
+                    <span class="award-year">2025</span>
+                    <span class="award-text">Serve as reviewer for <strong>AAAI</strong>, <a href="https://bmvc2025.bmva.org" target="_blank" rel="noopener noreferrer"><strong>BMVC</strong> (Outstanding)</a>, <strong>IEEE TMM</strong>, <strong>IEEE TIP</strong></span>
                 </div>
-                <div class="activity-card" style="margin-bottom: 0.75rem;">
-                    <h4>Invited Activities</h4>
-                    <p>Young Researcher, National Physical-AI Strategy Advisory Seminar (Invited by ETRI, Sep 2025)</p>
+                <div class="award-item">
+                    <span class="award-year">2025</span>
+                    <span class="award-text">Be invited as <strong>Young Researcher</strong> to National Physical-AI Strategy Advisory Seminar (Invited by ETRI)</span>
                 </div>
-                <div class="activity-card">
-                    <h4>Presentations</h4>
-                    <p>Oral at KOREA Digital Innovators Symposium 2024 (UNIST representative) &middot; Poster at KCCV 2024</p>
+                <div class="award-item">
+                    <span class="award-year">2024</span>
+                    <span class="award-text">Present oral talk at <strong>KOREA Digital Innovators Symposium</strong> as UNIST representative</span>
+                </div>
+                <div class="award-item">
+                    <span class="award-year">2024</span>
+                    <span class="award-text">Present poster at <strong>KCCV 2024</strong></span>
                 </div>
             </div>
         </div>
