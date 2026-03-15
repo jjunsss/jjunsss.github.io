@@ -756,47 +756,14 @@
 
         .pub-ticker-wrapper {
             position: relative;
-            overflow: hidden;
-            border-radius: var(--radius-md);
-            max-height: 68vh;
-            min-height: 420px;
         }
         .pub-ticker-track {
             display: flex;
             flex-direction: column;
             gap: 0.95rem;
-            will-change: transform;
-            --pub-ticker-distance: 0px;
-            --pub-ticker-duration: 20s;
-        }
-        .pub-ticker-track.ticking {
-            animation: pub-ticker-marquee var(--pub-ticker-duration) linear infinite;
-        }
-        @media (hover: hover) {
-            .pub-ticker-wrapper:hover .pub-ticker-track.ticking,
-            .pub-ticker-wrapper:focus-within .pub-ticker-track.ticking {
-                animation-play-state: paused;
-            }
         }
         .pub-ticker-list {
             display: flex; flex-direction: column; gap: 0.95rem;
-        }
-        .pub-ticker-track.ticker-paused {
-            animation-play-state: paused;
-        }
-        .pub-ticker-toggle {
-            position: absolute; top: 0.75rem; right: 0.75rem; z-index: 5;
-            width: 34px; height: 34px; border-radius: 50%;
-            background: var(--bg-card); border: 1px solid var(--border);
-            color: var(--text-muted); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; transition: var(--transition);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        }
-        .pub-ticker-toggle:hover { color: var(--accent); border-color: var(--accent); }
-        @keyframes pub-ticker-marquee {
-            from { transform: translateY(0); }
-            to { transform: translateY(calc(-1 * var(--pub-ticker-distance))); }
         }
 
         .pub-card {
@@ -964,13 +931,6 @@
         /* Hidden cards by filter */
         .pub-card.hidden {
             display: none;
-        }
-        .pub-card.ticker-clone {
-            pointer-events: none;
-        }
-        .pub-card.ticker-clone a,
-        .pub-card.ticker-clone .pub-summary-trigger {
-            pointer-events: auto;
         }
 
         /* === TIMELINE === */
@@ -1172,31 +1132,11 @@
                 font-size: 0.71rem;
                 letter-spacing: 0.07em;
             }
-            /* Mobile horizontal carousel overrides */
-            .pub-ticker-wrapper {
-                max-height: none; min-height: auto;
-                overflow-x: auto; overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x proximity;
-                scrollbar-width: none;
-            }
-            .pub-ticker-wrapper::-webkit-scrollbar { display: none; }
-            .pub-ticker-track {
-                flex-direction: row; flex-wrap: nowrap;
-                gap: 0.75rem;
-                animation: none !important;
-                transform: none !important;
-                will-change: auto;
-                padding: 0.5rem 0;
-            }
+            .pub-ticker-track { gap: 0.75rem; }
             .pub-card {
-                min-width: 82vw; max-width: 82vw; width: 82vw;
-                flex-shrink: 0; scroll-snap-align: center;
                 padding: 1.1rem 1.05rem;
             }
             .pub-card:hover { transform: none; }
-            .pub-ticker-toggle { top: auto; bottom: 0.5rem; right: 0.75rem; }
-            .pub-ticker-toggle { display: none; }
             .pub-toolbar { gap: 0.75rem; }
             .pub-controls { width: 100%; }
             .pub-sort-wrap { width: 100%; gap: 0.45rem; }
@@ -1464,11 +1404,8 @@
         <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers (+6 domestic)</p>
     </div>
 
-    <!-- Publication feed (auto ticker) -->
+    <!-- Publication list -->
     <div class="pub-ticker-wrapper reveal">
-        <button class="pub-ticker-toggle" id="pubTickerToggle" aria-label="Pause ticker" title="Pause / Play">
-            <i class="fas fa-pause"></i>
-        </button>
         <div class="pub-ticker-track" id="pubTickerTrack">
 
             <!-- SDDGR ??CVPR 2024 Highlight -->
@@ -2031,67 +1968,11 @@
     // Publication filters + sorting
     const pubCountEl = document.getElementById('pubCount');
     const pubTickerTrack = document.getElementById('pubTickerTrack');
-    const pubTickerWrapper = document.querySelector('.pub-ticker-wrapper');
     const pubCards = Array.from(document.querySelectorAll('.pub-card'));
     const pubFilterBtns = Array.from(document.querySelectorAll('.pub-filter-btn'));
     const pubSortSelect = document.getElementById('pubSort');
-    let tickerToggle = document.getElementById('pubTickerToggle');
     let activePubFilter = 'all';
     let activePubSort = pubSortSelect ? pubSortSelect.value : 'newest';
-    let pubTickerRaf = null;
-    let isUserPausedTicker = false;
-    let isHoverPausedTicker = false;
-    let wheelPauseTimer = null;
-    const WHEEL_PAUSE_DELAY = 260;
-
-    // Mobile horizontal carousel state
-    const mobileMediaQuery = window.matchMedia('(max-width: 768px)');
-    let isMobileTicker = mobileMediaQuery.matches;
-    const MOBILE_AUTO_SCROLL_ENABLED = false;
-    let mobileScrollRaf = null;
-    let mobileScrollPaused = false;
-    let mobileUserInteracting = false;
-    let mobileScrollResumeTimer = null;
-    let mobileScrollOutOfView = false;
-    const MOBILE_SCROLL_SPEED = 0.6;
-
-    function setHoverPause(paused) {
-        isHoverPausedTicker = paused;
-        updateTickerPauseState();
-    }
-
-    function pauseTickerTemporarilyAfterWheel() {
-        isHoverPausedTicker = true;
-        updateTickerPauseState();
-        if (wheelPauseTimer) clearTimeout(wheelPauseTimer);
-        wheelPauseTimer = window.setTimeout(() => {
-            wheelPauseTimer = null;
-            isHoverPausedTicker = false;
-            updateTickerPauseState();
-        }, WHEEL_PAUSE_DELAY);
-    }
-
-    function updateTickerPauseState() {
-      if (!pubTickerTrack) return;
-      const shouldPause = isUserPausedTicker || isHoverPausedTicker;
-      // Desktop: CSS animation pause
-      pubTickerTrack.classList.toggle('ticker-paused', shouldPause);
-      // Mobile: sync to JS control only when auto scroll is enabled
-      if (mobileMediaQuery.matches && MOBILE_AUTO_SCROLL_ENABLED) {
-          if (isUserPausedTicker) {
-              mobileScrollPaused = true;
-              if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
-          } else if (!mobileScrollResumeTimer) {
-              mobileScrollPaused = false;
-          }
-      }
-      if (!tickerToggle) return;
-      const showPause = mobileMediaQuery.matches ? isUserPausedTicker : shouldPause;
-      tickerToggle.innerHTML = showPause
-        ? '<i class="fas fa-play"></i>'
-        : '<i class="fas fa-pause"></i>';
-      tickerToggle.setAttribute('aria-label', showPause ? 'Play ticker' : 'Pause ticker');
-    }
 
     function parsePublicationYear(card) {
         const textYear = card.dataset.year || card.querySelector('.pub-year')?.textContent || '0';
@@ -2137,155 +2018,6 @@
         }
     }
 
-    function sanitizeCloneForTicker(cardNode) {
-        const cloned = cardNode.cloneNode(true);
-        cloned.classList.add('ticker-clone');
-        cloned.setAttribute('aria-hidden', 'true');
-        cloned.setAttribute('tabindex', '-1');
-        cloned.querySelectorAll('a, .pub-summary-trigger, [tabindex], .pub-summary-popup').forEach(el => {
-            el.setAttribute('tabindex', '-1');
-        });
-        return cloned;
-    }
-
-    function measureTickerCycleHeight(cardCount) {
-        if (!pubTickerTrack || cardCount <= 0) return 0;
-        const firstCycleCards = Array.from(pubTickerTrack.children).slice(0, cardCount);
-        if (!firstCycleCards.length) return 0;
-        const trackStyle = getComputedStyle(pubTickerTrack);
-        const gap = parseFloat(trackStyle.rowGap || trackStyle.gap || '0') || 0;
-        const cardsHeight = firstCycleCards.reduce((sum, card) => sum + card.getBoundingClientRect().height, 0);
-        return cardsHeight + gap * Math.max(firstCycleCards.length - 1, 0);
-    }
-
-    function measureTickerCycleWidth(cardCount) {
-        if (!pubTickerTrack || cardCount <= 0) return 0;
-        const firstCycleCards = Array.from(pubTickerTrack.children).slice(0, cardCount);
-        if (!firstCycleCards.length) return 0;
-        const trackStyle = getComputedStyle(pubTickerTrack);
-        const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0') || 0;
-        const cardsWidth = firstCycleCards.reduce((sum, card) => sum + card.getBoundingClientRect().width, 0);
-        return cardsWidth + gap * Math.max(firstCycleCards.length - 1, 0);
-    }
-
-    function stopMobileHorizontalScroll() {
-        if (mobileScrollRaf) { cancelAnimationFrame(mobileScrollRaf); mobileScrollRaf = null; }
-        if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
-        mobileUserInteracting = false;
-        mobileScrollPaused = false;
-        if (pubTickerWrapper) pubTickerWrapper.scrollLeft = 0;
-    }
-
-    function beginMobileUserInteraction() {
-        if (!mobileMediaQuery.matches) return;
-        mobileUserInteracting = true;
-        mobileScrollPaused = true;
-        if (mobileScrollResumeTimer) {
-            clearTimeout(mobileScrollResumeTimer);
-            mobileScrollResumeTimer = null;
-        }
-    }
-
-    function endMobileUserInteraction(delayMs = 2200) {
-        if (!mobileMediaQuery.matches) return;
-        const resumeMs = Math.max(0, delayMs);
-        mobileUserInteracting = false;
-        if (mobileScrollResumeTimer) {
-            clearTimeout(mobileScrollResumeTimer);
-            mobileScrollResumeTimer = null;
-        }
-        mobileScrollResumeTimer = setTimeout(() => {
-            mobileScrollResumeTimer = null;
-            if (!mobileUserInteracting && !isUserPausedTicker) {
-                mobileScrollPaused = false;
-            }
-        }, resumeMs);
-    }
-
-    function pauseMobileScrollTemporarily(delayMs) {
-        if (!mobileMediaQuery.matches) return;
-        mobileUserInteracting = false;
-        mobileScrollPaused = true;
-        if (mobileScrollResumeTimer) clearTimeout(mobileScrollResumeTimer);
-        mobileScrollResumeTimer = setTimeout(() => {
-            mobileScrollResumeTimer = null;
-            mobileScrollPaused = false;
-        }, delayMs);
-    }
-
-    function startMobileHorizontalScroll(visibleCards) {
-        if (!MOBILE_AUTO_SCROLL_ENABLED) return;
-        stopMobileHorizontalScroll();
-        if (!pubTickerWrapper || visibleCards.length <= 1) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        requestAnimationFrame(() => {
-            const cycleWidth = measureTickerCycleWidth(visibleCards.length);
-            if (!cycleWidth) return;
-            const trackStyle = getComputedStyle(pubTickerTrack);
-            const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0') || 0;
-            const cycleWidthWithGap = cycleWidth + gap;
-            let lastTime = performance.now();
-
-            function scrollStep(timestamp) {
-                const delta = timestamp - lastTime;
-                lastTime = timestamp;
-                if (!mobileScrollPaused && !mobileUserInteracting && !isUserPausedTicker && !mobileScrollOutOfView) {
-                    pubTickerWrapper.scrollLeft += MOBILE_SCROLL_SPEED * delta;
-                    if (pubTickerWrapper.scrollLeft >= cycleWidthWithGap) {
-                        pubTickerWrapper.scrollLeft -= cycleWidthWithGap;
-                    }
-                }
-                mobileScrollRaf = requestAnimationFrame(scrollStep);
-            }
-            mobileScrollRaf = requestAnimationFrame(scrollStep);
-        });
-    }
-
-    function startPublicationTicker(visibleCards) {
-        if (!pubTickerTrack) return;
-
-        // Mobile: horizontal JS scroll
-        if (mobileMediaQuery.matches) {
-            if (!MOBILE_AUTO_SCROLL_ENABLED) {
-                if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
-                mobileScrollPaused = false;
-                pubTickerTrack.classList.remove('ticking');
-                pubTickerTrack.style.removeProperty('transform');
-                pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
-                return;
-            }
-            pubTickerTrack.classList.remove('ticking');
-            pubTickerTrack.style.removeProperty('transform');
-            pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
-            startMobileHorizontalScroll(visibleCards);
-            return;
-        }
-
-        // Desktop: vertical CSS animation
-        stopMobileHorizontalScroll();
-        pubTickerTrack.classList.remove('ticking');
-        pubTickerTrack.style.transform = 'translateY(0)';
-        pubTickerTrack.style.setProperty('--pub-ticker-distance', '0px');
-
-        if (visibleCards.length <= 1) {
-            return;
-        }
-
-        requestAnimationFrame(() => {
-          const cycleHeight = measureTickerCycleHeight(visibleCards.length);
-          if (!cycleHeight) return;
-          const duration = Math.max(12, Math.min(65, cycleHeight / 60));
-          pubTickerTrack.style.setProperty('--pub-ticker-distance', `${cycleHeight.toFixed(2)}px`);
-          pubTickerTrack.style.setProperty('--pub-ticker-duration', `${duration.toFixed(2)}s`);
-          requestAnimationFrame(() => {
-            pubTickerTrack.style.removeProperty('transform');
-            pubTickerTrack.classList.add('ticking');
-            updateTickerPauseState();
-          });
-        });
-    }
-
     function applyPublicationFilter(filter = activePubFilter) {
         activePubFilter = filter;
         const visibleCards = [];
@@ -2305,14 +2037,6 @@
         if (pubTickerTrack) {
             pubTickerTrack.innerHTML = '';
             sortedVisible.forEach(card => pubTickerTrack.appendChild(card));
-            if (!mobileMediaQuery.matches && sortedVisible.length > 1) {
-                sortedVisible.forEach(card => pubTickerTrack.appendChild(sanitizeCloneForTicker(card)));
-            }
-    if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
-            pubTickerRaf = requestAnimationFrame(() => {
-                startPublicationTicker(sortedVisible);
-                pubTickerRaf = null;
-            });
         }
 
         updatePublicationCount(filter, sortedVisible.length);
@@ -2341,156 +2065,6 @@
     }
 
     applyPublicationFilter('all');
-
-    // Ticker pause/play toggle
-    if (tickerToggle && pubTickerTrack) {
-        updateTickerPauseState();
-        tickerToggle.addEventListener('click', () => {
-            isUserPausedTicker = !isUserPausedTicker;
-            updateTickerPauseState();
-        });
-    }
-
-    if (pubTickerWrapper && pubTickerTrack) {
-        // Desktop: hover/mouse-based pause logic
-        const hasHover = window.matchMedia('(hover: hover)').matches;
-        if (hasHover) {
-            pubTickerWrapper.addEventListener('mouseenter', () => {
-                if (wheelPauseTimer) { clearTimeout(wheelPauseTimer); wheelPauseTimer = null; }
-                setHoverPause(true);
-            });
-            pubTickerWrapper.addEventListener('mouseleave', () => {
-                if (wheelPauseTimer) { clearTimeout(wheelPauseTimer); wheelPauseTimer = null; }
-                setHoverPause(false);
-            });
-            pubTickerWrapper.addEventListener('pointerdown', () => {
-                setHoverPause(true);
-            }, { passive: true });
-            pubTickerWrapper.addEventListener('wheel', (e) => {
-                pauseTickerTemporarilyAfterWheel();
-                e.stopPropagation();
-            }, { passive: true });
-        }
-
-        pubTickerWrapper.addEventListener('focusin', () => setHoverPause(true));
-        pubTickerWrapper.addEventListener('focusout', (e) => {
-            if (!pubTickerWrapper.contains(e.relatedTarget)) setHoverPause(false);
-        });
-
-        // Mobile: touch pause/resume for horizontal carousel
-        let touchMoved = false;
-        const beginInteraction = () => {
-            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
-            if (!mobileMediaQuery.matches) return;
-            touchMoved = false;
-            beginMobileUserInteraction();
-        };
-        const endInteraction = () => {
-            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
-            if (!mobileMediaQuery.matches) return;
-            const delay = touchMoved ? 2500 : 3000;
-            endMobileUserInteraction(delay);
-        };
-        const cancelInteraction = () => {
-            if (!MOBILE_AUTO_SCROLL_ENABLED) return;
-            if (!mobileMediaQuery.matches) return;
-            endMobileUserInteraction(1800);
-        };
-
-        pubTickerWrapper.addEventListener('touchstart', beginInteraction, { passive: true });
-
-        pubTickerWrapper.addEventListener('touchmove', () => {
-            if (!mobileMediaQuery.matches) return;
-            touchMoved = true;
-            beginMobileUserInteraction();
-        }, { passive: true });
-
-        pubTickerWrapper.addEventListener('touchend', endInteraction, { passive: true });
-
-        pubTickerWrapper.addEventListener('touchcancel', cancelInteraction, { passive: true });
-
-        // Pointer-based gesture support (mobile/tablet touch + pen)
-        pubTickerWrapper.addEventListener('pointerdown', (event) => {
-            if (!mobileMediaQuery.matches) return;
-            if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-            touchMoved = false;
-            beginMobileUserInteraction();
-        }, { passive: true });
-
-        pubTickerWrapper.addEventListener('pointermove', (event) => {
-            if (!mobileMediaQuery.matches) return;
-            if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-            touchMoved = true;
-            beginMobileUserInteraction();
-        }, { passive: true });
-
-        pubTickerWrapper.addEventListener('pointerup', () => {
-            if (!mobileMediaQuery.matches) return;
-            endInteraction();
-        }, { passive: true });
-
-        pubTickerWrapper.addEventListener('pointercancel', () => {
-            if (!mobileMediaQuery.matches) return;
-            cancelInteraction();
-        }, { passive: true });
-
-        // Mobile: pause 4s when tapping interactive elements (Paper link, etc.)
-        pubTickerWrapper.addEventListener('click', (e) => {
-            if (!mobileMediaQuery.matches || !MOBILE_AUTO_SCROLL_ENABLED) return;
-            if (e.target.closest('.pub-link')) {
-                pauseMobileScrollTemporarily(4000);
-            }
-        });
-    }
-
-    // Resize: detect mobile<->desktop transitions
-    window.addEventListener('resize', () => {
-        const wasMobile = isMobileTicker;
-        isMobileTicker = mobileMediaQuery.matches;
-        if (wasMobile !== isMobileTicker) {
-            if (!isMobileTicker) stopMobileHorizontalScroll();
-            if (pubTickerRaf) cancelAnimationFrame(pubTickerRaf);
-            pubTickerRaf = requestAnimationFrame(() => {
-                applyPublicationFilter(activePubFilter);
-                pubTickerRaf = null;
-            });
-            return;
-        }
-        if (pubTickerRaf) return;
-        if (activePubFilter) {
-            pubTickerRaf = requestAnimationFrame(() => {
-                applyPublicationFilter(activePubFilter);
-                pubTickerRaf = null;
-            });
-        }
-    });
-
-    // One-shot: reinitialize ticker when publication section first enters viewport
-    if (pubTickerWrapper) {
-        const tickerVisObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    tickerVisObs.disconnect();
-                    requestAnimationFrame(() => applyPublicationFilter(activePubFilter));
-                }
-            });
-        }, { threshold: 0.1 });
-        tickerVisObs.observe(pubTickerWrapper);
-
-        // Persistent: mobile auto-scroll pause when out of viewport
-        const mobileTickerVisObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => {
-                if (mobileMediaQuery.matches) {
-                    mobileScrollOutOfView = !e.isIntersecting;
-                    if (e.isIntersecting) {
-                        if (mobileScrollResumeTimer) { clearTimeout(mobileScrollResumeTimer); mobileScrollResumeTimer = null; }
-                        mobileScrollPaused = false;
-                    }
-                }
-            });
-        }, { threshold: 0.05 });
-        mobileTickerVisObs.observe(pubTickerWrapper);
-    }
 
     // === DIFFUSION DENOISING EFFECT ===
     (function() {
