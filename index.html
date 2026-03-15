@@ -72,7 +72,8 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
+            background: linear-gradient(160deg, #FAFAF9 0%, #F0F0EE 30%, #EDE9E3 60%, #F5F3F0 100%);
+            background-attachment: fixed;
             color: var(--text-primary);
             line-height: 1.75;
             font-size: 18px;
@@ -83,8 +84,9 @@
         body::before {
             content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
             background:
-                radial-gradient(ellipse 80% 50% at 20% 10%, rgba(37,99,235,0.03) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124,58,237,0.02) 0%, transparent 55%);
+                radial-gradient(ellipse 70% 50% at 15% 5%, rgba(37,99,235,0.06) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 40% at 85% 20%, rgba(180,83,9,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 50% at 50% 80%, rgba(124,58,237,0.04) 0%, transparent 55%);
         }
         a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--accent-hover); }
@@ -208,7 +210,7 @@
         }
         .hero-photo-wrap { position: relative; cursor: pointer; }
         .hero-photo {
-            width: 200px; height: 250px; border-radius: var(--radius);
+            width: 280px; height: 350px; border-radius: var(--radius);
             object-fit: cover; object-position: center top;
             display: block; box-shadow: var(--shadow-lg); border: 3px solid var(--bg-card);
         }
@@ -907,7 +909,7 @@
             .hero { padding: 6rem 1.25rem 2.5rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
             .hero-photo-wrap { display: inline-block; margin: 0 auto; }
-            .hero-photo { width: 160px; height: 200px; }
+            .hero-photo { width: 200px; height: 250px; }
             .hero-content h1 { font-size: 2.35rem; }
             .hero-subtitle { font-size: 1rem; }
             .hero-bio { max-width: 100%; font-size: 0.97rem; line-height: 1.7; }
