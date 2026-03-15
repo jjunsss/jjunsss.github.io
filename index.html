@@ -343,13 +343,33 @@
             border-radius: inherit;
         }
         .hero-content {
+            position: relative;
+            overflow: hidden;
             padding: clamp(1.6rem, 4vw, 2.4rem);
             border-radius: 32px;
-            border: 1px solid rgba(23, 35, 52, 0.08);
-            background: linear-gradient(160deg, rgba(255, 253, 248, 0.9), rgba(255, 248, 241, 0.76));
-            box-shadow: var(--shadow-lg);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(var(--accent-rgb), 0.22);
+            background:
+                radial-gradient(circle at 85% 18%, rgba(var(--gold-rgb), 0.14), transparent 26%),
+                radial-gradient(circle at 12% 92%, rgba(var(--accent-rgb), 0.18), transparent 32%),
+                linear-gradient(180deg, rgba(15, 19, 32, 0.95), rgba(8, 11, 20, 0.9));
+            box-shadow:
+                0 28px 72px rgba(0, 0, 0, 0.42),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+        .hero-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.04), transparent 34%),
+                linear-gradient(315deg, rgba(var(--accent-rgb), 0.08), transparent 36%);
+            pointer-events: none;
+        }
+        .hero-content > * {
+            position: relative;
+            z-index: 1;
         }
         .hero-kicker {
             display: inline-flex;
@@ -375,11 +395,13 @@
             letter-spacing: -0.05em;
             line-height: 0.98;
             margin-bottom: 0.85rem;
+            color: #F8FAFC;
+            text-shadow: 0 10px 28px rgba(var(--accent-rgb), 0.18);
             text-wrap: balance;
         }
         .hero-subtitle {
             font-size: 1.2rem;
-            color: var(--text-primary);
+            color: #F3F4F6;
             font-weight: 650;
             margin-bottom: 1.15rem;
             line-height: 1.55;
@@ -397,9 +419,9 @@
             align-items: center;
             padding: 0.42rem 0.9rem;
             border-radius: 999px;
-            border: 1px solid rgba(var(--accent-rgb), 0.16);
-            background: rgba(var(--accent-rgb), 0.06);
-            color: var(--accent);
+            border: 1px solid rgba(var(--accent-rgb), 0.28);
+            background: rgba(var(--accent-rgb), 0.14);
+            color: #A5B4FC;
             font-size: 0.88rem;
             font-weight: 650;
             line-height: 1.2;
@@ -410,12 +432,16 @@
             gap: 0.9rem;
         }
         .hero-bio {
-            color: var(--bio-color);
+            color: #D0D7E3;
             font-size: 1rem;
             line-height: 1.82;
             max-width: none;
             margin-bottom: 0;
             text-wrap: pretty;
+        }
+        .hero-bio strong {
+            color: #F6D28B;
+            font-weight: 700;
         }
         .hero-note-grid {
             display: grid;
@@ -426,13 +452,14 @@
         .hero-note {
             padding: 0.95rem 1rem;
             border-radius: 20px;
-            border: 1px solid rgba(23, 35, 52, 0.08);
-            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(var(--accent-rgb), 0.16);
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.72), rgba(11, 16, 28, 0.82));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
         .hero-note-label {
             display: block;
             margin-bottom: 0.25rem;
-            color: var(--accent);
+            color: #A5B4FC;
             font-size: 0.73rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
@@ -440,7 +467,7 @@
         }
         .hero-note strong {
             display: block;
-            color: var(--text-primary);
+            color: #F8FAFC;
             font-size: 0.97rem;
             font-weight: 700;
             line-height: 1.55;
@@ -515,9 +542,9 @@
             box-shadow: 0 10px 20px rgba(var(--accent-rgb), 0.2);
         }
         .hero-bio a {
-            color: var(--accent);
+            color: #A5B4FC;
             font-weight: 700;
-            text-decoration-color: rgba(var(--accent-rgb), 0.35);
+            text-decoration-color: rgba(var(--accent-rgb), 0.48);
             text-underline-offset: 2px;
         }
         .hero-bio a:hover { text-decoration-color: var(--accent); }
@@ -571,14 +598,17 @@
             display: inline-flex; align-items: center; gap: 0.42rem;
             padding: 0.58rem 1rem; border-radius: 999px; font-size: 0.91rem; font-weight: 700;
             text-decoration: none; transition: var(--transition);
-            border: 1px solid rgba(23, 35, 52, 0.1);
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.74);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.26);
+            color: #E5E7EB;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
         .hero-link:hover {
-            border-color: rgba(var(--accent-rgb), 0.28); color: var(--accent);
-            box-shadow: 0 12px 24px rgba(var(--accent-rgb), 0.12);
+            border-color: rgba(var(--accent-rgb), 0.38); color: #C7D2FE;
+            background: rgba(var(--accent-rgb), 0.14);
+            box-shadow: 0 12px 24px rgba(var(--accent-rgb), 0.16);
             transform: translateY(-2px);
         }
         .hero-link.primary {
