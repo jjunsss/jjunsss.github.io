@@ -222,12 +222,13 @@
         }
         .hero-grid {
             display: grid; grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-            gap: clamp(2rem, 4vw, 4rem); align-items: stretch;
+            gap: clamp(2rem, 4vw, 4rem); align-items: start;
         }
         .hero-visual {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            gap: 0.95rem;
         }
         .hero-photo-card {
             position: relative;
@@ -442,12 +443,12 @@
         .hero-prose {
             display: flex;
             flex-direction: column;
-            gap: 0.9rem;
+            gap: 0.75rem;
         }
         .hero-bio {
             color: #D0D7E3;
-            font-size: 1rem;
-            line-height: 1.82;
+            font-size: 0.98rem;
+            line-height: 1.74;
             max-width: none;
             margin-bottom: 0;
             text-wrap: pretty;
@@ -626,6 +627,25 @@
             border-color: var(--accent-hover);
         }
         .hero-link i { font-size: 0.88rem; }
+        .hero-visual .hero-note-grid,
+        .hero-visual .hero-links {
+            width: min(100%, 340px);
+        }
+        .hero-visual .hero-note-grid {
+            margin-top: 0;
+        }
+        .hero-visual .hero-links {
+            margin-top: 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+        }
+        .hero-visual .hero-link {
+            justify-content: center;
+            min-width: 0;
+            padding-inline: 0.75rem;
+            font-size: 0.84rem;
+        }
 
         /* === NEWS === */
         .news-bar { max-width: 1120px; margin: 0 auto 3rem; padding: 0 2rem; }
@@ -1117,6 +1137,9 @@
             .hero-note-grid { grid-template-columns: 1fr; gap: 0.65rem; margin-top: 1.2rem; }
             .hero-links { justify-content: flex-start; }
             .hero-link { padding: 0.5rem 0.9rem; font-size: 0.88rem; }
+            .hero-visual .hero-note-grid,
+            .hero-visual .hero-links { width: 100%; }
+            .hero-visual .hero-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .two-col { grid-template-columns: 1fr; gap: 2rem; }
             .nav-links {
                 display: none; position: absolute; top: 60px; left: 0; right: 0;
@@ -1210,6 +1233,7 @@
             .hero-subtitle { font-size: 0.96rem; }
             .hero-pill { font-size: 0.76rem; }
             .hero-link { padding: 0.42rem 0.72rem; font-size: 0.82rem; }
+            .hero-visual .hero-links { grid-template-columns: 1fr 1fr; }
             .section { padding: 1.45rem 1rem; }
             .closing-quote { padding: 0 1rem; }
             .closing-quote-card { padding: 1.05rem 0.95rem 1rem; }
@@ -1276,31 +1300,6 @@
                         <p>Presenting diffusion-based replay research for class-incremental object detection.</p>
                     </div>
                 </div>
-                <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
-            </div>
-            <div class="hero-content">
-                <span class="hero-kicker reveal reveal-delay-1">AI Researcher at UNIST AIGS</span>
-                <h1 class="reveal reveal-delay-1">Junsu Kim</h1>
-                <p class="hero-subtitle reveal reveal-delay-2">Combined MS-PhD student building open-world perception systems across computer vision, continual learning, and foundation models.</p>
-                <div class="hero-highlights reveal reveal-delay-2">
-                    <span class="hero-pill">Continual Learning</span>
-                    <span class="hero-pill">Open-world Detection</span>
-                    <span class="hero-pill">Vision-Language Models</span>
-                    <span class="hero-pill">Diffusion Models</span>
-                </div>
-                <div class="hero-prose reveal reveal-delay-3">
-                    <p class="hero-bio">
-                        I started my AI journey in 2023 and am currently a Combined MS/PhD student in the AI Graduate School (AIGS) at UNIST, advised by
-                        <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>.
-                    </p>
-                    <p class="hero-bio">
-                        My research focuses on continual learning, open-world object detection, and vision-language models, with growing interest in robotics and diffusion-based foundation models.
-                    </p>
-                    <p class="hero-bio">
-                        Previously, I interned at <strong>NAVER AI Lab</strong>, mentored by
-                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, and served as an <strong>NVIDIA DLI Ambassador</strong>.
-                    </p>
-                </div>
                 <div class="hero-note-grid reveal reveal-delay-3">
                     <div class="hero-note">
                         <span class="hero-note-label">Advisor</span>
@@ -1318,6 +1317,28 @@
                     <a href="http://www.linkedin.com/in/jjunsss-84b39122b" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
                     <a href="https://blog.naver.com/jjunsss" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fas fa-pen-nib"></i> Blog</a>
                     <a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer" class="hero-link shimmer-btn"><i class="fas fa-file-alt"></i> CV</a>
+                </div>
+                <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
+            </div>
+            <div class="hero-content">
+                <span class="hero-kicker reveal reveal-delay-1">AI Researcher at UNIST AIGS</span>
+                <h1 class="reveal reveal-delay-1">Junsu Kim</h1>
+                <p class="hero-subtitle reveal reveal-delay-2">Combined MS-PhD student building open-world perception systems across computer vision, continual learning, and foundation models.</p>
+                <div class="hero-highlights reveal reveal-delay-2">
+                    <span class="hero-pill">Continual Learning</span>
+                    <span class="hero-pill">Open-world Detection</span>
+                    <span class="hero-pill">Vision-Language Models</span>
+                    <span class="hero-pill">Diffusion Models</span>
+                </div>
+                <div class="hero-prose reveal reveal-delay-3">
+                    <p class="hero-bio">
+                        I am a Combined MS/PhD student at UNIST AIGS, advised by
+                        <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>, working on continual learning, open-world detection, and vision-language systems.
+                    </p>
+                    <p class="hero-bio">
+                        Previously, I interned at <strong>NAVER AI Lab</strong> with
+                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a> and served as an <strong>NVIDIA DLI Ambassador</strong>, with growing interest in robotics and diffusion-based foundation models.
+                    </p>
                 </div>
             </div>
         </div>
