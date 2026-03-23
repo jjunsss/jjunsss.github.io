@@ -198,23 +198,7 @@
         /* === HERO === */
         .hero-wrapper { position: relative; overflow: hidden; }
 
-        .hero-bg {
-            position: absolute; inset: 0;
-            background: var(--gradient-hero); background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
-        }
-        .hero-bg::before {
-            content: ''; position: absolute; inset: 0;
-            opacity: var(--hero-pattern-opacity);
-            background-image: radial-gradient(circle at 1px 1px, var(--text-muted) 0.5px, transparent 0);
-            background-size: 32px 32px;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 100% 0%; }
-            50% { background-position: 100% 100%; }
-            75% { background-position: 0% 100%; }
-        }
+        .hero-bg { display: none; }
 
         .hero {
             position: relative; padding: 7.5rem 2rem 4rem;
