@@ -118,7 +118,9 @@
         a:hover { color: var(--accent-hover); }
         a:focus-visible,
         button:focus-visible,
-        .pub-summary-trigger:focus-visible {
+        .pub-summary-trigger:focus-visible,
+        .project-link:focus-visible,
+        .project-media:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
             border-radius: 4px;
@@ -1306,6 +1308,125 @@
         }
         .pub-summary-trigger i { font-size: 0.7rem; }
 
+        /* === PROJECTS === */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F7FBFC 100%);
+            border: 1px solid rgba(83, 118, 136, 0.16);
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 24px rgba(37, 52, 68, 0.05);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+            border-color: var(--surface-border-strong);
+        }
+        .project-media {
+            display: block;
+            position: relative;
+            aspect-ratio: 1.91 / 1;
+            background:
+                linear-gradient(135deg, rgba(var(--teal-rgb), 0.13), rgba(var(--accent-rgb), 0.08)),
+                #F9FBFC;
+            overflow: hidden;
+            text-decoration: none;
+        }
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform var(--transition-slow), opacity var(--transition);
+        }
+        .project-card:hover .project-media img {
+            transform: scale(1.025);
+        }
+        .project-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.62rem;
+            flex: 1;
+            padding: 1rem 1.05rem 1.08rem;
+            min-width: 0;
+        }
+        .project-kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            font-weight: 650;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--venue-top);
+        }
+        .project-title {
+            font-size: 1.18rem;
+            line-height: 1.22;
+            margin: 0;
+            color: var(--text-primary);
+            overflow-wrap: anywhere;
+        }
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+            line-height: 1.56;
+            margin: 0;
+            text-wrap: pretty;
+        }
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.34rem;
+            margin-top: auto;
+        }
+        .project-tags span {
+            display: inline-flex;
+            align-items: center;
+            min-height: 1.65rem;
+            padding: 0.22rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(var(--accent-rgb), 0.08);
+            border: 1px solid rgba(var(--accent-rgb), 0.12);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .project-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+            margin-top: 0.15rem;
+        }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.28rem;
+            min-height: 2.15rem;
+            padding: 0.34rem 0.72rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.98);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.2;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .project-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
         .pub-summary-popup {
             position: fixed;
             top: 0;
@@ -1742,6 +1863,11 @@
             .pub-authors { font-size: 0.92rem; line-height: 1.52; }
             .pub-link { font-size: 0.86rem; }
             .pub-filter-btn { padding: 0.38rem 0.86rem; font-size: 0.93rem; }
+            .project-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+            .project-body { padding: 0.92rem 0.95rem 1rem; }
+            .project-title { font-size: 1.08rem; }
+            .project-desc { font-size: 0.92rem; line-height: 1.52; }
+            .project-link { min-height: 42px; font-size: 0.86rem; }
             .hero-link,
             .hero-band-button,
             .pub-link,
@@ -1817,6 +1943,8 @@
             }
             .hero-link,
             .pub-card,
+            .project-card,
+            .project-media img,
             .gallery-item,
             .gallery-item img,
             .gallery-caption,
@@ -1827,6 +1955,8 @@
             }
             .hero-link:hover,
             .pub-card:hover,
+            .project-card:hover,
+            .project-card:hover .project-media img,
             .gallery-item:hover,
             .gallery-item:hover img,
             .activity-card:hover,
@@ -1860,6 +1990,7 @@
             <ul class="nav-links" id="primary-nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#publications">Publications</a></li>
+                <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#awards">Awards</a></li>
                 <li><a href="#activities">Activities</a></li>
@@ -2324,6 +2455,72 @@
             </div>
 
         </div>
+    </div>
+</section>
+
+<!-- === PROJECTS === -->
+<section class="section" id="projects">
+    <div class="section-header reveal">
+        <h2>Projects</h2>
+        <div class="section-line"></div>
+    </div>
+    <div class="project-grid reveal">
+        <article class="project-card">
+            <a class="project-media" href="https://github.com/sparkorbit/sparkorbit" target="_blank" rel="noopener noreferrer" aria-label="Open SparkOrbit on GitHub">
+                <img src="images/projects/sparkorbit.png" alt="SparkOrbit project preview" loading="lazy" decoding="async">
+            </a>
+            <div class="project-body">
+                <div class="project-kicker">AI dashboard</div>
+                <h3 class="project-title">SparkOrbit</h3>
+                <p class="project-desc">AI orbit monitor for papers, models, benchmarks, and company news in one dashboard, with 40+ sources and local LLM summaries.</p>
+                <div class="project-tags" aria-label="SparkOrbit project tags">
+                    <span>AI monitor</span>
+                    <span>Dashboard</span>
+                    <span>Local LLM</span>
+                </div>
+                <div class="project-actions">
+                    <a class="project-link shimmer-btn" href="https://github.com/sparkorbit/sparkorbit" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <a class="project-media" href="https://github.com/jjunsss/MOMO" target="_blank" rel="noopener noreferrer" aria-label="Open MOMO on GitHub">
+                <img src="images/projects/momo.png" alt="MOMO project preview" loading="lazy" decoding="async">
+            </a>
+            <div class="project-body">
+                <div class="project-kicker">Meeting intelligence</div>
+                <h3 class="project-title">MOMO</h3>
+                <p class="project-desc">A local-first pipeline that turns long Zoom recordings into Markdown meeting recaps, keeping a separate evidence file for every claim.</p>
+                <div class="project-tags" aria-label="MOMO project tags">
+                    <span>Python</span>
+                    <span>Whisper</span>
+                    <span>Ollama</span>
+                </div>
+                <div class="project-actions">
+                    <a class="project-link shimmer-btn" href="https://github.com/jjunsss/MOMO" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <a class="project-media" href="https://github.com/jjunsss/LOOP-STATION" target="_blank" rel="noopener noreferrer" aria-label="Open LOOP-STATION on GitHub">
+                <img src="images/projects/loop-station.png" alt="LOOP-STATION project preview" loading="lazy" decoding="async">
+            </a>
+            <div class="project-body">
+                <div class="project-kicker">Agent workflow</div>
+                <h3 class="project-title">LOOP-STATION</h3>
+                <p class="project-desc">A Codex skill for bounded goal loops, multi-agent review, adaptive sessions, and implementation variants that stay controlled.</p>
+                <div class="project-tags" aria-label="LOOP-STATION project tags">
+                    <span>Codex skill</span>
+                    <span>Multi-agent</span>
+                    <span>Review loop</span>
+                </div>
+                <div class="project-actions">
+                    <a class="project-link shimmer-btn" href="https://github.com/jjunsss/LOOP-STATION" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </article>
     </div>
 </section>
 
