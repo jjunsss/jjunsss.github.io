@@ -1240,6 +1240,12 @@
         }
         .pub-highlight-label { display: none; grid-area: highlight; }
 
+        .pub-meta,
+        .pub-title,
+        .pub-authors,
+        .pub-links {
+            min-width: 0;
+        }
         .pub-meta { grid-area: meta; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.15rem; flex-wrap: wrap; }
         .pub-venue {
             font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; font-weight: 550;
@@ -1254,13 +1260,14 @@
         .pub-highlight-badge { display: none; }
         .pub-title {
             grid-area: title;
-            font-weight: 650; font-size: 1.16rem; line-height: 1.36;
+            font-weight: 650; font-size: 1.08rem; line-height: 1.38;
             margin-bottom: 0.3rem; color: var(--text-primary);
             display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            overflow-wrap: anywhere;
+            text-wrap: pretty;
         }
         .pub-authors {
             grid-area: authors;
