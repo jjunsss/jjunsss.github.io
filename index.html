@@ -543,16 +543,6 @@
         .diffusion-hint.visible { opacity: 1; }
         .diffusion-hint:hover { color: var(--accent); }
 
-        /* Gallery diffusion canvas */
-        .gallery-item { position: relative; }
-        .gallery-diffusion {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 3;
-            border-radius: inherit;
-        }
         .hero-content {
             position: relative;
             overflow: visible;
@@ -2676,39 +2666,32 @@
         <div class="section-line"></div>
     </div>
     <div class="gallery-grid reveal">
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/cvpr2024.jpg" alt="CVPR 2024">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">CVPR 2024 &middot; Highlight Poster</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/cvpr2024-workshop.jpg" alt="CVPR 2024 Workshop">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">CVPR 2024 &middot; Workshop</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/BMVC2025.png" alt="BMVC 2025">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">BMVC 2025</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/ICCV2025.png" alt="ICCV 2025">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">ICCV 2025 &middot; Workshop</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/kccv2024.jpg" alt="KCCV 2024">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">KCCV 2024 &middot; Poster</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/symposium2024.png" alt="Innovation Symposium 2024">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">Digital Innovators Symposium 2024</div>
         </div>
-        <div class="gallery-item" data-diffuse>
+        <div class="gallery-item">
             <img src="images/ICASSP2024.jpg" alt="ICASSP 2024">
-            <canvas class="gallery-diffusion"></canvas>
             <div class="gallery-caption">ICASSP 2024 &middot; Seoul</div>
         </div>
     </div>
@@ -3225,189 +3208,6 @@
                 scheduleHintReveal();
             }
         });
-    })();
-
-    // === GALLERY DIFFUSION EFFECT ===
-    (function() {
-        const galleryItems = Array.from(document.querySelectorAll('[data-diffuse]'));
-        if (!galleryItems.length) return;
-
-        function gaussRand() {
-            return (Math.random() - 0.5) * 2;
-        }
-
-        function getNoiseTint() {
-            return { r: 129, g: 140, b: 248, mix: 0.12 };
-        }
-
-        function drawGalleryNoise(ctx, w, h, intensity) {
-            const imgData = ctx.createImageData(w, h);
-            const data = imgData.data;
-            const tint = getNoiseTint();
-            const blockSize = intensity > 0.5 ? 3 : intensity > 0.25 ? 2 : 1;
-
-            for (let y = 0; y < h; y += blockSize) {
-                for (let x = 0; x < w; x += blockSize) {
-                    const variance = intensity * 128;
-                    const val = Math.max(0, Math.min(255, 128 + gaussRand() * variance));
-                    const r = val * (1 - tint.mix) + tint.r * tint.mix;
-                    const g = val * (1 - tint.mix) + tint.g * tint.mix;
-                    const b = val * (1 - tint.mix) + tint.b * tint.mix;
-                    for (let dy = 0; dy < blockSize && (y+dy) < h; dy++) {
-                        for (let dx = 0; dx < blockSize && (x+dx) < w; dx++) {
-                            const idx = ((y+dy)*w + (x+dx)) * 4;
-                            data[idx]=r; data[idx+1]=g; data[idx+2]=b; data[idx+3]=255;
-                        }
-                    }
-                }
-            }
-            ctx.putImageData(imgData, 0, 0);
-        }
-
-        function sizeGalleryCanvas(item, canvas, ctx) {
-            const dpr = getRenderScale(0.72);
-            const w = item.offsetWidth || 280;
-            const h = item.offsetHeight || 210;
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            canvas.width = Math.max(1, Math.round(w * dpr));
-            canvas.height = Math.max(1, Math.round(h * dpr));
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            return { width: canvas.width, height: canvas.height };
-        }
-
-        function primeGalleryItem(item) {
-            const canvas = item.querySelector('.gallery-diffusion');
-            if (!canvas) return null;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) return null;
-            const size = sizeGalleryCanvas(item, canvas, ctx);
-            canvas.style.opacity = 1;
-            drawGalleryNoise(ctx, size.width, size.height, 1.0);
-            return { canvas, ctx, size };
-        }
-
-        if (motionReduced()) {
-            document.querySelectorAll('.gallery-diffusion').forEach(canvas => {
-                canvas.style.opacity = 0;
-            });
-            return;
-        }
-
-        function animateGalleryItem(item, onComplete = () => {}) {
-            if (item.dataset.diffusePlayed === '1') {
-                onComplete();
-                return;
-            }
-            item.dataset.diffusePlayed = '1';
-            const primed = primeGalleryItem(item);
-            if (!primed) {
-                onComplete();
-                return;
-            }
-            const { canvas, ctx } = primed;
-
-            const duration = 700;
-            let start = null;
-
-            function tick(ts) {
-                if (!start) start = ts;
-                const progress = Math.min((ts - start) / duration, 1);
-                const eased = progress < 0.5
-                    ? 2 * progress * progress
-                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-                const intensity = 1.0 - eased;
-                const opacity = progress > 0.65 ? 1.0 - ((progress - 0.65) / 0.35) : 1.0;
-
-                canvas.style.opacity = opacity;
-                drawGalleryNoise(ctx, canvas.width, canvas.height, intensity);
-
-                if (progress < 1) {
-                    item._galleryAnim = requestAnimationFrame(tick);
-                } else {
-                    canvas.style.opacity = 0;
-                    item._galleryAnim = null;
-                    onComplete();
-                }
-            }
-
-            canvas.style.opacity = 1;
-            item._galleryAnim = requestAnimationFrame(tick);
-        }
-
-        const galleryQueue = [];
-        let galleryActiveCount = 0;
-        let galleryScrollIdle = true;
-        let galleryScrollTimer = null;
-
-        const runWhenIdle = (cb) => {
-            if (typeof window.requestIdleCallback === 'function') {
-                window.requestIdleCallback(cb, { timeout: 500 });
-            } else {
-                window.setTimeout(cb, 80);
-            }
-        };
-
-        function isGalleryItemNearViewport(item) {
-            const rect = item.getBoundingClientRect();
-            return rect.bottom > -80 && rect.top < window.innerHeight + 80;
-        }
-
-        function drainGalleryQueue() {
-            if (!galleryScrollIdle || galleryActiveCount > 0 || galleryQueue.length === 0) return;
-            const item = galleryQueue.shift();
-            if (!item || item.dataset.diffusePlayed === '1') {
-                drainGalleryQueue();
-                return;
-            }
-            galleryActiveCount += 1;
-            runWhenIdle(() => {
-                if (!galleryScrollIdle) {
-                    galleryActiveCount -= 1;
-                    galleryQueue.unshift(item);
-                    window.setTimeout(drainGalleryQueue, 170);
-                    return;
-                }
-                if (!isGalleryItemNearViewport(item)) {
-                    galleryActiveCount -= 1;
-                    delete item.dataset.diffuseQueued;
-                    galleryObserver.observe(item);
-                    window.setTimeout(drainGalleryQueue, 90);
-                    return;
-                }
-                animateGalleryItem(item, () => {
-                    delete item.dataset.diffuseQueued;
-                    galleryActiveCount -= 1;
-                    window.setTimeout(drainGalleryQueue, 90);
-                });
-            });
-        }
-
-        function enqueueGalleryItem(item) {
-            if (!item || item.dataset.diffuseQueued === '1' || item.dataset.diffusePlayed === '1') return;
-            item.dataset.diffuseQueued = '1';
-            galleryQueue.push(item);
-            drainGalleryQueue();
-        }
-
-        window.addEventListener('scroll', () => {
-            galleryScrollIdle = false;
-            clearTimeout(galleryScrollTimer);
-            galleryScrollTimer = window.setTimeout(() => {
-                galleryScrollIdle = true;
-                drainGalleryQueue();
-            }, 170);
-        }, { passive: true });
-
-        const galleryObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    enqueueGalleryItem(entry.target);
-                    galleryObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.16, rootMargin: '80px 0px' });
-
-        galleryItems.forEach(item => galleryObserver.observe(item));
     })();
 
 </script>
