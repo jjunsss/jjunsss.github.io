@@ -8,6 +8,13 @@
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
+    const reducedMotionQuery = typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-reduced-motion: reduce)')
+        : { matches: false, addEventListener: null };
+    const motionReduced = () => Boolean(reducedMotionQuery.matches);
+    const FRAME_INTERVAL = 48; // ~21fps is enough for slow ambient motion.
+    const SCROLL_IDLE_DELAY = 180;
+
     // Warm palette for blobs (cream, peach, terracotta, honey).
     const BLOB_PALETTE = [
         { r: 252, g: 215, b: 181 }, // soft peach
@@ -24,6 +31,8 @@
     let dpr = 1;
     let width = 0;
     let height = 0;
+    let scrollTimer = null;
+    let scrollPaused = false;
 
     function rand(min, max) { return min + Math.random() * (max - min); }
 
@@ -57,7 +66,9 @@
     }
 
     function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const isMobile = window.innerWidth <= 768;
+        const dprCap = isMobile ? 1.1 : 1.35;
+        dpr = Math.min(window.devicePixelRatio || 1, dprCap);
         width = window.innerWidth;
         height = window.innerHeight;
         canvas.width = Math.floor(width * dpr);
@@ -85,8 +96,13 @@
     }
 
     function step(now) {
-        // Cap to ~30fps — the motion is intentionally slow.
-        if (now - lastFrameTime < 33) {
+        if (scrollPaused || motionReduced()) {
+            animId = null;
+            drawStatic();
+            return;
+        }
+
+        if (now - lastFrameTime < FRAME_INTERVAL) {
             animId = requestAnimationFrame(step);
             return;
         }
@@ -123,6 +139,11 @@
     }
 
     function start() {
+        if (document.hidden || scrollPaused || motionReduced()) {
+            drawStatic();
+            return;
+        }
+        if (animId) return;
         cancelAnimationFrame(animId);
         lastFrameTime = performance.now();
         animId = requestAnimationFrame(step);
@@ -133,24 +154,51 @@
         animId = null;
     }
 
+    function pauseForScroll() {
+        if (motionReduced() || document.hidden) return;
+        if (!scrollPaused) {
+            scrollPaused = true;
+            stop();
+            drawStatic();
+        }
+        clearTimeout(scrollTimer);
+        scrollTimer = window.setTimeout(() => {
+            scrollPaused = false;
+            scrollTimer = null;
+            start();
+        }, SCROLL_IDLE_DELAY);
+    }
+
     let resizeTimer = null;
     function onResize() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             resize();
             createBlobs();
+            drawStatic();
+            start();
         }, 120);
     }
 
     resize();
     createBlobs();
-    start();
+    if (motionReduced()) drawStatic();
+    else start();
 
     window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('scroll', pauseForScroll, { passive: true });
 
     // Pause when tab hidden to save CPU; resume on focus.
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) stop();
         else start();
     });
+
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+        reducedMotionQuery.addEventListener('change', () => {
+            stop();
+            drawStatic();
+            start();
+        });
+    }
 })();

@@ -2136,9 +2136,19 @@
 
         let started = false;
         let startTime = null;
+        let obs = null;
+        const cleanupCitationWatchers = () => {
+            if (obs) {
+                obs.disconnect();
+                obs = null;
+            }
+            window.removeEventListener('scroll', maybeRun);
+            window.removeEventListener('resize', maybeRun);
+        };
         const run = () => {
             if (started) return;
             started = true;
+            cleanupCitationWatchers();
             citationStat.classList.add('counting');
             const countDuration = 1680;
             let lastValue = 0;
@@ -2168,21 +2178,24 @@
             requestAnimationFrame(step);
         };
 
+        let citationFrameId = null;
         const maybeRun = () => {
+            if (citationFrameId !== null) return;
+            citationFrameId = requestAnimationFrame(() => {
+                citationFrameId = null;
+                maybeRunNow();
+            });
+        };
+        const maybeRunNow = () => {
             const rect = citationStat.getBoundingClientRect();
             const visibleEnough = rect.top < window.innerHeight * 0.86 && rect.bottom > window.innerHeight * 0.16;
             if (visibleEnough) window.setTimeout(run, 140);
         };
 
         if ('IntersectionObserver' in window) {
-            const obs = new IntersectionObserver((entries) => {
+            obs = new IntersectionObserver((entries) => {
                 if (entries.some(entry => entry.isIntersecting)) {
                     maybeRun();
-                    if (started) {
-                        obs.disconnect();
-                        window.removeEventListener('scroll', maybeRun);
-                        window.removeEventListener('resize', maybeRun);
-                    }
                 }
             }, { threshold: 0.3, rootMargin: '0px 0px -8% 0px' });
             obs.observe(citationStat);
@@ -2222,7 +2235,7 @@
 
             <!-- B-RIGHT ??BMVC 2025 -->
             <div class="pub-card" data-venue="main" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/bright.png" alt="B-RIGHT figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/bright.png" alt="B-RIGHT figure" loading="lazy" decoding="async" width="513" height="380"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">BMVC 2025</span>
@@ -2236,7 +2249,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/bright.png" alt="B-RIGHT Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/bright.png" alt="B-RIGHT Figure" loading="lazy" decoding="async" width="513" height="380"></div>
                         <div class="pub-summary-text">A systematic re-evaluation of existing HOI benchmarks, revealing integrity issues and proposing new evaluation protocols for generalized human-object interaction testing.</div>
                     </div>
                 </div>
@@ -2244,7 +2257,7 @@
 
             <!-- FSCIL Synthetic ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/fscil-synthetic.png" alt="FSCIL Synthetic figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/fscil-synthetic.png" alt="FSCIL Synthetic figure" loading="lazy" decoding="async" width="560" height="336"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -2258,7 +2271,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/fscil-synthetic.png" alt="FSCIL Synthetic Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/fscil-synthetic.png" alt="FSCIL Synthetic Figure" loading="lazy" decoding="async" width="560" height="336"></div>
                         <div class="pub-summary-text">Investigates whether synthetic image generation can effectively address catastrophic forgetting in few-shot class-incremental learning, challenging common assumptions in the field.</div>
                     </div>
                 </div>
@@ -2266,7 +2279,7 @@
 
             <!-- RPE ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/rpe.png" alt="RPE figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/rpe.png" alt="RPE figure" loading="lazy" decoding="async" width="560" height="336"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -2281,7 +2294,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/rpe.png" alt="RPE Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/rpe.png" alt="RPE Figure" loading="lazy" decoding="async" width="560" height="336"></div>
                         <div class="pub-summary-text">Critically examines the reliability of reasoning-based pose estimation benchmarks, identifying systematic biases and proposing refined evaluation metrics.</div>
                     </div>
                 </div>
@@ -2289,7 +2302,7 @@
 
             <!-- Diffusion FSCIL ??ArXiv -->
             <div class="pub-card" data-venue="arxiv" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/diffusion-fscil.png" alt="Diffusion FSCIL figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/diffusion-fscil.png" alt="Diffusion FSCIL figure" loading="lazy" decoding="async" width="560" height="355"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2025</span>
@@ -2303,7 +2316,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/diffusion-fscil.png" alt="Diffusion FSCIL Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/diffusion-fscil.png" alt="Diffusion FSCIL Figure" loading="lazy" decoding="async" width="560" height="355"></div>
                         <div class="pub-summary-text">Bridges diffusion models with few-shot class incremental learning, leveraging generative priors to overcome data scarcity and catastrophic forgetting simultaneously.</div>
                     </div>
                 </div>
@@ -2311,7 +2324,7 @@
 
             <!-- SDDGR ??CVPR 2024 Highlight -->
             <div class="pub-card highlight" data-venue="main" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/sddgr.png" alt="SDDGR figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/sddgr.png" alt="SDDGR figure" loading="lazy" decoding="async" width="560" height="376"></div>
                 <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight &middot; Top 2.8%</div>
                 <div class="pub-meta">
                     <span class="pub-venue top">CVPR 2024</span>
@@ -2327,7 +2340,7 @@
                     </button>
                     <div class="pub-summary-popup">
                         <div class="pub-summary-img">
-                            <img src="images/papers/sddgr.png" alt="SDDGR Figure">
+                            <img src="images/papers/thumbs/sddgr.png" alt="SDDGR Figure" loading="lazy" decoding="async" width="560" height="376">
                         </div>
                         <div class="pub-summary-text">
                             Proposes using Stable Diffusion as a generative replay mechanism for class incremental object detection, effectively mitigating catastrophic forgetting while maintaining high-quality synthetic data generation.
@@ -2338,7 +2351,7 @@
 
             <!-- VLM-PL ??CVPR-W 2024 -->
             <div class="pub-card" data-venue="workshop" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/vlmpl.png" alt="VLM-PL figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/vlmpl.png" alt="VLM-PL figure" loading="lazy" decoding="async" width="560" height="348"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">CVPR-W 2024</span>
@@ -2352,7 +2365,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/vlmpl.png" alt="VLM-PL Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/vlmpl.png" alt="VLM-PL Figure" loading="lazy" decoding="async" width="560" height="348"></div>
                         <div class="pub-summary-text">Leverages vision-language models for advanced pseudo labeling in class incremental object detection, improving detection accuracy on novel classes without forgetting.</div>
                     </div>
                 </div>
@@ -2360,7 +2373,7 @@
 
             <!-- ICASSP 2024 -->
             <div class="pub-card" data-venue="main" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/icassp.png" alt="ICASSP figure" loading="lazy"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/icassp.png" alt="ICASSP figure" loading="lazy" decoding="async" width="560" height="343"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">ICASSP 2024</span>
@@ -2374,7 +2387,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/icassp.png" alt="ICASSP Figure"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/icassp.png" alt="ICASSP Figure" loading="lazy" decoding="async" width="560" height="343"></div>
                         <div class="pub-summary-text">Introduces a class-wise buffer management strategy for incremental object detection that optimizes exemplar selection and training to balance old and new class performance.</div>
                     </div>
                 </div>
@@ -2467,7 +2480,7 @@
     <div class="project-grid reveal">
         <article class="project-card">
             <a class="project-media" href="https://github.com/sparkorbit/sparkorbit" target="_blank" rel="noopener noreferrer" aria-label="Open SparkOrbit on GitHub">
-                <img src="images/projects/sparkorbit.png" alt="SparkOrbit project preview" loading="lazy" decoding="async">
+                <img src="images/projects/sparkorbit.png" alt="SparkOrbit project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
             <div class="project-body">
                 <div class="project-kicker">AI dashboard</div>
@@ -2486,7 +2499,7 @@
 
         <article class="project-card">
             <a class="project-media" href="https://github.com/jjunsss/MOMO" target="_blank" rel="noopener noreferrer" aria-label="Open MOMO on GitHub">
-                <img src="images/projects/momo.png" alt="MOMO project preview" loading="lazy" decoding="async">
+                <img src="images/projects/momo.png" alt="MOMO project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
             <div class="project-body">
                 <div class="project-kicker">Meeting intelligence</div>
@@ -2505,7 +2518,7 @@
 
         <article class="project-card">
             <a class="project-media" href="https://github.com/jjunsss/LOOP-STATION" target="_blank" rel="noopener noreferrer" aria-label="Open LOOP-STATION on GitHub">
-                <img src="images/projects/loop-station.png" alt="LOOP-STATION project preview" loading="lazy" decoding="async">
+                <img src="images/projects/loop-station.png" alt="LOOP-STATION project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
             <div class="project-body">
                 <div class="project-kicker">Agent workflow</div>
@@ -2752,8 +2765,13 @@
 
     // Navbar scroll
     const navbar = document.getElementById('navbar');
+    let navbarScrolled = false;
     const syncNavbarState = () => {
-        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 10);
+        if (!navbar) return;
+        const nextScrolled = window.scrollY > 10;
+        if (nextScrolled === navbarScrolled) return;
+        navbarScrolled = nextScrolled;
+        navbar.classList.toggle('scrolled', navbarScrolled);
     };
     window.addEventListener('scroll', createRafThrottle(syncNavbarState), { passive: true });
     syncNavbarState();
@@ -3066,7 +3084,7 @@
 
         function sizeCanvas() {
             const rect = canvas.getBoundingClientRect();
-            const dpr = getRenderScale(1.5);
+            const dpr = getRenderScale(0.85);
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             canvas.width = Math.max(1, Math.round(rect.width * dpr));
             canvas.height = Math.max(1, Math.round(rect.height * dpr));
@@ -3083,10 +3101,7 @@
         }
 
         function gaussRand() {
-            let u = 0, v = 0;
-            while (u === 0) u = Math.random();
-            while (v === 0) v = Math.random();
-            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            return (Math.random() - 0.5) * 2;
         }
 
         function drawNoise(intensity) {
@@ -3218,10 +3233,7 @@
         if (!galleryItems.length) return;
 
         function gaussRand() {
-            let u = 0, v = 0;
-            while (u === 0) u = Math.random();
-            while (v === 0) v = Math.random();
-            return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            return (Math.random() - 0.5) * 2;
         }
 
         function getNoiseTint() {
@@ -3253,7 +3265,7 @@
         }
 
         function sizeGalleryCanvas(item, canvas, ctx) {
-            const dpr = getRenderScale(1.2);
+            const dpr = getRenderScale(0.72);
             const w = item.offsetWidth || 280;
             const h = item.offsetHeight || 210;
             ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -3281,12 +3293,20 @@
             return;
         }
 
-        function animateGalleryItem(item) {
+        function animateGalleryItem(item, onComplete = () => {}) {
+            if (item.dataset.diffusePlayed === '1') {
+                onComplete();
+                return;
+            }
+            item.dataset.diffusePlayed = '1';
             const primed = primeGalleryItem(item);
-            if (!primed) return;
+            if (!primed) {
+                onComplete();
+                return;
+            }
             const { canvas, ctx } = primed;
 
-            const duration = 780;
+            const duration = 700;
             let start = null;
 
             function tick(ts) {
@@ -3306,6 +3326,7 @@
                 } else {
                     canvas.style.opacity = 0;
                     item._galleryAnim = null;
+                    onComplete();
                 }
             }
 
@@ -3313,20 +3334,80 @@
             item._galleryAnim = requestAnimationFrame(tick);
         }
 
+        const galleryQueue = [];
+        let galleryActiveCount = 0;
+        let galleryScrollIdle = true;
+        let galleryScrollTimer = null;
+
+        const runWhenIdle = (cb) => {
+            if (typeof window.requestIdleCallback === 'function') {
+                window.requestIdleCallback(cb, { timeout: 500 });
+            } else {
+                window.setTimeout(cb, 80);
+            }
+        };
+
+        function isGalleryItemNearViewport(item) {
+            const rect = item.getBoundingClientRect();
+            return rect.bottom > -80 && rect.top < window.innerHeight + 80;
+        }
+
+        function drainGalleryQueue() {
+            if (!galleryScrollIdle || galleryActiveCount > 0 || galleryQueue.length === 0) return;
+            const item = galleryQueue.shift();
+            if (!item || item.dataset.diffusePlayed === '1') {
+                drainGalleryQueue();
+                return;
+            }
+            galleryActiveCount += 1;
+            runWhenIdle(() => {
+                if (!galleryScrollIdle) {
+                    galleryActiveCount -= 1;
+                    galleryQueue.unshift(item);
+                    window.setTimeout(drainGalleryQueue, 170);
+                    return;
+                }
+                if (!isGalleryItemNearViewport(item)) {
+                    galleryActiveCount -= 1;
+                    delete item.dataset.diffuseQueued;
+                    galleryObserver.observe(item);
+                    window.setTimeout(drainGalleryQueue, 90);
+                    return;
+                }
+                animateGalleryItem(item, () => {
+                    delete item.dataset.diffuseQueued;
+                    galleryActiveCount -= 1;
+                    window.setTimeout(drainGalleryQueue, 90);
+                });
+            });
+        }
+
+        function enqueueGalleryItem(item) {
+            if (!item || item.dataset.diffuseQueued === '1' || item.dataset.diffusePlayed === '1') return;
+            item.dataset.diffuseQueued = '1';
+            galleryQueue.push(item);
+            drainGalleryQueue();
+        }
+
+        window.addEventListener('scroll', () => {
+            galleryScrollIdle = false;
+            clearTimeout(galleryScrollTimer);
+            galleryScrollTimer = window.setTimeout(() => {
+                galleryScrollIdle = true;
+                drainGalleryQueue();
+            }, 170);
+        }, { passive: true });
+
         const galleryObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const items = entry.target.querySelectorAll('[data-diffuse]');
-                    items.forEach((item, i) => {
-                        setTimeout(() => animateGalleryItem(item), i * 70);
-                    });
+                    enqueueGalleryItem(entry.target);
                     galleryObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.02, rootMargin: '320px 0px' });
+        }, { threshold: 0.16, rootMargin: '80px 0px' });
 
-        const galleryGrid = document.querySelector('.gallery-grid');
-        if (galleryGrid) galleryObserver.observe(galleryGrid);
+        galleryItems.forEach(item => galleryObserver.observe(item));
     })();
 
 </script>
