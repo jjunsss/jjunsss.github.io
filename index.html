@@ -938,6 +938,33 @@
         a.hero-meta-value:hover {
             color: var(--accent);
         }
+        .hero-meta-cta {
+            width: fit-content;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.42rem;
+            min-height: 34px;
+            padding: 0.36rem 0.72rem;
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.76);
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 800;
+            line-height: 1;
+            text-decoration: none;
+            box-shadow: 0 8px 16px rgba(var(--accent-rgb), 0.08);
+            transition: var(--transition);
+        }
+        .hero-meta-cta:hover {
+            color: #fff;
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .hero-meta-cta i {
+            font-size: 0.78rem;
+        }
         .hero-meta-copy {
             color: var(--text-muted);
             font-size: 0.9rem;
@@ -2023,9 +2050,10 @@
                         <span class="hero-meta-value">UNIST Busan Centum Campus</span>
                     </div>
                     <div class="hero-meta-item">
-                        <span class="hero-meta-label">Now Building</span>
-                        <a class="hero-meta-value" href="https://github.com/sparkorbit/sparkorbit" target="_blank" rel="noopener noreferrer">SparkOrbit</a>
-                        <span class="hero-meta-copy">All AI signals, at a glance.</span>
+                        <span class="hero-meta-label">Projects</span>
+                        <a class="hero-meta-cta" href="#projects">
+                            Go Projects! <i class="fas fa-arrow-down"></i>
+                        </a>
                     </div>
                     <div class="hero-meta-item">
                         <span class="hero-meta-label">Seeking</span>
