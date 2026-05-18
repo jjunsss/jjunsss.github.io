@@ -1328,7 +1328,7 @@
         /* === PROJECTS === */
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1rem;
         }
         .project-card {
@@ -2137,7 +2137,7 @@
         <div class="section-line"></div>
     </div>
     <div class="citation-stat">
-        <span class="citation-number" data-target="127">0</span><span class="citation-plus">+</span>
+        <span class="citation-number" data-target="128">0</span><span class="citation-plus">+</span>
         <span class="citation-label">Total Citations</span>
     </div>
     <script>
@@ -2530,6 +2530,25 @@
                 </div>
                 <div class="project-actions">
                     <a class="project-link shimmer-btn" href="https://github.com/jjunsss/MOMO" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
+        </article>
+
+        <article class="project-card">
+            <a class="project-media" href="https://github.com/jjunsss/cheapest-flights" target="_blank" rel="noopener noreferrer" aria-label="Open Cheapest Flights on GitHub">
+                <img src="images/projects/cheapest-flights.png" alt="Cheapest Flights project preview" loading="lazy" decoding="async" width="1200" height="630">
+            </a>
+            <div class="project-body">
+                <div class="project-kicker">Travel search</div>
+                <h3 class="project-title">Cheapest Flights</h3>
+                <p class="project-desc">A TypeScript tool that sweeps departure and return date combinations, then ranks cheap direct-flight candidates across travel sites.</p>
+                <div class="project-tags" aria-label="Cheapest Flights project tags">
+                    <span>TypeScript</span>
+                    <span>Flight search</span>
+                    <span>Date sweep</span>
+                </div>
+                <div class="project-actions">
+                    <a class="project-link shimmer-btn" href="https://github.com/jjunsss/cheapest-flights" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
                 </div>
             </div>
         </article>
