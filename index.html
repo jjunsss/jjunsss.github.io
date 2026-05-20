@@ -1557,6 +1557,31 @@
         .timeline-org { font-size: 0.96rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
         .timeline-detail { font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; }
         .timeline-detail a { font-weight: 500; }
+        .timeline-photo-btn {
+            display: block;
+            width: min(260px, 100%);
+            margin-top: 0.72rem;
+            padding: 0;
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            overflow: hidden;
+            cursor: zoom-in;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .timeline-photo-btn:hover {
+            border-color: rgba(var(--accent-rgb), 0.3);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+        .timeline-photo-btn img {
+            display: block;
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            object-position: center 62%;
+        }
 
         /* === AWARDS === */
         .awards-list { display: flex; flex-direction: column; gap: 0; }
@@ -2608,6 +2633,9 @@
                     <div class="timeline-title">AI Research Intern</div>
                     <div class="timeline-org">NAVER AI Lab, Seoul</div>
                     <div class="timeline-detail">Backbone Research Team &middot; Advisor: <a href="https://sites.google.com/site/dyhan0920/">Dongyoon Han</a></div>
+                    <button class="timeline-photo-btn" type="button" onclick="document.getElementById('naverLightbox').classList.add('show')" aria-label="Open NAVER AI Lab photo">
+                        <img src="images/naver-ai-lab.jpg" alt="Junsu Kim at NAVER AI Lab" width="1100" height="1100">
+                    </button>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-period">2022 &ndash; 2025</div>
@@ -2764,6 +2792,9 @@
 </footer>
 
 <!-- Photo Lightbox -->
+<div id="naverLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
+    <img src="images/naver-ai-lab.jpg" alt="Junsu Kim at NAVER AI Lab" onclick="event.stopPropagation()">
+</div>
 <div id="nvidiaLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
     <img src="images/NVIDIA_AI_AMB.png" alt="NVIDIA AI Ambassador" onclick="event.stopPropagation()">
 </div>
