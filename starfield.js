@@ -13,7 +13,8 @@
         : { matches: false, addEventListener: null };
     const motionReduced = () => Boolean(reducedMotionQuery.matches);
     const FRAME_INTERVAL = 48; // ~21fps is enough for slow ambient motion.
-    const SCROLL_IDLE_DELAY = 180;
+    const SCROLL_FRAME_INTERVAL = 96; // Keep moving during scroll, but cheaper.
+    const SCROLL_IDLE_DELAY = 220;
 
     // Warm palette for blobs (cream, peach, terracotta, honey).
     const BLOB_PALETTE = [
@@ -96,13 +97,14 @@
     }
 
     function step(now) {
-        if (scrollPaused || motionReduced()) {
+        if (motionReduced()) {
             animId = null;
             drawStatic();
             return;
         }
 
-        if (now - lastFrameTime < FRAME_INTERVAL) {
+        const frameInterval = scrollPaused ? SCROLL_FRAME_INTERVAL : FRAME_INTERVAL;
+        if (now - lastFrameTime < frameInterval) {
             animId = requestAnimationFrame(step);
             return;
         }
@@ -139,7 +141,7 @@
     }
 
     function start() {
-        if (document.hidden || scrollPaused || motionReduced()) {
+        if (document.hidden || motionReduced()) {
             drawStatic();
             return;
         }
@@ -158,8 +160,7 @@
         if (motionReduced() || document.hidden) return;
         if (!scrollPaused) {
             scrollPaused = true;
-            stop();
-            drawStatic();
+            start();
         }
         clearTimeout(scrollTimer);
         scrollTimer = window.setTimeout(() => {
