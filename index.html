@@ -1959,6 +1959,37 @@
             .award-text { font-size: 0.88rem; }
         }
 
+        @media (min-width: 560px) and (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.78rem;
+            }
+            .project-body {
+                gap: 0.5rem;
+                padding: 0.78rem 0.82rem 0.88rem;
+            }
+            .project-kicker {
+                font-size: 0.62rem;
+                letter-spacing: 0.07em;
+            }
+            .project-title { font-size: 0.98rem; }
+            .project-desc {
+                font-size: 0.82rem;
+                line-height: 1.42;
+            }
+            .project-tags { gap: 0.25rem; }
+            .project-tags span {
+                min-height: 1.35rem;
+                padding: 0.16rem 0.42rem;
+                font-size: 0.68rem;
+            }
+            .project-link {
+                min-height: 38px;
+                padding: 0.32rem 0.62rem;
+                font-size: 0.78rem;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero { padding: 4.5rem 0.95rem 1.7rem; }
             .hero-bubble.b,
