@@ -1638,7 +1638,6 @@
         .gallery-item img {
             width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
         }
-        .gallery-item.is-tall img { object-position: top center; }
         .gallery-item:hover img { transform: scale(1.15); }
         .gallery-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -2823,8 +2822,8 @@
             <img src="images/ICASSP2024.jpg" alt="ICASSP 2024">
             <div class="gallery-caption">ICASSP 2024 &middot; Seoul</div>
         </div>
-        <div class="gallery-item is-tall" role="button" tabindex="0" onclick="document.getElementById('nvidiaDirectoryLightbox').classList.add('show')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); document.getElementById('nvidiaDirectoryLightbox').classList.add('show'); }">
-            <img src="images/nvidia-instructor-directory.jpg" alt="NVIDIA DLI Certified Instructor Directory profile screenshot" loading="lazy" decoding="async">
+        <div class="gallery-item" role="button" tabindex="0" onclick="document.getElementById('nvidiaDirectoryLightbox').classList.add('show')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); document.getElementById('nvidiaDirectoryLightbox').classList.add('show'); }">
+            <img src="images/nvidia-instructor-directory-gallery.jpg" alt="NVIDIA DLI Certified Instructor Directory gallery preview" loading="lazy" decoding="async">
             <div class="gallery-caption">NVIDIA DLI &middot; Certified Instructor Directory</div>
         </div>
     </div>
