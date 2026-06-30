@@ -1539,9 +1539,15 @@
             transform: scale(0.92); transition: transform 0.3s ease;
         }
         .photo-lightbox.show img { transform: scale(1); }
+        .timeline-photo-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.38rem;
+            margin-top: 0.4rem;
+        }
         .photo-btn {
             display: inline-flex; align-items: center; gap: 0.34rem;
-            margin-top: 0.4rem;
+            margin-top: 0;
             padding: 0.36rem 0.85rem;
             min-height: 36px;
             border-radius: 999px;
@@ -1555,6 +1561,7 @@
             color: var(--accent-hover); border-color: var(--accent-hover); background: var(--accent-light);
         }
         .photo-btn i { font-size: 0.72rem; }
+        .timeline-item > .photo-btn { margin-top: 0.4rem; }
 
         /* Hidden cards by filter */
         .pub-card.hidden {
@@ -1631,6 +1638,7 @@
         .gallery-item img {
             width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
         }
+        .gallery-item.is-tall img { object-position: top center; }
         .gallery-item:hover img { transform: scale(1.15); }
         .gallery-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -2685,7 +2693,10 @@
                     <div class="timeline-title">NVIDIA AI Ambassador</div>
                     <div class="timeline-org">NVIDIA DLI Program</div>
                     <div class="timeline-detail">Leader, NVIDIA &middot; MODULABS Foundation Models Lab</div>
-                    <button class="photo-btn" onclick="document.getElementById('nvidiaLightbox').classList.add('show')"><i class="fas fa-camera"></i> View Photo</button>
+                    <div class="timeline-photo-actions">
+                        <button class="photo-btn" onclick="document.getElementById('nvidiaLightbox').classList.add('show')"><i class="fas fa-certificate"></i> View Certificate</button>
+                        <button class="photo-btn" onclick="document.getElementById('nvidiaDirectoryLightbox').classList.add('show')"><i class="fas fa-id-badge"></i> View Directory</button>
+                    </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-period">2022 &ndash; 2023</div>
@@ -2812,6 +2823,10 @@
             <img src="images/ICASSP2024.jpg" alt="ICASSP 2024">
             <div class="gallery-caption">ICASSP 2024 &middot; Seoul</div>
         </div>
+        <div class="gallery-item is-tall" role="button" tabindex="0" onclick="document.getElementById('nvidiaDirectoryLightbox').classList.add('show')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); document.getElementById('nvidiaDirectoryLightbox').classList.add('show'); }">
+            <img src="images/nvidia-instructor-directory.jpg" alt="NVIDIA DLI Certified Instructor Directory profile screenshot" loading="lazy" decoding="async">
+            <div class="gallery-caption">NVIDIA DLI &middot; Certified Instructor Directory</div>
+        </div>
     </div>
 </section>
 
@@ -2840,6 +2855,9 @@
 </div>
 <div id="nvidiaLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
     <img src="images/NVIDIA_AI_AMB.png" alt="NVIDIA AI Ambassador" onclick="event.stopPropagation()">
+</div>
+<div id="nvidiaDirectoryLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
+    <img src="images/nvidia-instructor-directory.jpg" alt="NVIDIA DLI Certified Instructor Directory profile screenshot" onclick="event.stopPropagation()">
 </div>
 
 <!-- === SCRIPTS === -->
