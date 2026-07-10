@@ -1071,6 +1071,14 @@
             text-transform: uppercase;
             font-weight: 800;
         }
+        .hero-band-cta-main {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem 1rem;
+            flex-wrap: wrap;
+        }
         .hero-band-cta strong {
             color: var(--text-primary);
             font-size: 1.08rem;
@@ -1863,6 +1871,7 @@
             .hero-band-grid { grid-template-columns: 1fr; gap: 1rem; }
             .hero-band-list .news-item { align-items: flex-start; }
             .hero-band-cta { padding-left: 0; padding-top: 0.95rem; border-left: none; border-top: 1px solid rgba(110, 83, 52, 0.12); }
+            .hero-band-cta-main { align-items: flex-start; }
             .two-col { grid-template-columns: 1fr; gap: 2rem; }
             .nav-links {
                 display: none; position: fixed; top: 60px; left: 0; right: 0; bottom: 0;
@@ -2206,9 +2215,11 @@
                 </div>
                 <div class="hero-band-cta">
                     <span class="hero-band-cta-label">Open to Opportunities</span>
-                    <strong>Looking for research internships in industry.</strong>
+                    <div class="hero-band-cta-main">
+                        <strong>Looking for research internships in industry.</strong>
+                        <a href="mailto:jjunsssk@unist.ac.kr" class="hero-band-button shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
+                    </div>
                     <p class="hero-band-copy">Interested in practical research around 2D/3D representation, continual learning, and large-scale vision-language or diffusion models.</p>
-                    <a href="mailto:jjunsssk@unist.ac.kr" class="hero-band-button shimmer-btn"><i class="fas fa-envelope"></i> Contact Me</a>
                 </div>
             </div>
         </div>
