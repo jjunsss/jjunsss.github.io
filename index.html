@@ -2379,12 +2379,34 @@
                 </select>
             </label>
         </div>
-        <p id="pubCount" class="pub-count" aria-live="polite">Showing 7 papers (+6 domestic)</p>
+        <p id="pubCount" class="pub-count" aria-live="polite">Showing 8 papers (+6 domestic)</p>
     </div>
 
     <!-- Publication list -->
     <div class="pub-list-wrapper reveal">
         <div class="pub-list" id="pubTickerTrack">
+
+            <!-- BeeHunters / arXiv 2026 -->
+            <div class="pub-card" data-venue="arxiv" data-year="2026">
+                <div class="pub-thumb"><img src="images/projects/beehunters.png?v=2" alt="BeeHunters tiny pollinator detection figure" loading="lazy" decoding="async" width="1200" height="630"></div>
+                <div class="pub-highlight-label"></div>
+                <div class="pub-meta">
+                    <span class="pub-venue arxiv">arXiv 2026</span>
+                </div>
+                <div class="pub-title">Where Is the Bee? Detecting Tiny Pollinators with a Single Collaborative-Head Transformer</div>
+                <div class="pub-authors"><span class="me">J. Kim</span>, S. Baek</div>
+                <div class="pub-links">
+                    <a href="https://arxiv.org/pdf/2608.08580" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fas fa-file-pdf"></i> Paper</a>
+                    <a href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" class="pub-link shimmer-btn"><i class="fab fa-github"></i> Code</a>
+                    <button type="button" class="pub-summary-trigger shimmer-btn">
+                        <i class="fas fa-eye"></i> Summary
+                    </button>
+                    <div class="pub-summary-popup">
+                        <div class="pub-summary-img"><img src="images/projects/beehunters.png?v=2" alt="BeeHunters project figure" loading="lazy" decoding="async" width="1200" height="630"></div>
+                        <div class="pub-summary-text">A single-model, first-place BuzzSpot Challenge solution for tiny pollinator detection, combining Co-DINO with a Swin-L backbone, crop-mosaic training, and class-weighted ETF supervision.</div>
+                    </div>
+                </div>
+            </div>
 
             <!-- B-RIGHT ??BMVC 2025 -->
             <div class="pub-card" data-venue="main" data-year="2025">
@@ -2637,6 +2659,7 @@
                     <span>1st Place</span>
                 </div>
                 <div class="project-actions">
+                    <a class="project-link shimmer-btn" href="https://arxiv.org/pdf/2608.08580" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i> Paper</a>
                     <a class="project-link shimmer-btn" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
                     <a class="project-link shimmer-btn" href="https://www.codabench.org/competitions/16441/#/results-tab" target="_blank" rel="noopener noreferrer"><i class="fas fa-trophy"></i> Results</a>
                 </div>
