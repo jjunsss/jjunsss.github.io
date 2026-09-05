@@ -472,7 +472,7 @@
         }
         .hero-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 310px);
             gap: clamp(1.8rem, 4vw, 3.4rem);
             align-items: end;
         }
@@ -613,9 +613,9 @@
         }
         .hero-content h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(4rem, 7.6vw, 5.5rem);
+            font-size: 4.5rem;
             font-weight: 600;
-            letter-spacing: -0.05em;
+            letter-spacing: 0;
             line-height: 0.92;
             margin-bottom: 0.7rem;
             color: var(--text-primary);
@@ -648,6 +648,68 @@
             display: flex;
             flex-direction: column;
             gap: 0.7rem;
+        }
+        .intro-tabs {
+            display: flex;
+            gap: 1.35rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        .intro-tab {
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 650;
+            color: var(--text-muted);
+            background: none;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            padding: 0.55rem 0;
+            cursor: pointer;
+        }
+        .intro-tab[aria-selected="true"] { color: var(--venue-top); border-bottom-color: currentColor; }
+        .intro-tab i { margin-right: 0.35rem; }
+        .intro-panels { display: grid; }
+        .intro-panel { grid-area: 1 / 1; min-width: 0; }
+        /* Retain the tallest panel's space so switching topics never moves the page. */
+        .intro-panel[hidden] { display: block; visibility: hidden; pointer-events: none; }
+        .intro-panel h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.25;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-wrap: balance;
+            margin-bottom: 0.6rem;
+        }
+        .intro-panel p { font-size: 0.98rem; line-height: 1.65; max-width: 52ch; color: var(--text-secondary); }
+        .intro-work-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-top: 0.9rem; }
+        .intro-work-links a { font-size: 0.85rem; font-weight: 650; color: var(--venue-top); text-decoration: underline; text-underline-offset: 4px; }
+        .intro-work-links i { font-size: 0.7rem; margin-left: 0.3rem; }
+        .intro-background { margin-top: 1rem; }
+        .intro-background summary { cursor: pointer; width: fit-content; font-size: 0.83rem; color: var(--text-muted); }
+        .intro-background .hero-prose { margin-top: 0.6rem; }
+        .intro-background .hero-bio { font-size: 0.9rem; }
+        .intro-tab:focus-visible, .intro-work-links a:focus-visible,
+        .project-filter:focus-visible, .project-surprise:focus-visible,
+        .project-card:focus-visible, .intro-background summary:focus-visible {
+            outline: 2px solid var(--venue-top); outline-offset: 4px;
+        }
+        .project-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1.2rem; }
+        .project-filters { display: flex; gap: 0.15rem; background: var(--bg-secondary); border-radius: 6px; padding: 0.2rem; }
+        .project-filter { font: inherit; font-size: 0.85rem; border: 0; border-radius: 4px; background: transparent; color: var(--text-muted); padding: 0.4rem 0.8rem; cursor: pointer; }
+        .project-filter[aria-pressed="true"] { background: var(--bg-card); color: var(--text-primary); box-shadow: var(--shadow-xs); }
+        .project-surprise { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 6px; color: var(--venue-top); background: var(--bg-card); cursor: pointer; position: relative; }
+        .project-surprise::after { content: attr(aria-label); position: absolute; bottom: calc(100% + 8px); right: 0; white-space: nowrap; padding: 0.3rem 0.6rem; font: 0.75rem 'Inter', sans-serif; background: var(--text-primary); color: var(--bg-card); border-radius: 4px; opacity: 0; pointer-events: none; }
+        .project-surprise:hover::after, .project-surprise:focus-visible::after { opacity: 1; }
+        .project-count { margin-left: auto; color: var(--text-muted); font-size: 0.8rem; }
+        .project-card[hidden] { display: none; }
+        .project-card.spotlight { outline: 2px solid var(--venue-top); outline-offset: 4px; }
+        .project-card, #paper-sddgr { scroll-margin-top: 100px; }
+        @media (max-width: 768px) {
+            .intro-panel h2 { font-size: 1.6rem; }
+            .intro-tabs { gap: 1.15rem; }
+            .project-count { order: 3; width: 100%; margin-left: 0; }
+            .project-surprise { margin-left: auto; }
         }
         .hero-bio {
             color: var(--text-secondary);
@@ -937,7 +999,7 @@
         .hero-link i { font-size: 0.8rem; }
         .hero-meta-strip {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: minmax(0, 1fr) auto;
             gap: 0.95rem 1.2rem;
             margin: 1.2rem 0 1.3rem;
             padding: 1rem 0;
@@ -1759,6 +1821,7 @@
             transition: opacity 0.7s ease, transform 0.7s ease;
         }
         .reveal.visible { opacity: 1; transform: translateY(0); }
+        .hero .reveal { opacity: 1; transform: none; transition: none; }
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
@@ -1903,7 +1966,7 @@
             .hero-highlights { gap: 0.38rem 0.9rem; margin-bottom: 1rem; }
             .hero-pill { font-size: 0.82rem; }
             .hero-bio { max-width: 100%; font-size: 0.95rem; line-height: 1.68; }
-            .hero-meta-strip { grid-template-columns: 1fr; gap: 0.8rem; margin: 1rem 0 1.1rem; padding: 0.85rem 0; }
+            .hero-meta-strip { grid-template-columns: minmax(0, 1fr) auto; gap: 0.8rem; margin: 1rem 0 1.1rem; padding: 0.85rem 0; }
             .hero-links { justify-content: flex-start; margin-top: 1rem; gap: 0.45rem 0.7rem; }
             .hero-link { padding: 0.46rem 0.72rem; font-size: 0.86rem; min-height: 42px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.88); border-radius: 999px; }
             .hero-link.primary { min-height: 44px; }
@@ -2048,14 +2111,14 @@
             .hero-pill { font-size: 0.74rem; }
             .hero-links {
                 display: grid;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 0.45rem;
             }
             .hero-link {
                 width: 100%;
                 justify-content: center;
-                padding: 0.46rem 0.62rem;
-                font-size: 0.82rem;
+                padding: 0.46rem 0.3rem;
+                font-size: 0.78rem;
                 min-height: 42px;
             }
             .hero-link.primary { grid-column: 1 / -1; }
@@ -2185,13 +2248,34 @@
                             Go Projects! <i class="fas fa-arrow-down"></i>
                         </a>
                     </div>
-                    <div class="hero-meta-item">
-                        <span class="hero-meta-label">Seeking</span>
-                        <span class="hero-meta-value">AI Research Internships</span>
-                        <span class="hero-meta-copy">2D/3D, continual learning, vision-language, and diffusion systems.</span>
+                </div>
+                <div class="intro-explorer" aria-label="Meet Junsu">
+                    <div class="intro-tabs" role="tablist" aria-label="Research, building, and applied AI">
+                        <button type="button" class="intro-tab" id="intro-tab-research" role="tab" aria-selected="true" aria-controls="intro-research"><i class="fas fa-microscope" aria-hidden="true"></i>Research</button>
+                        <button type="button" class="intro-tab" id="intro-tab-build" role="tab" aria-selected="false" aria-controls="intro-build" tabindex="-1"><i class="fas fa-code" aria-hidden="true"></i>Build</button>
+                        <button type="button" class="intro-tab" id="intro-tab-field" role="tab" aria-selected="false" aria-controls="intro-field" tabindex="-1"><i class="fas fa-seedling" aria-hidden="true"></i>Field</button>
+                    </div>
+                    <div class="intro-panels">
+                        <div class="intro-panel" role="tabpanel" id="intro-research" aria-labelledby="intro-tab-research" tabindex="0">
+                            <h2>Can AI learn without forgetting?</h2>
+                            <p>I study how vision models keep learning as the world changes, using continual learning, vision-language models, and diffusion.</p>
+                            <div class="intro-work-links"><a href="#paper-sddgr">SDDGR &middot; CVPR Highlight<i class="fas fa-arrow-down" aria-hidden="true"></i></a><a href="#publications">All papers<i class="fas fa-arrow-down" aria-hidden="true"></i></a></div>
+                        </div>
+                        <div class="intro-panel" role="tabpanel" id="intro-build" aria-labelledby="intro-tab-build" tabindex="0" hidden>
+                            <h2>Small tools. Real daily problems.</h2>
+                            <p>From making sense of long meetings to finding cheaper flights, I turn everyday friction into tools I can actually use.</p>
+                            <div class="intro-work-links"><a href="#project-momo">MOMO<i class="fas fa-arrow-down" aria-hidden="true"></i></a><a href="#project-flights">Cheapest Flights<i class="fas fa-arrow-down" aria-hidden="true"></i></a><a href="#projects">All projects<i class="fas fa-arrow-down" aria-hidden="true"></i></a></div>
+                        </div>
+                        <div class="intro-panel" role="tabpanel" id="intro-field" aria-labelledby="intro-tab-field" tabindex="0" hidden>
+                            <h2>From pixels to pollinators.</h2>
+                            <p>I'm interested in AI for agriculture and fisheries. BeeHunters brings that curiosity to tiny pollinator detection: a solo entry, and a first-place finish.</p>
+                            <div class="intro-work-links"><a href="#project-beehunters">BeeHunters &middot; Challenge winner<i class="fas fa-arrow-down" aria-hidden="true"></i></a></div>
+                        </div>
                     </div>
                 </div>
-                <div class="hero-prose reveal reveal-delay-3">
+                <details class="intro-background">
+                    <summary>Background &amp; collaborators</summary>
+                    <div class="hero-prose">
                     <p class="hero-bio">
                         I am a Combined MS/PhD student at UNIST AIGS, advised by
                         <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>. My work focuses on continual learning, open-world detection, and vision-language systems.
@@ -2200,7 +2284,8 @@
                         Previously, I interned at <strong>NAVER AI Lab</strong> advised by
                         <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, where I studied backbone architectures and analyzed internal representations of large-scale models. I also serve as an <strong>NVIDIA AI Ambassador</strong>, with a strong interest in applied AI for everyday problems.
                     </p>
-                </div>
+                    </div>
+                </details>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link"><i class="fas fa-envelope"></i> Email</a>
                     <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer" class="hero-link"><i class="fas fa-graduation-cap"></i> Scholar</a>
@@ -2496,7 +2581,7 @@
             </div>
 
             <!-- SDDGR ??CVPR 2024 Highlight -->
-            <div class="pub-card highlight" data-venue="main" data-year="2024">
+            <div class="pub-card highlight" id="paper-sddgr" data-venue="main" data-year="2024">
                 <div class="pub-thumb"><img src="images/papers/thumbs/sddgr.png" alt="SDDGR figure" loading="lazy" decoding="async" width="560" height="376"></div>
                 <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight &middot; Top 2.8%</div>
                 <div class="pub-meta">
@@ -2644,8 +2729,17 @@
         <h2>Projects</h2>
         <div class="section-line"></div>
     </div>
+    <div class="project-toolbar">
+        <div class="project-filters" role="group" aria-label="Filter projects">
+            <button type="button" class="project-filter" data-project-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="project-filter" data-project-filter="research" aria-pressed="false">Research</button>
+            <button type="button" class="project-filter" data-project-filter="tools" aria-pressed="false">Tools</button>
+        </div>
+        <span class="project-count" id="project-count" role="status">5 projects</span>
+        <button type="button" class="project-surprise" aria-label="Surprise me with a project"><i class="fas fa-dice" aria-hidden="true"></i></button>
+    </div>
     <div class="project-grid reveal">
-        <article class="project-card">
+        <article class="project-card" id="project-beehunters" data-project-kind="research" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" aria-label="Open BeeHunters on GitHub">
                 <img src="images/projects/beehunters.png?v=2" alt="BeeHunters tiny pollinator detection project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
@@ -2666,7 +2760,7 @@
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card" id="project-sparkorbit" data-project-kind="tools" tabindex="-1">
             <a class="project-media" href="https://github.com/sparkorbit/sparkorbit" target="_blank" rel="noopener noreferrer" aria-label="Open SparkOrbit on GitHub">
                 <img src="images/projects/sparkorbit.png" alt="SparkOrbit project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
@@ -2685,7 +2779,7 @@
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card" id="project-momo" data-project-kind="tools" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/MOMO" target="_blank" rel="noopener noreferrer" aria-label="Open MOMO on GitHub">
                 <img src="images/projects/momo.png" alt="MOMO project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
@@ -2704,7 +2798,7 @@
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card" id="project-flights" data-project-kind="tools" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/cheapest-flights" target="_blank" rel="noopener noreferrer" aria-label="Open Cheapest Flights on GitHub">
                 <img src="images/projects/cheapest-flights.png" alt="Cheapest Flights project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
@@ -2723,7 +2817,7 @@
             </div>
         </article>
 
-        <article class="project-card">
+        <article class="project-card" id="project-loop-station" data-project-kind="tools" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/LOOP-STATION" target="_blank" rel="noopener noreferrer" aria-label="Open LOOP-STATION on GitHub">
                 <img src="images/projects/loop-station.png" alt="LOOP-STATION project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
@@ -3230,6 +3324,11 @@
 
     function applyPublicationFilter(filter = activePubFilter) {
         activePubFilter = filter;
+        pubFilterBtns.forEach(button => {
+            const selected = button.dataset.filter === filter;
+            button.classList.toggle('active', selected);
+            button.setAttribute('aria-pressed', String(selected));
+        });
         const visibleCards = [];
 
         pubCards.forEach(card => {
@@ -3258,12 +3357,6 @@
             const filter = this.dataset.filter;
             if (!filter) return;
 
-            activePubFilter = filter;
-            pubFilterBtns.forEach(b => {
-                const isActive = b === this;
-                b.classList.toggle('active', isActive);
-                b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
             applyPublicationFilter(filter);
         });
     });
@@ -3276,6 +3369,69 @@
     }
 
     applyPublicationFilter('all');
+
+    // Topic tabs support both pointer and standard tab-list keyboard navigation.
+    const introTabs = Array.from(document.querySelectorAll('.intro-tab'));
+    const selectIntro = (selected) => {
+        introTabs.forEach(tab => {
+            const active = tab === selected;
+            tab.setAttribute('aria-selected', String(active));
+            tab.tabIndex = active ? 0 : -1;
+            document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+        });
+    };
+    introTabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectIntro(tab));
+        tab.addEventListener('keydown', event => {
+            let next;
+            if (event.key === 'ArrowRight') next = (index + 1) % introTabs.length;
+            if (event.key === 'ArrowLeft') next = (index + introTabs.length - 1) % introTabs.length;
+            if (event.key === 'Home') next = 0;
+            if (event.key === 'End') next = introTabs.length - 1;
+            if (next === undefined) return;
+            event.preventDefault();
+            selectIntro(introTabs[next]);
+            introTabs[next].focus();
+        });
+    });
+
+    const projectCards = Array.from(document.querySelectorAll('.project-card'));
+    const projectFilters = Array.from(document.querySelectorAll('.project-filter'));
+    const projectCount = document.getElementById('project-count');
+    let lastProject = null;
+    function filterProjects(kind) {
+        projectFilters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.projectFilter === kind)));
+        projectCards.forEach(card => {
+            card.hidden = kind !== 'all' && card.dataset.projectKind !== kind;
+            card.classList.remove('spotlight');
+        });
+        const count = projectCards.filter(card => !card.hidden).length;
+        projectCount.textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
+    }
+    projectFilters.forEach(button => button.addEventListener('click', () => filterProjects(button.dataset.projectFilter)));
+    document.querySelector('.project-surprise').addEventListener('click', () => {
+        const visible = projectCards.filter(card => !card.hidden);
+        const candidates = visible.length > 1 ? visible.filter(card => card !== lastProject) : visible;
+        const selected = candidates[Math.floor(Math.random() * candidates.length)];
+        if (!selected) return;
+        lastProject = selected;
+        projectCards.forEach(card => card.classList.toggle('spotlight', card === selected));
+        projectCount.textContent = `Selected: ${selected.querySelector('.project-title').textContent}`;
+        selected.focus({ preventScroll: true });
+        selected.scrollIntoView({ behavior: motionReduced() ? 'instant' : 'smooth', block: 'start' });
+    });
+
+    // Reveal filtered destinations before native anchor navigation positions the page.
+    function revealWorkTarget(hash) {
+        const project = projectCards.find(card => `#${card.id}` === hash);
+        if (project?.hidden) filterProjects('all');
+        if (hash === '#paper-sddgr' && activePubFilter !== 'all') applyPublicationFilter('all');
+    }
+    document.querySelectorAll('.intro-work-links a').forEach(link => {
+        link.addEventListener('click', () => revealWorkTarget(link.hash));
+    });
+    window.addEventListener('hashchange', () => revealWorkTarget(window.location.hash));
+    revealWorkTarget(window.location.hash);
 
     // === DIFFUSION DENOISING EFFECT ===
     (function() {
