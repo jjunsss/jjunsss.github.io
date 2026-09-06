@@ -1726,19 +1726,31 @@
 
         /* === ACTIVITIES === */
         .activity-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem;
         }
         .activity-card {
-            background: linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(248, 240, 225, 0.88));
+            --activity-accent: var(--accent);
+            display: flex; flex-direction: column; gap: 0.75rem; min-width: 0;
+            background: var(--bg-card);
             border: 1px solid var(--surface-border);
-            border-radius: var(--radius-md); padding: 1.15rem 1.25rem; transition: var(--transition);
+            border-top: 3px solid var(--activity-accent);
+            border-radius: 8px; padding: 1.2rem 1.25rem;
         }
-        .activity-card:hover {
-            box-shadow: var(--shadow-sm); border-color: rgba(var(--accent-rgb), 0.2);
-            transform: translateY(-1px);
+        .activity-card.lecturer { --activity-accent: var(--venue-workshop); }
+        .activity-card.nvidia { --activity-accent: var(--venue-top); }
+        .activity-role {
+            display: flex; align-items: center; gap: 0.6rem;
+            color: var(--activity-accent); font-size: 0.9rem; font-weight: 700;
+            line-height: 1.4; letter-spacing: 0;
         }
-        .activity-card h4 { font-size: 1.02rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .activity-card p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; }
+        .activity-role i { width: 1.15rem; text-align: center; flex-shrink: 0; }
+        .activity-card h3 { font-size: 1.1rem; font-weight: 650; line-height: 1.45; letter-spacing: 0; }
+        .activity-card p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.55; }
+        .activity-card time {
+            display: block; margin-top: auto; padding-top: 0.75rem;
+            border-top: 1px solid var(--border-light);
+            font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted);
+        }
 
         /* === GALLERY === */
         .gallery-grid {
@@ -2204,7 +2216,7 @@
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#awards">Awards</a></li>
-                <li><a href="#activities">Activities</a></li>
+                <li><a href="#activities">Teaching</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer">CV</a></li>
             </ul>
@@ -2957,18 +2969,24 @@
         <div class="section-line"></div>
     </div>
     <div class="activity-grid reveal">
-        <div class="activity-card">
-            <h4>Samsung SSAFY (13th)</h4>
-            <p>Lecture Mentor &middot; Language Models &amp; RAG, Jul 2025</p>
-        </div>
-        <div class="activity-card">
-            <h4>UNIST AI Novatus Academia</h4>
-            <p>Workshop Lecturer &middot; Computer Vision, 2023</p>
-        </div>
-        <div class="activity-card">
-            <h4>NVIDIA Jetson AI Workshop</h4>
-            <p>Pukyong National University, May 2022</p>
-        </div>
+        <article class="activity-card">
+            <div class="activity-role"><i class="fas fa-comments" aria-hidden="true"></i>Lecture Mentor</div>
+            <h3>Samsung SSAFY (13th)</h3>
+            <p>Language Models &amp; RAG</p>
+            <time datetime="2025-07">Jul 2025</time>
+        </article>
+        <article class="activity-card lecturer">
+            <div class="activity-role"><i class="fas fa-chalkboard-user" aria-hidden="true"></i>Workshop Lecturer</div>
+            <h3>UNIST AI Novatus Academia</h3>
+            <p>Computer Vision</p>
+            <time datetime="2023">2023</time>
+        </article>
+        <article class="activity-card nvidia">
+            <div class="activity-role"><i class="fas fa-microchip" aria-hidden="true"></i>NVIDIA Instructor</div>
+            <h3>NVIDIA Jetson AI Workshop</h3>
+            <p>Pukyong National University</p>
+            <time datetime="2022-05">May 2022</time>
+        </article>
     </div>
 </section>
 
