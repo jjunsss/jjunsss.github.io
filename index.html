@@ -29,7 +29,7 @@
     <style>
         /* === DESIGN TOKENS (light editorial theme) === */
         :root {
-            --site-header-height: 98px;
+            --site-header-height: 122px;
             --bg-primary: #F8FAFB;
             --bg-secondary: #EEF2F5;
             --bg-card: #FFFFFF;
@@ -143,13 +143,20 @@
         .opportunity-banner {
             background: var(--venue-top); color: var(--bg-card);
             padding: 0.5rem 1rem; min-height: 38px;
-            display: flex; align-items: center; justify-content: center;
-            gap: 0.5rem 1.2rem;
+            display: grid; align-items: center; justify-content: center;
+            grid-template-columns: auto auto;
+            grid-template-areas: 'headline contact' 'expertise expertise';
+            gap: 0.2rem 1.2rem;
             font-size: 0.8rem; line-height: 1.5;
         }
         .opportunity-banner p { margin: 0; font-weight: 550; text-wrap: balance; }
+        .opportunity-headline { grid-area: headline; }
+        .opportunity-banner .opportunity-expertise {
+            grid-area: expertise; font-size: 0.74rem; font-weight: 400;
+            text-align: center; line-height: 1.5;
+        }
         .opportunity-banner a {
-            flex-shrink: 0; color: inherit; font-weight: 700;
+            grid-area: contact; color: inherit; font-weight: 700; white-space: nowrap;
             text-decoration: underline; text-underline-offset: 3px;
         }
         .opportunity-banner a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
@@ -1975,8 +1982,9 @@
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             body { font-size: 16px; line-height: 1.68; }
-            :root { --site-header-height: 114px; }
-            .opportunity-banner { min-height: 54px; gap: 0.75rem; font-size: 0.75rem; }
+            :root { --site-header-height: 150px; }
+            .opportunity-banner { min-height: 54px; gap: 0.3rem 0.75rem; font-size: 0.75rem; grid-template-columns: minmax(0, 1fr) auto; }
+            .opportunity-banner .opportunity-expertise { text-align: left; font-size: 0.72rem; }
             .hero { padding: calc(var(--site-header-height) + 0.85rem) 1rem 1.55rem; }
             .hero-bg::before { opacity: 0.36; }
             .hero-bubble {
@@ -2230,8 +2238,9 @@
 <!-- === NAVIGATION === -->
 <nav id="navbar">
     <div class="opportunity-banner" aria-label="Research internship availability">
-        <p>Actively seeking a research internship in industry.</p>
+        <p class="opportunity-headline">Actively seeking research internships in industry and academia.</p>
         <a href="mailto:jjunsssk@unist.ac.kr">Message me</a>
+        <p class="opportunity-expertise"><strong>UNIST AIGS</strong> &middot; Continual Learning &middot; Open-world Detection &middot; Vision-Language &amp; Diffusion</p>
     </div>
     <div class="nav-inner">
         <a href="#" class="nav-logo">Junsu Kim</a>
