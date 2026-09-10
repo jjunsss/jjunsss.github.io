@@ -1799,6 +1799,21 @@
             opacity: 0; transform: translateY(4px); transition: var(--transition);
         }
         .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+        button.gallery-item { padding: 0; font: inherit; text-align: left; width: 100%; }
+        .gallery-item.event-photo-trigger .gallery-caption { opacity: 1; transform: none; font-size: 0.78rem; }
+        .gallery-item.event-photo-trigger:hover img { transform: none; }
+        .event-photo-link { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+        .event-photo-trigger:focus-visible { outline: 2px solid var(--venue-top); outline-offset: 3px; }
+        .event-photo-dialog {
+            margin: auto; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px;
+            width: min(1040px, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem);
+            background: var(--bg-card); color: var(--text-primary);
+        }
+        .event-photo-dialog::backdrop { background: rgba(0, 0, 0, 0.8); }
+        .event-photo-dialog-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.65rem; }
+        .event-photo-dialog h2 { font: 600 0.92rem/1.5 'Inter', sans-serif; }
+        .event-photo-dialog button { border: 0; background: none; color: var(--text-primary); font: inherit; font-size: 0.85rem; cursor: pointer; padding: 0.45rem; text-decoration: underline; }
+        .event-photo-dialog img { display: block; width: 100%; height: auto; max-height: calc(100dvh - 8rem); object-fit: contain; }
 
         .closing-quote {
             max-width: 820px;
@@ -2357,6 +2372,10 @@
             </div>
             <div class="hero-band-grid">
                 <div class="hero-band-list">
+                    <div class="news-item">
+                        <span class="news-badge new">2026</span>
+                        <span class="news-text">Presented <strong>BeeHunters</strong> at <strong>CVPPA @ ECCV 2026</strong>. <button type="button" class="event-photo-link event-photo-trigger" aria-haspopup="dialog" aria-controls="eccvTalkDialog">View Photo</button></span>
+                    </div>
                     <div class="news-item">
                         <span class="news-badge new">2026</span>
                         <span class="news-text"><strong>1st Place</strong> in the <a href="https://www.codabench.org/competitions/16441/#/results-tab" target="_blank" rel="noopener noreferrer">CVPPA@ECCV'26 BuzzSpot Challenge</a> (Solo Entry &middot; Small Object Detection) <a class="challenge-code-link" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" aria-label="View BeeHunters code on GitHub"><i class="fab fa-github" aria-hidden="true"></i> Code</a></span>
@@ -3025,6 +3044,10 @@
         <div class="section-line"></div>
     </div>
     <div class="gallery-grid reveal">
+        <button type="button" class="gallery-item event-photo-trigger" aria-label="View ECCV 2026 CVPPA presentation photo" aria-haspopup="dialog" aria-controls="eccvTalkDialog">
+            <img src="images/eccv2026-talk-thumb.jpg" alt="Junsu Kim presenting BeeHunters at CVPPA, ECCV 2026, with the detector comparison slide and audience visible" width="800" height="600" loading="lazy" decoding="async">
+            <span class="gallery-caption">ECCV 2026 &middot; CVPPA Talk</span>
+        </button>
         <div class="gallery-item">
             <img src="images/cvpr2024.jpg" alt="CVPR 2024">
             <div class="gallery-caption">CVPR 2024 &middot; Highlight Poster</div>
@@ -3080,6 +3103,13 @@
 </footer>
 
 <!-- Photo Lightbox -->
+<dialog id="eccvTalkDialog" class="event-photo-dialog" aria-labelledby="eccvTalkTitle">
+    <div class="event-photo-dialog-header">
+        <h2 id="eccvTalkTitle">BeeHunters &middot; CVPPA @ ECCV 2026</h2>
+        <form method="dialog"><button type="submit" autofocus>Close</button></form>
+    </div>
+    <img data-src="images/eccv2026-talk.jpg" alt="Junsu Kim presenting the BeeHunters detector comparison at CVPPA, ECCV 2026" width="2000" height="1500" decoding="async">
+</dialog>
 <div id="naverLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
     <img src="images/naver-ai-lab.jpg" alt="Junsu Kim at NAVER AI Lab" onclick="event.stopPropagation()">
 </div>
@@ -3302,6 +3332,19 @@
                 closeAllSummaryPopups();
             }
         }
+    });
+
+    const eccvTalkDialog = document.getElementById('eccvTalkDialog');
+    document.querySelectorAll('.event-photo-trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const photo = eccvTalkDialog.querySelector('img');
+            if (!photo.hasAttribute('src')) photo.src = photo.dataset.src;
+            eccvTalkDialog.showModal();
+        });
+    });
+    eccvTalkDialog.addEventListener('click', event => {
+        const rect = eccvTalkDialog.getBoundingClientRect();
+        if (event.target === eccvTalkDialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) eccvTalkDialog.close();
     });
 
     // Close lightbox on Escape
