@@ -540,7 +540,8 @@
             aspect-ratio: 4 / 5;
             height: auto;
             border-radius: 26px;
-            object-fit: cover; object-position: center 26%;
+            object-fit: cover; object-position: center;
+            transform: scale(1.45); transform-origin: 43% 78%;
             display: block; box-shadow: var(--shadow-md); border: 2px solid rgba(255, 255, 255, 0.98);
         }
         .hero-photo-caption {
@@ -2354,13 +2355,9 @@
             <div class="hero-visual reveal reveal-delay-2">
                 <div class="hero-photo-card">
                     <div class="hero-photo-wrap" id="diffusionWrap" title="Click to replay diffusion">
-                        <img class="hero-photo" src="images/profile.jpg" alt="Junsu Kim">
+                        <img class="hero-photo" src="images/profile-riverside.jpeg" alt="Junsu Kim smiling by the river with a city skyline at night" width="1080" height="1440">
                         <canvas id="diffusionCanvas" class="diffusion-canvas"></canvas>
                         <div id="diffusionStep" class="diffusion-step">t=480</div>
-                    </div>
-                    <div class="hero-photo-caption">
-                        <strong>CVPR 2024 Highlight Poster</strong>
-                        <p>Presenting diffusion-based replay research for class-incremental object detection.</p>
                     </div>
                 </div>
                 <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
