@@ -23,13 +23,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Inter:wght@300;400;450;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <!-- Variable-weight ranges: one file per family, and every weight used below (450–800) renders true instead of snapping. -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..600&amp;family=Inter:wght@400..800&amp;family=JetBrains+Mono:wght@400..700&amp;display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="images/profile-riverside.jpeg" fetchpriority="high">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         /* === DESIGN TOKENS (light editorial theme) === */
         :root {
-            --site-header-height: 122px;
+            --site-header-height: 61px;
             --bg-primary: #F8FAFB;
             --bg-secondary: #EEF2F5;
             --bg-card: #FFFFFF;
@@ -57,7 +59,7 @@
             --shadow-md: 0 14px 32px rgba(37, 52, 68, 0.09);
             --shadow-lg: 0 20px 44px rgba(37, 52, 68, 0.12);
             --shadow-xl: 0 28px 64px rgba(37, 52, 68, 0.14);
-            --nav-bg: rgba(250, 251, 252, 0.94);
+            --nav-bg: rgba(250, 251, 252, 0.97);
             --gradient-hero: linear-gradient(135deg, rgba(217,119,87,0.05) 0%, rgba(14,124,102,0.08) 52%, rgba(140,106,184,0.06) 100%);
             --gradient-accent: linear-gradient(135deg, #D97757, #E8B86D);
             --hero-pattern-opacity: 0.22;
@@ -110,11 +112,6 @@
                 radial-gradient(ellipse 34% 22% at 52% 64%, rgba(var(--accent-rgb), 0.01) 0%, transparent 68%);
             opacity: 0.2;
         }
-        @keyframes bg-drift {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-15px, 10px) scale(1.02); }
-            100% { transform: translate(10px, -15px) scale(1); }
-        }
         a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
         a:hover { color: var(--accent-hover); }
         a:focus-visible,
@@ -130,33 +127,28 @@
         /* Story intro removed — visitors go directly to main content */
 
         /* === NAVIGATION === */
+        /* Sticky (in-flow) nav: only the 60px bar stays on screen; the banner above scrolls away.
+           No backdrop-filter — re-blurring animated layers every frame was a major Windows lag source,
+           and at 97% opacity the blur was invisible anyway. */
         nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
             background: var(--nav-bg);
-            backdrop-filter: blur(10px) saturate(120%);
-            -webkit-backdrop-filter: blur(10px) saturate(120%);
             border-bottom: 1px solid var(--border);
-            transition: background var(--transition-slow), box-shadow var(--transition);
+            transition: box-shadow var(--transition);
         }
-        nav.scrolled { box-shadow: var(--shadow-md); }
+        nav.scrolled { box-shadow: 0 6px 18px rgba(37, 52, 68, 0.07); }
 
         .opportunity-banner {
-            background: var(--venue-top); color: var(--bg-card);
-            padding: 0.5rem 1rem; min-height: 38px;
-            display: grid; align-items: center; justify-content: center;
-            grid-template-columns: auto auto;
-            grid-template-areas: 'headline contact' 'expertise expertise';
-            gap: 0.2rem 1.2rem;
-            font-size: 0.8rem; line-height: 1.5;
+            position: relative; z-index: 1001;
+            background: var(--venue-top); color: #fff;
+            padding: 0.45rem 1rem;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+            gap: 0.15rem 1rem;
+            font-size: 0.84rem; line-height: 1.5; text-align: center;
         }
-        .opportunity-banner p { margin: 0; font-weight: 550; text-wrap: balance; }
-        .opportunity-headline { grid-area: headline; }
-        .opportunity-banner .opportunity-expertise {
-            grid-area: expertise; font-size: 0.74rem; font-weight: 400;
-            text-align: center; line-height: 1.5;
-        }
+        .opportunity-banner p { margin: 0; font-weight: 550; }
         .opportunity-banner a {
-            grid-area: contact; color: inherit; font-weight: 700; white-space: nowrap;
+            color: inherit; font-weight: 700; white-space: nowrap;
             text-decoration: underline; text-underline-offset: 3px;
         }
         .opportunity-banner a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
@@ -259,9 +251,9 @@
                 radial-gradient(ellipse 28% 22% at 64% 78%, rgba(var(--accent-rgb), 0.08), transparent 60%);
             opacity: 0.6;
             filter: blur(12px);
-            animation: bg-drift 22s ease-in-out infinite alternate;
-            will-change: transform;
         }
+        /* Hero decorations are intentionally static: the infinite float/glow/pulse animations
+           kept the compositor busy (~100% of a core while idle on software-rastered Windows). */
         .hero-bubble {
             position: absolute;
             left: var(--x, 50%);
@@ -278,12 +270,7 @@
             box-shadow:
                 inset 0 0 30px rgba(255, 255, 255, 0.24),
                 0 18px 42px rgba(37, 52, 68, 0.08);
-            transform: translate3d(-50%, -50%, 0);
-            will-change: transform, opacity;
-            animation:
-                hero-bubble-float var(--duration, 22s) ease-in-out infinite alternate,
-                hero-bubble-glow var(--glow-duration, 16s) ease-in-out infinite;
-            animation-delay: var(--delay, 0s);
+            transform: translate(-50%, -50%);
         }
         .hero-bubble::after {
             content: '';
@@ -377,15 +364,6 @@
             --mobile-opacity-low: 0.12;
             --mobile-opacity-high: 0.18;
         }
-        @keyframes hero-bubble-float {
-            0% { transform: translate3d(-50%, -50%, 0) translate3d(0, 0, 0) scale(0.98); }
-            50% { transform: translate3d(-50%, -50%, 0) translate3d(var(--dx-mid, 11px), var(--dy-mid, -6px), 0) scale(1.02); }
-            100% { transform: translate3d(-50%, -50%, 0) translate3d(var(--dx, 20px), var(--dy, 18px), 0) scale(1.06); }
-        }
-        @keyframes hero-bubble-glow {
-            0%, 100% { opacity: var(--opacity-low, 0.45); filter: saturate(105%); }
-            50% { opacity: var(--opacity-high, 0.58); filter: saturate(122%); }
-        }
         .hero-signal {
             position: absolute;
             left: var(--x, 50%);
@@ -397,8 +375,6 @@
             transform: rotate(var(--rot, 0deg));
             transform-origin: left center;
             opacity: var(--opacity, 0.68);
-            animation: hero-signal-drift var(--duration, 18s) ease-in-out infinite alternate;
-            will-change: transform, opacity;
         }
         .hero-signal::before,
         .hero-signal::after {
@@ -419,18 +395,6 @@
         .hero-signal::after {
             right: -4px;
             background: radial-gradient(circle, rgba(255,255,255,0.96) 0%, rgba(var(--violet-rgb),0.44) 48%, transparent 76%);
-        }
-        .hero-signal-pulse {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 14px;
-            height: 14px;
-            border-radius: 999px;
-            background: radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(var(--teal-rgb),0.52) 42%, rgba(var(--accent-rgb),0.16) 66%, transparent 72%);
-            transform: translate(-50%, -50%);
-            animation: hero-signal-travel var(--travel, 9s) linear infinite;
-            animation-delay: var(--delay, 0s);
         }
         .hero-signal.s1 {
             --x: 56%;
@@ -470,25 +434,8 @@
             --dx: 14px;
             --dy: -10px;
         }
-        @keyframes hero-signal-drift {
-            0% {
-                transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
-                opacity: var(--opacity-low, 0.58);
-            }
-            100% {
-                transform: translate3d(var(--dx, 12px), var(--dy, -10px), 0) rotate(calc(var(--rot, 0deg) + 2deg));
-                opacity: var(--opacity, 0.68);
-            }
-        }
-        @keyframes hero-signal-travel {
-            0% { left: 0%; opacity: 0; }
-            8% { opacity: 0.95; }
-            48% { left: 100%; opacity: 0.8; }
-            60%, 100% { left: 100%; opacity: 0; }
-        }
-
         .hero {
-            position: relative; padding: calc(var(--site-header-height) + 2.4rem) 2rem 2.5rem;
+            position: relative; padding: 2.6rem 2rem 2.5rem;
             max-width: 1120px; margin: 0 auto;
             z-index: 1;
         }
@@ -587,8 +534,7 @@
             font-size: 0.68rem;
             font-weight: 500;
             color: rgba(255,255,255,0.85);
-            background: rgba(0,0,0,0.45);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.55);
             padding: 0.15rem 0.45rem;
             border-radius: 4px;
             z-index: 6;
@@ -743,8 +689,17 @@
             text-wrap: pretty;
         }
         .hero-bio strong {
-            color: var(--gold);
-            font-weight: 700;
+            color: var(--text-primary);
+            font-weight: 650;
+        }
+        /* Always-visible bio: advisor + NAVER AI Lab are the first things reviewers look for,
+           so they no longer sit inside a collapsed <details>. */
+        .hero-lede {
+            font-size: 1rem;
+            margin: 1.1rem 0 1.5rem;
+            padding-top: 1.1rem;
+            border-top: 1px solid rgba(110, 83, 52, 0.14);
+            max-width: 40rem;
         }
         .hero-note-grid {
             display: grid;
@@ -895,7 +850,7 @@
         }
         .hero-bio a {
             color: var(--accent);
-            font-weight: 700;
+            font-weight: 600;
             text-decoration-color: rgba(var(--accent-rgb), 0.48);
             text-underline-offset: 2px;
         }
@@ -1104,10 +1059,10 @@
             align-items: center;
             gap: 0.55rem;
             color: var(--accent);
-            font-size: 0.68rem;
-            letter-spacing: 0.14em;
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: 750;
         }
         .hero-band-kicker::before {
             content: '';
@@ -1131,8 +1086,8 @@
             font-size: 0.9rem;
         }
         .hero-band-list .news-badge {
-            padding: 0.16rem 0.48rem;
-            font-size: 0.72rem;
+            padding: 0.16rem 0.5rem;
+            font-size: 0.76rem;
         }
         .hero-band-list .news-item:first-child {
             padding-top: 0;
@@ -1437,7 +1392,7 @@
 
         .pub-citations {
             color: var(--text-muted);
-            font-size: 0.76rem;
+            font-size: 0.82rem;
             font-weight: 600;
             text-decoration: none;
             transition: var(--transition);
@@ -1745,7 +1700,7 @@
             color: var(--text-muted); flex-shrink: 0; width: 38px;
         }
         .award-text { color: var(--text-secondary); line-height: 1.55; font-size: 0.96rem; }
-        .award-text strong { color: var(--gold); font-weight: 600; }
+        .award-text strong { color: var(--text-primary); font-weight: 650; }
 
         /* === ACTIVITIES === */
         .activity-grid {
@@ -1784,25 +1739,22 @@
         }
         .gallery-item {
             aspect-ratio: 4/3; border-radius: var(--radius-md); overflow: hidden;
-            position: relative; background: linear-gradient(180deg, rgba(255, 250, 240, 0.96), rgba(243, 232, 210, 0.92)); cursor: pointer;
-            border: 1px solid var(--surface-border); transition: var(--transition);
+            position: relative; background: linear-gradient(180deg, rgba(255, 250, 240, 0.96), rgba(243, 232, 210, 0.92));
+            border: 1px solid var(--surface-border); transition: box-shadow var(--transition), transform var(--transition);
         }
+        button.gallery-item { padding: 0; font: inherit; color: inherit; text-align: left; width: 100%; cursor: zoom-in; }
         .gallery-item:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .gallery-item:focus-visible { outline: 2px solid var(--venue-top); outline-offset: 3px; }
         .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+            width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.45s ease;
         }
-        .gallery-item:hover img { transform: scale(1.15); }
+        .gallery-item:hover img { transform: scale(1.04); }
         .gallery-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 2.5rem 0.75rem 0.65rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: white; font-size: 0.88rem; font-weight: 500;
-            opacity: 0; transform: translateY(4px); transition: var(--transition);
+            padding: 2rem 0.75rem 0.6rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.68));
+            color: white; font-size: 0.82rem; font-weight: 550; line-height: 1.35;
         }
-        .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
-        button.gallery-item { padding: 0; font: inherit; text-align: left; width: 100%; }
-        .gallery-item.event-photo-trigger .gallery-caption { opacity: 1; transform: none; font-size: 0.78rem; }
-        .gallery-item.event-photo-trigger:hover img { transform: none; }
         .event-photo-link { border: 0; padding: 0; background: none; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
         .event-photo-trigger:focus-visible { outline: 2px solid var(--venue-top); outline-offset: 3px; }
         .event-photo-dialog {
@@ -1881,132 +1833,30 @@
         .reveal-delay-4 { transition-delay: 0.4s; }
 
         /* === MESH GRADIENT BACKGROUND === */
+        /* z-index -1: paint behind all content. At 0 it sat above every non-positioned
+           element (section headings, awards, teaching, footer) and washed out their text. */
         #starfield-root {
             position: fixed;
             inset: 0;
-            z-index: 0;
+            z-index: -1;
             pointer-events: none;
             overflow: hidden;
         }
-        #bubble-canvas,
-        #starfield-fallback {
+        #bubble-canvas {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-        }
-        #bubble-canvas {
             display: block;
-            z-index: 1;
-        }
-        #starfield-fallback {
-            z-index: 0;
-            opacity: 0;
-            transition: opacity 0.45s ease;
-        }
-        #starfield-fallback .fallback-star {
-            position: absolute;
-            left: 0;
-            top: 0;
-            border-radius: 999px;
-            transform: translate3d(var(--x), var(--y), 0);
-            animation: fallback-drift var(--drift, 24s) linear infinite;
-            --glow-size: 9px;
-            --twinkle-low: 0.45;
-            --twinkle-high: 0.73;
-            will-change: transform;
-        }
-        #starfield-fallback .fallback-star.layer-near {
-            --glow-size: 16px;
-            --glow-wide: 32px;
-        }
-        #starfield-fallback .fallback-star.layer-far {
-            --glow-size: 6px;
-        }
-        #starfield-fallback .fallback-star::before {
-            content: '';
-            display: block;
-            width: var(--size, 2px);
-            height: var(--size, 2px);
-            border-radius: inherit;
-            opacity: var(--opacity, 0.55);
-            background: rgba(var(--star-rgb, 248, 247, 255), 0.96);
-            box-shadow: 0 0 var(--glow-size, 9px) rgba(var(--star-rgb, 248, 247, 255), 0.38);
-            animation: fallback-twinkle var(--twinkle, 4.8s) ease-in-out infinite;
-            animation-delay: var(--delay, 0s);
-            will-change: opacity, transform;
-        }
-        #starfield-fallback .fallback-star.layer-near::before {
-            box-shadow:
-                0 0 var(--glow-size) rgba(var(--star-rgb, 248, 247, 255), 0.42),
-                0 0 var(--glow-wide) rgba(var(--star-rgb, 248, 247, 255), 0.14);
-        }
-        #starfield-fallback .fallback-star.layer-far::before {
-            box-shadow: 0 0 var(--glow-size) rgba(var(--star-rgb, 248, 247, 255), 0.22);
-        }
-        body.starfield-fallback-active #starfield-fallback { opacity: 1; }
-        body.starfield-fallback-active #bubble-canvas { opacity: 0 !important; }
-        #starfield-qa {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 12000;
-            min-width: 220px;
-            padding: 0.7rem 0.82rem;
-            border-radius: 14px;
-            border: 1px solid rgba(129, 140, 248, 0.28);
-            background: rgba(8, 10, 18, 0.82);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
-            color: #f8fafc;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            line-height: 1.5;
-            letter-spacing: 0.01em;
-        }
-        #starfield-qa[hidden] { display: none !important; }
-        #starfield-qa .qa-label {
-            display: inline-block;
-            margin-bottom: 0.35rem;
-            padding: 0.14rem 0.48rem;
-            border-radius: 999px;
-            background: rgba(129, 140, 248, 0.16);
-            color: #c7d2fe;
-            font-size: 0.64rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-        #starfield-qa .qa-line { color: rgba(226, 232, 240, 0.88); }
-        #starfield-qa .qa-line strong { color: #f8fafc; font-weight: 600; }
-        @keyframes fallback-drift {
-            0%, 100% { transform: translate3d(var(--x), var(--y), 0); }
-            50% { transform: translate3d(calc(var(--x) + var(--drift-x, 0px)), calc(var(--y) + var(--drift-y, 0px)), 0); }
-        }
-        @keyframes fallback-twinkle {
-            0%, 100% {
-                opacity: var(--twinkle-low, 0.45);
-                transform: scale(0.92);
-            }
-            50% {
-                opacity: var(--twinkle-high, 0.73);
-                transform: scale(1.08);
-            }
         }
 
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             body { font-size: 16px; line-height: 1.68; }
-            :root { --site-header-height: 150px; }
-            .opportunity-banner { min-height: 54px; gap: 0.3rem 0.75rem; font-size: 0.75rem; grid-template-columns: minmax(0, 1fr) auto; }
-            .opportunity-banner .opportunity-expertise { text-align: left; font-size: 0.72rem; }
-            .hero { padding: calc(var(--site-header-height) + 0.85rem) 1rem 1.55rem; }
+            .opportunity-banner { font-size: 0.8rem; gap: 0.1rem 0.6rem; }
+            .hero { padding: 1.6rem 1rem 1.55rem; }
             .hero-bg::before { opacity: 0.36; }
-            .hero-bubble {
-                --opacity-low: var(--mobile-opacity-low, 0.3);
-                --opacity-high: var(--mobile-opacity-high, 0.38);
-            }
+            .hero-bubble { opacity: var(--mobile-opacity-low, 0.3); }
             .hero-signal { display: none; }
             .hero-bubble.c,
             .hero-bubble.e { display: none; }
@@ -2017,10 +1867,11 @@
             .hero-photo-wrap { width: 100%; }
             .hero-photo { width: 100%; aspect-ratio: 4 / 4.85; }
             .hero-photo-caption { margin-top: 0.85rem; }
-            .hero-kicker { font-size: 0.68rem; letter-spacing: 0.11em; }
+            .hero-kicker { font-size: 0.74rem; letter-spacing: 0.1em; }
             .hero-content h1 { font-size: 2.95rem; }
             .hero-highlights { gap: 0.38rem 0.9rem; margin-bottom: 1rem; }
-            .hero-pill { font-size: 0.82rem; }
+            .hero-pill { font-size: 0.82rem; padding: 0.3rem 0.62rem; border: 1px solid var(--border); border-radius: 999px; background: rgba(255, 255, 255, 0.72); }
+            .hero-pill + .hero-pill::before { display: none; }
             .hero-bio { max-width: 100%; font-size: 0.95rem; line-height: 1.68; }
             .hero-meta-strip { grid-template-columns: minmax(0, 1fr); gap: 0.8rem; margin: 1rem 0 1.1rem; padding: 0.85rem 0; }
             .hero-links { justify-content: flex-start; margin-top: 1rem; gap: 0.45rem 0.7rem; }
@@ -2064,7 +1915,7 @@
             .citation-label {
                 width: 100%;
                 margin-left: 0;
-                font-size: 0.71rem;
+                font-size: 0.74rem;
                 letter-spacing: 0.07em;
             }
             .pub-list { gap: 0.75rem; }
@@ -2140,7 +1991,7 @@
                 padding: 0.78rem 0.82rem 0.88rem;
             }
             .project-kicker {
-                font-size: 0.62rem;
+                font-size: 0.7rem;
                 letter-spacing: 0.07em;
             }
             .project-title { font-size: 0.98rem; }
@@ -2152,7 +2003,7 @@
             .project-tags span {
                 min-height: 1.35rem;
                 padding: 0.16rem 0.42rem;
-                font-size: 0.68rem;
+                font-size: 0.72rem;
             }
             .project-link {
                 min-height: 38px;
@@ -2162,7 +2013,8 @@
         }
 
         @media (max-width: 480px) {
-            .hero { padding: calc(var(--site-header-height) + 0.85rem) 0.95rem 1.7rem; }
+            .banner-extra { display: none; }
+            .hero { padding: 1.5rem 0.95rem 1.7rem; }
             .hero-bubble.b,
             .hero-bubble.d { display: none; }
             .hero-content h1 { font-size: 2.35rem; }
@@ -2198,7 +2050,6 @@
             .hero-bg::before,
             .hero-bubble,
             .hero-signal,
-            .hero-signal-pulse,
             .citation-number,
             .citation-plus,
             .citation-stat.counting,
@@ -2246,18 +2097,15 @@
 <body>
 
 <div id="starfield-root" aria-hidden="true">
-    <div id="starfield-fallback"></div>
     <canvas id="bubble-canvas"></canvas>
-    <div id="starfield-qa" hidden></div>
 </div>
 
 <!-- === NAVIGATION === -->
+<div class="opportunity-banner" role="note" aria-label="Research internship availability">
+    <p class="opportunity-headline">Actively seeking research internships<span class="banner-extra"> in industry and academia</span>.</p>
+    <a href="mailto:jjunsssk@unist.ac.kr">Message me</a>
+</div>
 <nav id="navbar">
-    <div class="opportunity-banner" aria-label="Research internship availability">
-        <p class="opportunity-headline">Actively seeking research internships in industry and academia.</p>
-        <a href="mailto:jjunsssk@unist.ac.kr">Message me</a>
-        <p class="opportunity-expertise"><strong>UNIST AIGS</strong> &middot; Continual Learning &middot; Open-world Detection &middot; Vision-Language &amp; Diffusion</p>
-    </div>
     <div class="nav-inner">
         <a href="#" class="nav-logo">Junsu Kim</a>
         <div class="nav-right">
@@ -2286,9 +2134,9 @@
         <span class="hero-bubble c"></span>
         <span class="hero-bubble d"></span>
         <span class="hero-bubble e"></span>
-        <span class="hero-signal s1"><span class="hero-signal-pulse"></span></span>
-        <span class="hero-signal s2"><span class="hero-signal-pulse"></span></span>
-        <span class="hero-signal s3"><span class="hero-signal-pulse"></span></span>
+        <span class="hero-signal s1"></span>
+        <span class="hero-signal s2"></span>
+        <span class="hero-signal s3"></span>
     </div>
     <section class="hero" id="about">
         <div class="hero-grid">
@@ -2300,12 +2148,13 @@
                     <span class="hero-pill">Open-world Detection</span>
                     <span class="hero-pill">Vision-Language + Diffusion</span>
                 </div>
-                <div class="hero-meta-strip reveal reveal-delay-2">
-                    <div class="hero-meta-item">
-                        <span class="hero-meta-label">Current Base</span>
-                        <span class="hero-meta-value">UNIST Busan Centum Campus</span>
-                    </div>
-                </div>
+                <p class="hero-bio hero-lede reveal reveal-delay-2">
+                    I am a Combined MS/PhD student at UNIST AIGS, advised by
+                    <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>, and based at the UNIST Busan Centum Campus.
+                    Previously, I interned at <strong>NAVER AI Lab</strong> with
+                    <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, studying backbone architectures and the internal representations of large-scale models.
+                    I also serve as an <strong>NVIDIA AI Ambassador</strong>.
+                </p>
                 <div class="intro-explorer" aria-label="Meet Junsu">
                     <div class="intro-tabs" role="tablist" aria-label="Research, building, and applied AI">
                         <button type="button" class="intro-tab" id="intro-tab-research" role="tab" aria-selected="true" aria-controls="intro-research"><i class="fas fa-microscope" aria-hidden="true"></i>Research</button>
@@ -2330,19 +2179,6 @@
                         </div>
                     </div>
                 </div>
-                <details class="intro-background">
-                    <summary>Background &amp; collaborators</summary>
-                    <div class="hero-prose">
-                    <p class="hero-bio">
-                        I am a Combined MS/PhD student at UNIST AIGS, advised by
-                        <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>. My work focuses on continual learning, open-world detection, and vision-language systems.
-                    </p>
-                    <p class="hero-bio">
-                        Previously, I interned at <strong>NAVER AI Lab</strong> advised by
-                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, where I studied backbone architectures and analyzed internal representations of large-scale models. I also serve as an <strong>NVIDIA AI Ambassador</strong>, with a strong interest in applied AI for everyday problems.
-                    </p>
-                    </div>
-                </details>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link"><i class="fas fa-envelope"></i> Email</a>
                     <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer" class="hero-link"><i class="fas fa-graduation-cap"></i> Scholar</a>
@@ -2407,7 +2243,7 @@
         <div class="section-line"></div>
     </div>
     <div class="citation-stat">
-        <span class="citation-number" data-target="163">0</span><span class="citation-plus">+</span>
+        <span class="citation-number" data-target="163">163</span><span class="citation-plus">+</span>
         <span class="citation-label">Total Citations</span>
     </div>
     <script>
@@ -2421,6 +2257,16 @@
 
         const target = parseInt(citNum.dataset.target || '0', 10);
         if (Number.isNaN(target)) return;
+
+        // The real number ships in the HTML (crawlers, link previews and no-JS readers see 163, not 0).
+        // Only zero it for the count-up when it is still off-screen; if it is already visible, leave it.
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const initialRect = citationStat.getBoundingClientRect();
+        if (reduceMotion || (initialRect.top < window.innerHeight && initialRect.bottom > 0)) {
+            citNum.textContent = target;
+            return;
+        }
+        citNum.textContent = '0';
 
         let started = false;
         let startTime = null;
@@ -2523,7 +2369,7 @@
 
             <!-- BeeHunters / ECCV 2026 Challenge Technical Report -->
             <div class="pub-card" data-venue="arxiv" data-year="2026">
-                <div class="pub-thumb"><img src="images/projects/beehunters.png?v=2" alt="BeeHunters tiny pollinator detection figure" loading="lazy" decoding="async" width="1200" height="630"></div>
+                <div class="pub-thumb"><img src="images/projects/beehunters.jpg" alt="BeeHunters tiny pollinator detection figure" loading="lazy" decoding="async" width="1200" height="630"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ECCV 2026 Challenge · Technical Report</span>
@@ -2537,7 +2383,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/projects/beehunters.png?v=2" alt="BeeHunters project figure" loading="lazy" decoding="async" width="1200" height="630"></div>
+                        <div class="pub-summary-img"><img src="images/projects/beehunters.jpg" alt="BeeHunters project figure" loading="lazy" decoding="async" width="1200" height="630"></div>
                         <div class="pub-summary-text">A single-model, first-place BuzzSpot Challenge solution for tiny pollinator detection, combining Co-DINO with a Swin-L backbone, crop-mosaic training, and class-weighted ETF supervision.</div>
                     </div>
                 </div>
@@ -2545,7 +2391,7 @@
 
             <!-- B-RIGHT ??BMVC 2025 -->
             <div class="pub-card" data-venue="main" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/thumbs/bright.png" alt="B-RIGHT figure" loading="lazy" decoding="async" width="513" height="380"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/bright.jpg" alt="B-RIGHT figure" loading="lazy" decoding="async" width="513" height="380"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">BMVC 2025</span>
@@ -2558,7 +2404,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/bright.png" alt="B-RIGHT Figure" loading="lazy" decoding="async" width="513" height="380"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/bright.jpg" alt="B-RIGHT Figure" loading="lazy" decoding="async" width="513" height="380"></div>
                         <div class="pub-summary-text">A systematic re-evaluation of existing HOI benchmarks, revealing integrity issues and proposing new evaluation protocols for generalized human-object interaction testing.</div>
                     </div>
                 </div>
@@ -2566,7 +2412,7 @@
 
             <!-- FSCIL Synthetic ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/thumbs/fscil-synthetic.png" alt="FSCIL Synthetic figure" loading="lazy" decoding="async" width="560" height="336"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/fscil-synthetic.jpg" alt="FSCIL Synthetic figure" loading="lazy" decoding="async" width="560" height="336"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -2580,7 +2426,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/fscil-synthetic.png" alt="FSCIL Synthetic Figure" loading="lazy" decoding="async" width="560" height="336"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/fscil-synthetic.jpg" alt="FSCIL Synthetic Figure" loading="lazy" decoding="async" width="560" height="336"></div>
                         <div class="pub-summary-text">Investigates whether synthetic image generation can effectively address catastrophic forgetting in few-shot class-incremental learning, challenging common assumptions in the field.</div>
                     </div>
                 </div>
@@ -2588,7 +2434,7 @@
 
             <!-- RPE ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/thumbs/rpe.png" alt="RPE figure" loading="lazy" decoding="async" width="560" height="336"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/rpe.jpg" alt="RPE figure" loading="lazy" decoding="async" width="560" height="336"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
@@ -2602,7 +2448,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/rpe.png" alt="RPE Figure" loading="lazy" decoding="async" width="560" height="336"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/rpe.jpg" alt="RPE Figure" loading="lazy" decoding="async" width="560" height="336"></div>
                         <div class="pub-summary-text">Audits the RPE benchmark, uncovers annotation and image-index mismatches that undermine reproducibility, and releases corrected ground-truth annotations with evaluation code.</div>
                     </div>
                 </div>
@@ -2610,7 +2456,7 @@
 
             <!-- Diffusion FSCIL ??ArXiv -->
             <div class="pub-card" data-venue="arxiv" data-year="2025">
-                <div class="pub-thumb"><img src="images/papers/thumbs/diffusion-fscil.png" alt="Diffusion FSCIL figure" loading="lazy" decoding="async" width="560" height="355"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/diffusion-fscil.jpg" alt="Diffusion FSCIL figure" loading="lazy" decoding="async" width="560" height="355"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2025</span>
@@ -2624,7 +2470,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/diffusion-fscil.png" alt="Diffusion FSCIL Figure" loading="lazy" decoding="async" width="560" height="355"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/diffusion-fscil.jpg" alt="Diffusion FSCIL Figure" loading="lazy" decoding="async" width="560" height="355"></div>
                         <div class="pub-summary-text">Bridges diffusion models with few-shot class incremental learning, leveraging generative priors to overcome data scarcity and catastrophic forgetting simultaneously.</div>
                     </div>
                 </div>
@@ -2632,7 +2478,7 @@
 
             <!-- SDDGR ??CVPR 2024 Highlight -->
             <div class="pub-card highlight" id="paper-sddgr" data-venue="main" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/thumbs/sddgr.png" alt="SDDGR figure" loading="lazy" decoding="async" width="560" height="376"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/sddgr.jpg" alt="SDDGR figure" loading="lazy" decoding="async" width="560" height="376"></div>
                 <div class="pub-highlight-label"><i class="fas fa-star"></i> CVPR Highlight &middot; Top 2.8%</div>
                 <div class="pub-meta">
                     <span class="pub-venue top">CVPR 2024</span>
@@ -2648,7 +2494,7 @@
                     </button>
                     <div class="pub-summary-popup">
                         <div class="pub-summary-img">
-                            <img src="images/papers/thumbs/sddgr.png" alt="SDDGR Figure" loading="lazy" decoding="async" width="560" height="376">
+                            <img src="images/papers/thumbs/sddgr.jpg" alt="SDDGR Figure" loading="lazy" decoding="async" width="560" height="376">
                         </div>
                         <div class="pub-summary-text">
                             Proposes using Stable Diffusion as a generative replay mechanism for class incremental object detection, effectively mitigating catastrophic forgetting while maintaining high-quality synthetic data generation.
@@ -2659,7 +2505,7 @@
 
             <!-- VLM-PL ??CVPR-W 2024 -->
             <div class="pub-card" data-venue="workshop" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/thumbs/vlmpl.png" alt="VLM-PL figure" loading="lazy" decoding="async" width="560" height="348"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/vlmpl.jpg" alt="VLM-PL figure" loading="lazy" decoding="async" width="560" height="348"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">CVPR-W 2024</span>
@@ -2673,7 +2519,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/vlmpl.png" alt="VLM-PL Figure" loading="lazy" decoding="async" width="560" height="348"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/vlmpl.jpg" alt="VLM-PL Figure" loading="lazy" decoding="async" width="560" height="348"></div>
                         <div class="pub-summary-text">Leverages vision-language models for advanced pseudo labeling in class incremental object detection, improving detection accuracy on novel classes without forgetting.</div>
                     </div>
                 </div>
@@ -2681,7 +2527,7 @@
 
             <!-- ICASSP 2024 -->
             <div class="pub-card" data-venue="main" data-year="2024">
-                <div class="pub-thumb"><img src="images/papers/thumbs/icassp.png" alt="ICASSP figure" loading="lazy" decoding="async" width="560" height="343"></div>
+                <div class="pub-thumb"><img src="images/papers/thumbs/icassp.jpg" alt="ICASSP figure" loading="lazy" decoding="async" width="560" height="343"></div>
                 <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">ICASSP 2024</span>
@@ -2695,7 +2541,7 @@
                         <i class="fas fa-eye"></i> Summary
                     </button>
                     <div class="pub-summary-popup">
-                        <div class="pub-summary-img"><img src="images/papers/thumbs/icassp.png" alt="ICASSP Figure" loading="lazy" decoding="async" width="560" height="343"></div>
+                        <div class="pub-summary-img"><img src="images/papers/thumbs/icassp.jpg" alt="ICASSP Figure" loading="lazy" decoding="async" width="560" height="343"></div>
                         <div class="pub-summary-text">Introduces a class-wise buffer management strategy for incremental object detection that optimizes exemplar selection and training to balance old and new class performance.</div>
                     </div>
                 </div>
@@ -2791,7 +2637,7 @@
     <div class="project-grid reveal">
         <article class="project-card" id="project-beehunters" data-project-kind="research" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" aria-label="Open BeeHunters on GitHub">
-                <img src="images/projects/beehunters.png?v=2" alt="BeeHunters tiny pollinator detection project preview" loading="lazy" decoding="async" width="1200" height="630">
+                <img src="images/projects/beehunters.jpg" alt="BeeHunters tiny pollinator detection project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
             <div class="project-body">
                 <div class="project-kicker">Challenge winner</div>
@@ -2850,7 +2696,7 @@
 
         <article class="project-card" id="project-flights" data-project-kind="tools" tabindex="-1">
             <a class="project-media" href="https://github.com/jjunsss/cheapest-flights" target="_blank" rel="noopener noreferrer" aria-label="Open Cheapest Flights on GitHub">
-                <img src="images/projects/cheapest-flights.png" alt="Cheapest Flights project preview" loading="lazy" decoding="async" width="1200" height="630">
+                <img src="images/projects/cheapest-flights.jpg" alt="Cheapest Flights project preview" loading="lazy" decoding="async" width="1200" height="630">
             </a>
             <div class="project-body">
                 <div class="project-kicker">Travel search</div>
@@ -3045,38 +2891,38 @@
             <img src="images/eccv2026-talk-thumb.jpg" alt="Junsu Kim presenting BeeHunters at CVPPA, ECCV 2026, with the detector comparison slide and audience visible" width="800" height="600" loading="lazy" decoding="async">
             <span class="gallery-caption">ECCV 2026 &middot; CVPPA Talk</span>
         </button>
-        <div class="gallery-item">
-            <img src="images/cvpr2024.jpg" alt="CVPR 2024">
-            <div class="gallery-caption">CVPR 2024 &middot; Highlight Poster</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/cvpr2024-workshop.jpg" alt="CVPR 2024 Workshop">
-            <div class="gallery-caption">CVPR 2024 &middot; Workshop</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/BMVC2025.png" alt="BMVC 2025">
-            <div class="gallery-caption">BMVC 2025</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/ICCV2025.png" alt="ICCV 2025">
-            <div class="gallery-caption">ICCV 2025 &middot; Workshop</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/kccv2024.jpg" alt="KCCV 2024">
-            <div class="gallery-caption">KCCV 2024 &middot; Poster</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/symposium2024.png" alt="Innovation Symposium 2024">
-            <div class="gallery-caption">Digital Innovators Symposium 2024</div>
-        </div>
-        <div class="gallery-item">
-            <img src="images/ICASSP2024.jpg" alt="ICASSP 2024">
-            <div class="gallery-caption">ICASSP 2024 &middot; Seoul</div>
-        </div>
-        <div class="gallery-item" role="button" tabindex="0" onclick="document.getElementById('nvidiaDirectoryLightbox').classList.add('show')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); document.getElementById('nvidiaDirectoryLightbox').classList.add('show'); }">
-            <img src="images/nvidia-instructor-directory-gallery.jpg" alt="NVIDIA DLI Certified Instructor Directory gallery preview" loading="lazy" decoding="async">
-            <div class="gallery-caption">NVIDIA DLI &middot; Certified Instructor Directory</div>
-        </div>
+        <button type="button" class="gallery-item gallery-open" data-full="images/cvpr2024.jpg" data-caption="CVPR 2024 &middot; Highlight Poster" aria-haspopup="dialog">
+            <img src="images/cvpr2024.jpg" alt="CVPR 2024 Highlight poster session" width="808" height="805" loading="lazy" decoding="async">
+            <span class="gallery-caption">CVPR 2024 &middot; Highlight Poster</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/cvpr2024-workshop.jpg" data-caption="CVPR 2024 &middot; Workshop" aria-haspopup="dialog">
+            <img src="images/cvpr2024-workshop.jpg" alt="CVPR 2024 workshop poster session" width="290" height="290" loading="lazy" decoding="async">
+            <span class="gallery-caption">CVPR 2024 &middot; Workshop</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/BMVC2025.jpg" data-caption="BMVC 2025" aria-haspopup="dialog">
+            <img src="images/BMVC2025.jpg" alt="BMVC 2025" width="400" height="602" loading="lazy" decoding="async">
+            <span class="gallery-caption">BMVC 2025</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/ICCV2025.jpg" data-caption="ICCV 2025 &middot; Workshop" aria-haspopup="dialog">
+            <img src="images/ICCV2025.jpg" alt="ICCV 2025 workshop" width="400" height="254" loading="lazy" decoding="async">
+            <span class="gallery-caption">ICCV 2025 &middot; Workshop</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/kccv2024.jpg" data-caption="KCCV 2024 &middot; Poster" aria-haspopup="dialog">
+            <img src="images/kccv2024.jpg" alt="KCCV 2024 poster session" width="1000" height="1010" loading="lazy" decoding="async">
+            <span class="gallery-caption">KCCV 2024 &middot; Poster</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/symposium2024.jpg" data-caption="Digital Innovators Symposium 2024" aria-haspopup="dialog">
+            <img src="images/symposium2024.jpg" alt="Digital Innovators Symposium 2024" width="1000" height="1003" loading="lazy" decoding="async">
+            <span class="gallery-caption">Digital Innovators Symposium 2024</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/ICASSP2024.jpg" data-caption="ICASSP 2024 &middot; Seoul" aria-haspopup="dialog">
+            <img src="images/ICASSP2024.jpg" alt="ICASSP 2024, Seoul" width="400" height="533" loading="lazy" decoding="async">
+            <span class="gallery-caption">ICASSP 2024 &middot; Seoul</span>
+        </button>
+        <button type="button" class="gallery-item gallery-open" data-full="images/nvidia-instructor-directory.jpg" data-caption="NVIDIA DLI &middot; Certified Instructor Directory" aria-haspopup="dialog">
+            <img src="images/nvidia-instructor-directory-gallery.jpg" alt="NVIDIA DLI Certified Instructor Directory gallery preview" width="1200" height="900" loading="lazy" decoding="async">
+            <span class="gallery-caption">NVIDIA DLI &middot; Certified Instructor Directory</span>
+        </button>
     </div>
 </section>
 
@@ -3106,6 +2952,13 @@
         <form method="dialog"><button type="submit" autofocus>Close</button></form>
     </div>
     <img data-src="images/eccv2026-talk.jpg" alt="Junsu Kim presenting the BeeHunters detector comparison at CVPPA, ECCV 2026" width="2000" height="1500" decoding="async">
+</dialog>
+<dialog id="galleryDialog" class="event-photo-dialog" aria-labelledby="galleryDialogTitle">
+    <div class="event-photo-dialog-header">
+        <h2 id="galleryDialogTitle"></h2>
+        <form method="dialog"><button type="submit" autofocus>Close</button></form>
+    </div>
+    <img alt="" decoding="async">
 </dialog>
 <div id="naverLightbox" class="photo-lightbox" onclick="this.classList.remove('show')">
     <img src="images/naver-ai-lab.jpg" alt="Junsu Kim at NAVER AI Lab" onclick="event.stopPropagation()">
@@ -3339,10 +3192,28 @@
             eccvTalkDialog.showModal();
         });
     });
-    eccvTalkDialog.addEventListener('click', event => {
-        const rect = eccvTalkDialog.getBoundingClientRect();
-        if (event.target === eccvTalkDialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) eccvTalkDialog.close();
+    const closeOnBackdrop = dialog => dialog.addEventListener('click', event => {
+        const rect = dialog.getBoundingClientRect();
+        if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
     });
+    closeOnBackdrop(eccvTalkDialog);
+
+    // Gallery tiles share one dialog; the full image loads only when opened.
+    const galleryDialog = document.getElementById('galleryDialog');
+    if (galleryDialog) {
+        const galleryImg = galleryDialog.querySelector('img');
+        const galleryTitle = galleryDialog.querySelector('h2');
+        document.querySelectorAll('.gallery-open').forEach(tile => {
+            tile.addEventListener('click', () => {
+                const thumb = tile.querySelector('img');
+                galleryImg.src = tile.dataset.full;
+                galleryImg.alt = thumb ? thumb.alt : '';
+                galleryTitle.textContent = tile.dataset.caption || '';
+                galleryDialog.showModal();
+            });
+        });
+        closeOnBackdrop(galleryDialog);
+    }
 
     // Close lightbox on Escape
     document.addEventListener('keydown', (e) => {

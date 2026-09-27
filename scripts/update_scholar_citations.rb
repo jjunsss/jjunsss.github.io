@@ -26,7 +26,7 @@ count =
 abort("Could not extract citation count from Google Scholar HTML") unless count
 
 updated_html =
-  html.sub(/(<span class="citation-number" data-target=")\d+(">\d*<\/span>)/, "\\1#{count}\\2")
+  html.sub(/(<span class="citation-number" data-target=")\d+(">)\d*(<\/span>)/, "\\1#{count}\\2#{count}\\3")
 
 abort("Could not find the citation number element in index.html") if updated_html == html && !html.match?(/data-target="#{Regexp.escape(count)}"/)
 
