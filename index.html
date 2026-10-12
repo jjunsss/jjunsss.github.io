@@ -1534,6 +1534,7 @@
         .press-also a:hover { color: var(--accent); border-color: var(--accent); }
         .press-thumb { grid-area: thumb; display: block; aspect-ratio: 4 / 3; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-light); background: var(--bg-secondary); }
         .press-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .press-item.no-thumb .press-body { grid-column: 2 / -1; }
         .press-item:target { background: linear-gradient(90deg, rgba(var(--teal-rgb), 0.06), transparent 70%); }
         @media (max-width: 768px) {
             .press-item {
@@ -1542,6 +1543,7 @@
                 gap: 0.25rem 0.9rem; padding: 1rem 0;
             }
             .press-headline { font-size: 0.98rem; }
+            .press-item.no-thumb .press-body { grid-column: 1 / -1; }
             .press-also a { padding: 0.3rem 0.65rem; }
         }
 
@@ -2403,7 +2405,7 @@
                 </div>
                 <div class="pub-title">Multi-Task Learning Approach to Autonomous Driving Techniques</div>
                 <div class="pub-authors">I. Lee, <span class="me">J. Kim</span>, H. Lee, Y. Kim, D. Lee, H. Lee</div>
-                <div class="pub-links"></div>
+                <div class="pub-links"><a href="https://www.busan.com/view/busan/view.php?code=20220109000025" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a></div>
             </div>
 
             <!-- KICS Summer 2021 — Best Paper -->
@@ -2414,7 +2416,7 @@
                 </div>
                 <div class="pub-title">Deep Learning-Based Self-Driving Systems for Swarm Vehicles</div>
                 <div class="pub-authors">H. Kim, <span class="me">J. Kim</span>, I. Lee, H. Lee</div>
-                <div class="pub-links"></div>
+                <div class="pub-links"><a href="https://www.busan.com/view/busan/view.php?code=20220109000025" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a></div>
             </div>
 
             <!-- IEMEK ICT 2021 — Best Paper -->
@@ -2702,6 +2704,14 @@
                 <div class="press-also"><span>Also in</span><a href="https://techxplore.com/news/2024-06-advances-ai-technology-classification.html" target="_blank" rel="noopener noreferrer">TechXplore</a><a href="https://www.sciencetimes.co.kr/news/unist-%EA%B8%B0%EC%A1%B4-%EC%A7%80%EC%8B%9D-%EC%9C%A0%EC%A7%80%ED%95%98%EB%A9%B0-%EC%83%88-%EC%A0%95%EB%B3%B4-%ED%95%99%EC%8A%B5%ED%95%98%EB%8A%94-ai-%EA%B8%B0%EC%88%A0-%EA%B0%9C%EB%B0%9C/?cat=16933" target="_blank" rel="noopener noreferrer">사이언스타임즈</a><a href="https://www.busan.com/view/busan/view.php?code=2024062017381726262" target="_blank" rel="noopener noreferrer">부산일보</a><a href="https://www.miragenews.com/ai-tech-breakthrough-enhances-object-detection-1265851/" target="_blank" rel="noopener noreferrer">Mirage News</a></div>
             </div>
             <a class="press-thumb" href="https://news.unist.ac.kr/a-breakthrough-in-ai-technology-for-improved-object-detection-and-classification/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><img src="images/cvpr2024.jpg" alt="" width="808" height="805" loading="lazy" decoding="async"></a>
+        </article>
+        <article class="press-item no-thumb" id="press-pknu2022">
+            <time class="press-date" datetime="2022-01">Jan 2022</time>
+            <div class="press-body">
+                <p class="press-context">PKNU &middot; Paper awards from IEIE and KICS for autonomous-driving research</p>
+                <h3 class="press-headline" lang="ko"><a href="https://www.busan.com/view/busan/view.php?code=20220109000025" target="_blank" rel="noopener noreferrer">부경대 학생 팀, 2개 학회서 논문상</a></h3>
+                <p class="press-source">부산일보</p>
+            </div>
         </article>
     </div>
 </section>
