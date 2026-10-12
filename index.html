@@ -1508,6 +1508,43 @@
             .activity-card time { font-size: 0.72rem; white-space: nowrap; }
         }
 
+        /* === PRESS === */
+        .press-list { border-top: 1px solid var(--border); }
+        .press-item {
+            display: grid;
+            grid-template-columns: 6rem minmax(0, 1fr) 9.5rem;
+            grid-template-areas: 'date body thumb';
+            gap: 0.3rem 1.5rem; align-items: start;
+            padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+        }
+        .press-date { grid-area: date; padding-top: 0.15rem; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); }
+        .press-body { grid-area: body; min-width: 0; }
+        .press-context { font-size: 0.8rem; font-weight: 650; color: var(--venue-top); margin-bottom: 0.3rem; }
+        .press-headline { font-size: 1.06rem; font-weight: 650; line-height: 1.45; margin-bottom: 0.25rem; text-wrap: pretty; }
+        .press-headline a { color: var(--text-primary); text-decoration: underline; text-decoration-color: rgba(var(--accent-rgb), 0.3); text-underline-offset: 4px; }
+        .press-headline a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+        .press-source { font-size: 0.88rem; font-weight: 600; color: var(--text-secondary); }
+        .press-also { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.4rem; margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-muted); }
+        .press-also span { margin-right: 0.15rem; }
+        .press-also a {
+            padding: 0.16rem 0.6rem; border: 1px solid var(--border); border-radius: 999px;
+            background: rgba(255, 255, 255, 0.9); color: var(--text-secondary); font-weight: 550;
+            transition: color var(--transition), border-color var(--transition);
+        }
+        .press-also a:hover { color: var(--accent); border-color: var(--accent); }
+        .press-thumb { grid-area: thumb; display: block; aspect-ratio: 4 / 3; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border-light); background: var(--bg-secondary); }
+        .press-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .press-item:target { background: linear-gradient(90deg, rgba(var(--teal-rgb), 0.06), transparent 70%); }
+        @media (max-width: 768px) {
+            .press-item {
+                grid-template-columns: minmax(0, 1fr) 5.5rem;
+                grid-template-areas: 'date thumb' 'body thumb';
+                gap: 0.25rem 0.9rem; padding: 1rem 0;
+            }
+            .press-headline { font-size: 0.98rem; }
+            .press-also a { padding: 0.3rem 0.65rem; }
+        }
+
         /* === GALLERY === */
         .gallery-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem;
@@ -1875,6 +1912,7 @@
 <symbol id="i-eye" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></symbol>
 <symbol id="i-file-alt" viewBox="0 0 384 512"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM112 256H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></symbol>
 <symbol id="i-file-pdf" viewBox="0 0 512 512"><path d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 144-208 0c-35.3 0-64 28.7-64 64l0 144-48 0c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM176 352l32 0c30.9 0 56 25.1 56 56s-25.1 56-56 56l-16 0 0 32c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-48 0-80c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24l-16 0 0 48 16 0zm96-80l32 0c26.5 0 48 21.5 48 48l0 64c0 26.5-21.5 48-48 48l-32 0c-8.8 0-16-7.2-16-16l0-128c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16l0-64c0-8.8-7.2-16-16-16l-16 0 0 96 16 0zm80-112c0-8.8 7.2-16 16-16l48 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 32 32 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-32 0 0 48c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-64 0-64z"/></symbol>
+<symbol id="i-newspaper" viewBox="0 0 512 512"><path d="M168 80c-13.3 0-24 10.7-24 24V408c0 8.4-1.4 16.5-4.1 24H440c13.3 0 24-10.7 24-24V104c0-13.3-10.7-24-24-24H168zM72 480c-39.8 0-72-32.2-72-72V112C0 98.7 10.7 88 24 88s24 10.7 24 24V408c0 13.3 10.7 24 24 24s24-10.7 24-24V104c0-39.8 32.2-72 72-72H440c39.8 0 72 32.2 72 72V408c0 39.8-32.2 72-72 72H72zM176 136c0-13.3 10.7-24 24-24h96c13.3 0 24 10.7 24 24v80c0 13.3-10.7 24-24 24H200c-13.3 0-24-10.7-24-24V136zm200-24h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H376c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 80h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H376c-13.3 0-24-10.7-24-24s10.7-24 24-24zM200 272H408c13.3 0 24 10.7 24 24s-10.7 24-24 24H200c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 80H408c13.3 0 24 10.7 24 24s-10.7 24-24 24H200c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></symbol>
 <symbol id="i-graduation-cap" viewBox="0 0 640 512"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"/></symbol>
 <symbol id="i-id-badge" viewBox="0 0 384 512"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64zm96 320h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM144 64h96c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></symbol>
 <symbol id="i-microscope" viewBox="0 0 512 512"><path d="M160 32c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32c17.7 0 32 14.3 32 32V288c0 17.7-14.3 32-32 32c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32zM32 448H320c70.7 0 128-57.3 128-128s-57.3-128-128-128V128c106 0 192 86 192 192c0 49.2-18.5 94-48.9 128H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320 32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm80-64H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></symbol>
@@ -1903,6 +1941,7 @@
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#awards">Awards</a></li>
+                <li><a href="#press">Press</a></li>
                 <li><a href="#activities">Teaching</a></li>
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="https://www.overleaf.com/read/jpgdpdxnnjjg#88f336" target="_blank" rel="noopener noreferrer">CV</a></li>
@@ -1994,7 +2033,7 @@
                     </div>
                     <div class="news-item">
                         <span class="news-badge new">2026</span>
-                        <span class="news-text"><strong>1st Place</strong> in the <a href="https://www.codabench.org/competitions/16441/#/results-tab" target="_blank" rel="noopener noreferrer">CVPPA@ECCV'26 BuzzSpot Challenge</a> (Solo Entry &middot; Small Object Detection) <a class="challenge-code-link" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" aria-label="View BeeHunters code on GitHub"><svg class="icon" width="0.9688em" height="1em" aria-hidden="true" focusable="false"><use href="#i-github"/></svg> Code</a></span>
+                        <span class="news-text"><strong>1st Place</strong> in the <a href="https://www.codabench.org/competitions/16441/#/results-tab" target="_blank" rel="noopener noreferrer">CVPPA@ECCV'26 BuzzSpot Challenge</a> (Solo Entry &middot; Small Object Detection) <a class="challenge-code-link" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" aria-label="View BeeHunters code on GitHub"><svg class="icon" width="0.9688em" height="1em" aria-hidden="true" focusable="false"><use href="#i-github"/></svg> Code</a> <a class="challenge-code-link" href="#press-eccv2026"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a></span>
                     </div>
                     <div class="news-item">
                         <span class="news-badge new">2025</span>
@@ -2010,7 +2049,7 @@
                     </div>
                     <div class="news-item">
                         <span class="news-badge highlight">Highlight</span>
-                        <span class="news-text">CVPR 2024 first-author paper selected as <strong>Highlight Poster</strong> (top 2.8%)</span>
+                        <span class="news-text">CVPR 2024 first-author paper selected as <strong>Highlight Poster</strong> (top 2.8%) <a class="challenge-code-link" href="#press-sddgr"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a></span>
                     </div>
                 </div>
             </div>
@@ -2162,6 +2201,7 @@
                 <div class="pub-links">
                     <a href="https://arxiv.org/pdf/2608.08580" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-file-pdf"/></svg> Paper</a>
                     <a href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="0.9688em" height="1em" aria-hidden="true" focusable="false"><use href="#i-github"/></svg> Code</a>
+                    <a href="https://www.ksilbo.co.kr/news/articleView.html?idxno=1069221" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a>
                     <button type="button" class="pub-summary-trigger">
                         <svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg> Summary
                     </button>
@@ -2272,6 +2312,7 @@
                 <div class="pub-authors"><span class="me">J. Kim</span>, H. Cho, J. Kim, Y. Tiruneh, S. Baek</div>
                 <div class="pub-links">
                     <a href="https://arxiv.org/abs/2402.17323" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-file-pdf"/></svg> Paper</a>
+                    <a href="https://news.unist.ac.kr/a-breakthrough-in-ai-technology-for-improved-object-detection-and-classification/" target="_blank" rel="noopener noreferrer" class="pub-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a>
                     <button type="button" class="pub-summary-trigger">
                         <svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-eye"/></svg> Summary
                     </button>
@@ -2433,6 +2474,7 @@
                 <div class="project-actions">
                     <a class="project-link" href="https://arxiv.org/pdf/2608.08580" target="_blank" rel="noopener noreferrer"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-file-pdf"/></svg> Paper</a>
                     <a class="project-link" href="https://github.com/jjunsss/BeeHunters" target="_blank" rel="noopener noreferrer"><svg class="icon" width="0.9688em" height="1em" aria-hidden="true" focusable="false"><use href="#i-github"/></svg> GitHub</a>
+                    <a class="project-link" href="https://www.ksilbo.co.kr/news/articleView.html?idxno=1069221" target="_blank" rel="noopener noreferrer"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-newspaper"/></svg> Press</a>
                     <a class="project-link" href="https://cvppa2026.github.io/challenges#buzzspot-challenge" target="_blank" rel="noopener noreferrer"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Results</a>
                 </div>
             </div>
@@ -2631,6 +2673,36 @@
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- === PRESS === -->
+<section class="section" id="press">
+    <div class="section-header reveal">
+        <h2>Press</h2>
+        <div class="section-line"></div>
+    </div>
+    <div class="press-list reveal">
+        <article class="press-item" id="press-eccv2026">
+            <time class="press-date" datetime="2026-10">Oct 2026</time>
+            <div class="press-body">
+                <p class="press-context">BeeHunters &middot; 1st of 37 teams, BuzzSpot Challenge @ ECCV 2026</p>
+                <h3 class="press-headline" lang="ko"><a href="https://www.ksilbo.co.kr/news/articleView.html?idxno=1069221" target="_blank" rel="noopener noreferrer">UNIST ‘ECCV 챌린지’ 3개 부문 석권, 김준수씨, AI 활용 곤충 탐지 1위</a></h3>
+                <p class="press-source">경상일보</p>
+                <div class="press-also"><span>Also in</span><a href="https://www.aitimes.kr/news/articleView.html?idxno=42215" target="_blank" rel="noopener noreferrer">인공지능신문</a><a href="https://view.asiae.co.kr/article/2026100809384349043" target="_blank" rel="noopener noreferrer">아시아경제</a><a href="https://www.irobotnews.com/news/articleView.html?idxno=48896" target="_blank" rel="noopener noreferrer">로봇신문</a><a href="https://www.veritas-a.com/news/articleView.html?idxno=630986" target="_blank" rel="noopener noreferrer">베리타스알파</a></div>
+            </div>
+            <a class="press-thumb" href="https://www.ksilbo.co.kr/news/articleView.html?idxno=1069221" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><img src="images/eccv2026-talk-thumb.jpg" alt="" width="800" height="600" loading="lazy" decoding="async"></a>
+        </article>
+        <article class="press-item" id="press-sddgr">
+            <time class="press-date" datetime="2024-06">Jun 2024</time>
+            <div class="press-body">
+                <p class="press-context">SDDGR &middot; CVPR 2024 Highlight</p>
+                <h3 class="press-headline"><a href="https://news.unist.ac.kr/a-breakthrough-in-ai-technology-for-improved-object-detection-and-classification/" target="_blank" rel="noopener noreferrer">A Breakthrough in AI Technology for Improved Object Detection and Classification</a></h3>
+                <p class="press-source">UNIST News Center</p>
+                <div class="press-also"><span>Also in</span><a href="https://techxplore.com/news/2024-06-advances-ai-technology-classification.html" target="_blank" rel="noopener noreferrer">TechXplore</a><a href="https://www.sciencetimes.co.kr/news/unist-%EA%B8%B0%EC%A1%B4-%EC%A7%80%EC%8B%9D-%EC%9C%A0%EC%A7%80%ED%95%98%EB%A9%B0-%EC%83%88-%EC%A0%95%EB%B3%B4-%ED%95%99%EC%8A%B5%ED%95%98%EB%8A%94-ai-%EA%B8%B0%EC%88%A0-%EA%B0%9C%EB%B0%9C/?cat=16933" target="_blank" rel="noopener noreferrer">사이언스타임즈</a><a href="https://www.busan.com/view/busan/view.php?code=2024062017381726262" target="_blank" rel="noopener noreferrer">부산일보</a><a href="https://www.miragenews.com/ai-tech-breakthrough-enhances-object-detection-1265851/" target="_blank" rel="noopener noreferrer">Mirage News</a></div>
+            </div>
+            <a class="press-thumb" href="https://news.unist.ac.kr/a-breakthrough-in-ai-technology-for-improved-object-detection-and-classification/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><img src="images/cvpr2024.jpg" alt="" width="808" height="805" loading="lazy" decoding="async"></a>
+        </article>
     </div>
 </section>
 
