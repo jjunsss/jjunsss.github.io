@@ -7,14 +7,23 @@ Updates
   - publications that have no badge yet: a badge is inserted when the Scholar
     title matches the card title
 
-Exit codes: 0 = done (changed or not), 1 = Scholar page unusable (blocked / layout change).
-Standard library only, so it runs as-is on GitHub Actions.
+Source
+  - SERPAPI_KEY set  -> SerpApi "google_scholar_author" API (needed on GitHub Actions:
+                        Scholar answers 403 to GitHub's servers)
+  - otherwise        -> the public Scholar profile page (works from a personal machine)
+
+Exit codes: 0 = done (changed, unchanged, or skipped on Actions without a key),
+            1 = could not read citations.
+Standard library only.
 """
 from __future__ import annotations
 
 import html
+import json
+import os
 import re
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -36,6 +45,30 @@ def fetch_profile(user_id: str) -> str:
         return resp.read().decode("utf-8", "replace")
 
 
+def fetch_serpapi(user_id: str, key: str) -> tuple[int, list[dict]]:
+    query = urllib.parse.urlencode({"engine": "google_scholar_author", "author_id": user_id,
+                                    "hl": "en", "num": 100, "api_key": key})
+    with urllib.request.urlopen(f"https://serpapi.com/search.json?{query}", timeout=60) as resp:
+        data = json.load(resp)
+    if data.get("error"):
+        raise ValueError(f"SerpApi: {data['error']}")
+    total = None
+    for row in (data.get("cited_by") or {}).get("table", []):
+        if "citations" in row:
+            total = int(row["citations"].get("all") or 0)
+    if total is None:
+        raise ValueError("SerpApi response has no citation table")
+    papers = []
+    for art in data.get("articles", []):
+        cited = art.get("cited_by") or {}
+        papers.append({
+            "title": art.get("title", ""),
+            "cites_ids": [c for c in str(cited.get("cites_id") or "").split(",") if c],
+            "count": int(cited.get("value") or 0),
+        })
+    return total, papers
+
+
 def parse_profile(page: str) -> tuple[int, list[dict]]:
     table = re.search(r'<table id="gsc_rsb_st">(.*?)</table>', page, re.S)
     total = re.search(r'<td class="gsc_rsb_std">(\d+)</td>', table.group(1)) if table else None
@@ -44,13 +77,13 @@ def parse_profile(page: str) -> tuple[int, list[dict]]:
     papers = []
     for row in re.findall(r'<tr class="gsc_a_tr">(.*?)</tr>', page, re.S):
         title = re.search(r'class="gsc_a_at"[^>]*>(.*?)</a>', row, re.S)
-        cites = re.search(r'<a[^>]*href="([^"]*cites=(\d+)[^"]*)"[^>]*class="gsc_a_ac[^"]*"[^>]*>(\d+)</a>', row)
+        cites = re.search(r'<a[^>]*href="([^"]*cites=([\d,]+)[^"]*)"[^>]*class="gsc_a_ac[^"]*"[^>]*>(\d+)</a>', row)
         if not cites:  # attribute order varies
-            cites = re.search(r'<a[^>]*class="gsc_a_ac[^"]*"[^>]*href="([^"]*cites=(\d+)[^"]*)"[^>]*>(\d+)</a>', row)
+            cites = re.search(r'<a[^>]*class="gsc_a_ac[^"]*"[^>]*href="([^"]*cites=([\d,]+)[^"]*)"[^>]*>(\d+)</a>', row)
         if title:
             papers.append({
                 "title": html.unescape(re.sub(r"<[^>]+>", "", title.group(1))).strip(),
-                "cites_id": cites.group(2) if cites else None,
+                "cites_ids": cites.group(2).split(",") if cites else [],
                 "count": int(cites.group(3)) if cites else 0,
             })
     if not papers:
@@ -75,12 +108,13 @@ def apply(src: str, total: int, papers: list[dict]) -> tuple[str, list[str]]:
     src = new
 
     for p in papers:
-        if not p["cites_id"] or p["count"] <= 0:
+        if not p["cites_ids"] or p["count"] <= 0:
             continue
-        # 1) existing badge with the same Scholar id
-        pat = re.compile(r'<a class="pub-citations" href="[^"]*cites=' + p["cites_id"] + r'"[^>]*>\d+ citations?</a>')
+        # 1) existing badge whose cites= id matches any id Scholar lists for this paper
+        ids = "|".join(re.escape(i) for i in p["cites_ids"])
+        pat = re.compile(r'<a class="pub-citations" href="[^"]*cites=(' + ids + r')"[^>]*>\d+ citations?</a>')
         if pat.search(src):
-            new = pat.sub(lambda _: badge(p["cites_id"], p["count"]), src)
+            new = pat.sub(lambda m: badge(m.group(1), p["count"]), src)
             if new != src:
                 log.append(f'{p["count"]:>4}  {p["title"][:60]}')
             src = new
@@ -93,7 +127,7 @@ def apply(src: str, total: int, papers: list[dict]) -> tuple[str, list[str]]:
                 if "pub-citations" in m.group(1):
                     break  # card already has a (different-id) badge; leave it alone
                 meta = m.group(1)
-                insert = meta.rstrip() + "\n                    " + badge(p["cites_id"], p["count"]) + "\n                "
+                insert = meta.rstrip() + "\n                    " + badge(p["cites_ids"][0], p["count"]) + "\n                "
                 src = src[:m.start(1)] + insert + src[m.end(1):]
                 log.append(f'{p["count"]:>4}  {p["title"][:60]}  (new badge)')
                 break
@@ -106,10 +140,17 @@ def main() -> int:
     if not user:
         print("Scholar user id not found in index.html", file=sys.stderr)
         return 1
+    key = os.environ.get("SERPAPI_KEY", "").strip()
+    if not key and os.environ.get("GITHUB_ACTIONS") == "true":
+        print("::notice::SERPAPI_KEY secret is not set; skipping (Scholar blocks GitHub-hosted runners).")
+        return 0
     try:
-        total, papers = parse_profile(fetch_profile(user.group(1)))
-    except Exception as exc:  # network error, captcha page, layout change
-        print(f"::error::Could not read Google Scholar profile: {exc}", file=sys.stderr)
+        if key:
+            total, papers = fetch_serpapi(user.group(1), key)
+        else:
+            total, papers = parse_profile(fetch_profile(user.group(1)))
+    except Exception as exc:  # network error, captcha page, bad key, layout change
+        print(f"::error::Could not read citations: {exc}", file=sys.stderr)
         return 1
     updated, log = apply(src, total, papers)
     if updated == src:

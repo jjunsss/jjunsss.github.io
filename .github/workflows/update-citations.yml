@@ -22,7 +22,9 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Read Google Scholar and update index.html
+      - name: Read Google Scholar (via SerpApi) and update index.html
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python3 scripts/update_citations.py
 
       - name: Commit and publish (main + gh-pages)
