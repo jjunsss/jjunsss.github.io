@@ -375,6 +375,26 @@
             width: 64px; height: 64px; border-radius: 50%;
             object-fit: cover; border: 2px solid #fff; box-shadow: var(--shadow-sm);
         }
+        .hero-lede .hero-bio { font-size: 1rem; }
+        .hero-lede .hero-bio + .hero-bio { margin-top: 0.75rem; }
+        .hero-interests { margin: 0 0 1.5rem; max-width: 40rem; }
+        .hero-interests h2 {
+            margin-bottom: 0.7rem;
+            color: var(--venue-top); font-size: 0.78rem; font-weight: 750;
+            letter-spacing: 0.12em; text-transform: uppercase;
+        }
+        .interest-list { list-style: none; }
+        .interest-list li {
+            display: grid; grid-template-columns: 13.5rem minmax(0, 1fr); gap: 0.15rem 1rem;
+            padding: 0.6rem 0; border-top: 1px solid rgba(110, 83, 52, 0.12);
+            font-size: 0.95rem; line-height: 1.5;
+        }
+        .interest-list li:last-child { border-bottom: 1px solid rgba(110, 83, 52, 0.12); }
+        .interest-list strong { color: var(--text-primary); font-weight: 650; }
+        .interest-list span { color: var(--text-secondary); }
+        @media (max-width: 768px) {
+            .interest-list li { grid-template-columns: 1fr; padding: 0.55rem 0; }
+        }
         .hero-highlights {
             display: flex;
             flex-wrap: wrap;
@@ -475,7 +495,7 @@
            so they no longer sit inside a collapsed <details>. */
         .hero-lede {
             font-size: 1rem;
-            margin: 1.1rem 0 1.5rem;
+            margin: 1.1rem 0 1.6rem;
             padding-top: 1.1rem;
             border-top: 1px solid rgba(110, 83, 52, 0.14);
             max-width: 40rem;
@@ -1967,42 +1987,29 @@
                     <img class="hero-avatar" src="images/profile-avatar.jpg" alt="Junsu Kim" width="240" height="240" loading="lazy" decoding="async">
                     <h1>Junsu Kim</h1>
                 </div>
-                <div class="hero-highlights reveal reveal-delay-2">
-                    <span class="hero-pill">Continual Learning</span>
-                    <span class="hero-pill">Open-world Detection</span>
-                    <span class="hero-pill">Vision-Language + Diffusion</span>
+                <div class="hero-lede reveal reveal-delay-2">
+                    <p class="hero-bio">
+                        I am a Combined MS/PhD student at UNIST AIGS, advised by
+                        <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>, and based at the UNIST Busan Centum Campus.
+                        I study how vision models can keep learning as the world changes, without forgetting what they already know.
+                    </p>
+                    <p class="hero-bio">
+                        My first-author paper <a href="#paper-sddgr">SDDGR</a> was selected as a CVPR 2024 Highlight.
+                        Previously, I interned at <strong>NAVER AI Lab</strong> with
+                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, studying backbone architectures and the internal representations of large-scale models.
+                        I also serve as an <strong>NVIDIA AI Ambassador</strong> and enjoy taking vision models into the field, most recently with
+                        <a href="#project-beehunters">BeeHunters</a>, a solo entry that won 1st place in the ECCV 2026 BuzzSpot Challenge.
+                    </p>
                 </div>
-                <p class="hero-bio hero-lede reveal reveal-delay-2">
-                    I am a Combined MS/PhD student at UNIST AIGS, advised by
-                    <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>, and based at the UNIST Busan Centum Campus.
-                    Previously, I interned at <strong>NAVER AI Lab</strong> with
-                    <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, studying backbone architectures and the internal representations of large-scale models.
-                    I also serve as an <strong>NVIDIA AI Ambassador</strong>.
-                </p>
-                <div class="intro-explorer" aria-label="Meet Junsu">
-                    <div class="intro-tabs" role="tablist" aria-label="Research, building, and applied AI">
-                        <button type="button" class="intro-tab" id="intro-tab-research" role="tab" aria-selected="true" aria-controls="intro-research"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-microscope"/></svg>Research</button>
-                        <button type="button" class="intro-tab" id="intro-tab-build" role="tab" aria-selected="false" aria-controls="intro-build" tabindex="-1"><svg class="icon" width="1.25em" height="1em" aria-hidden="true" focusable="false"><use href="#i-code"/></svg>Build</button>
-                        <button type="button" class="intro-tab" id="intro-tab-field" role="tab" aria-selected="false" aria-controls="intro-field" tabindex="-1"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-seedling"/></svg>Field</button>
-                    </div>
-                    <div class="intro-panels">
-                        <div class="intro-panel" role="tabpanel" id="intro-research" aria-labelledby="intro-tab-research" tabindex="0">
-                            <h2>Can AI learn without forgetting?</h2>
-                            <p>I study how vision models keep learning as the world changes, using continual learning, vision-language models, and diffusion.</p>
-                            <div class="intro-work-links"><a href="#paper-sddgr">SDDGR &middot; CVPR Highlight<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a><a href="#publications">All papers<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a></div>
-                        </div>
-                        <div class="intro-panel" role="tabpanel" id="intro-build" aria-labelledby="intro-tab-build" tabindex="0" hidden>
-                            <h2>Small tools. Real daily problems.</h2>
-                            <p>From making sense of long meetings to finding cheaper flights, I turn everyday friction into tools I can actually use.</p>
-                            <div class="intro-work-links"><a href="#project-momo">MOMO<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a><a href="#project-flights">Cheapest Flights<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a><a href="#projects">All projects<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a></div>
-                        </div>
-                        <div class="intro-panel" role="tabpanel" id="intro-field" aria-labelledby="intro-tab-field" tabindex="0" hidden>
-                            <h2>AI for agriculture &amp; fisheries</h2>
-                            <p>I'm interested in AI for agriculture and fisheries. BeeHunters brings that curiosity to tiny pollinator detection: a solo entry, and a first-place finish.</p>
-                            <div class="intro-work-links"><a href="#project-beehunters">BeeHunters &middot; Challenge winner<svg class="icon" width="0.75em" height="1em" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg></a></div>
-                        </div>
-                    </div>
-                </div>
+                <section class="hero-interests reveal reveal-delay-3" aria-labelledby="interests-title">
+                    <h2 id="interests-title">Research Interests</h2>
+                    <ul class="interest-list">
+                        <li><strong>Continual Learning</strong><span>Learning new classes and tasks without forgetting old ones</span></li>
+                        <li><strong>Open-world Detection</strong><span>Finding novel, rare, and tiny objects in real scenes</span></li>
+                        <li><strong>Generative &amp; Vision-Language Models</strong><span>Diffusion models and VLMs as sources of data, labels, and features</span></li>
+                        <li><strong>Reliable Benchmarks</strong><span>Auditing evaluation protocols so results reflect real progress</span></li>
+                    </ul>
+                </section>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-envelope"/></svg> Email</a>
                     <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer" class="hero-link"><svg class="icon" width="1.25em" height="1em" aria-hidden="true" focusable="false"><use href="#i-graduation-cap"/></svg> Scholar</a>
@@ -3161,31 +3168,6 @@
 
     applyPublicationFilter('all');
 
-    // Topic tabs support both pointer and standard tab-list keyboard navigation.
-    const introTabs = Array.from(document.querySelectorAll('.intro-tab'));
-    const selectIntro = (selected) => {
-        introTabs.forEach(tab => {
-            const active = tab === selected;
-            tab.setAttribute('aria-selected', String(active));
-            tab.tabIndex = active ? 0 : -1;
-            document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
-        });
-    };
-    introTabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => selectIntro(tab));
-        tab.addEventListener('keydown', event => {
-            let next;
-            if (event.key === 'ArrowRight') next = (index + 1) % introTabs.length;
-            if (event.key === 'ArrowLeft') next = (index + introTabs.length - 1) % introTabs.length;
-            if (event.key === 'Home') next = 0;
-            if (event.key === 'End') next = introTabs.length - 1;
-            if (next === undefined) return;
-            event.preventDefault();
-            selectIntro(introTabs[next]);
-            introTabs[next].focus();
-        });
-    });
-
     const projectCards = Array.from(document.querySelectorAll('.project-card'));
     const projectFilters = Array.from(document.querySelectorAll('.project-filter'));
     const projectCount = document.getElementById('project-count');
@@ -3205,7 +3187,7 @@
         if (project?.hidden) filterProjects('all');
         if (hash === '#paper-sddgr' && activePubFilter !== 'all') applyPublicationFilter('all');
     }
-    document.querySelectorAll('.intro-work-links a').forEach(link => {
+    document.querySelectorAll('.hero-lede a[href^="#"]').forEach(link => {
         link.addEventListener('click', () => revealWorkTarget(link.hash));
     });
     window.addEventListener('hashchange', () => revealWorkTarget(window.location.hash));
