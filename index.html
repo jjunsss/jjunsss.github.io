@@ -221,8 +221,10 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(260px, 310px);
             gap: clamp(1.8rem, 4vw, 3.4rem);
-            align-items: end;
+            align-items: start;
         }
+        /* Top-aligned with the name (kicker height offset) so the portrait stays
+           inside the first screen on 768–864px-tall laptops. */
         .hero-visual {
             display: flex;
             flex-direction: column;
@@ -230,6 +232,7 @@
             justify-self: end;
             width: min(100%, 360px);
             gap: 0.85rem;
+            margin-top: 2.2rem;
         }
         .hero-photo-card {
             position: relative;
