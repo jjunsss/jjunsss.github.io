@@ -402,18 +402,8 @@
             color: var(--venue-top); font-size: 0.78rem; font-weight: 750;
             letter-spacing: 0.12em; text-transform: uppercase;
         }
-        .interest-list { list-style: none; }
-        .interest-list li {
-            display: grid; grid-template-columns: 13.5rem minmax(0, 1fr); gap: 0.15rem 1rem;
-            padding: 0.6rem 0; border-top: 1px solid rgba(110, 83, 52, 0.12);
-            font-size: 0.95rem; line-height: 1.5;
-        }
-        .interest-list li:last-child { border-bottom: 1px solid rgba(110, 83, 52, 0.12); }
-        .interest-list strong { color: var(--text-primary); font-weight: 650; }
-        .interest-list span { color: var(--text-secondary); }
-        @media (max-width: 768px) {
-            .interest-list li { grid-template-columns: 1fr; padding: 0.55rem 0; }
-        }
+        .hero-interests .hero-bio { font-size: 1rem; }
+        .hero-interests .hero-bio + .hero-bio { margin-top: 0.75rem; }
         .hero-highlights {
             display: flex;
             flex-wrap: wrap;
@@ -2010,24 +2000,26 @@
                     <p class="hero-bio">
                         I am a Combined MS/PhD student at UNIST AIGS, advised by
                         <a href="https://sites.google.com/site/bsrvision00/" target="_blank" rel="noopener noreferrer">Prof. Seungryul Baek</a>, and based at the UNIST Busan Centum Campus.
-                        I study how vision models can keep learning as the world changes, without forgetting what they already know.
-                    </p>
-                    <p class="hero-bio">
-                        My first-author paper <a href="#paper-sddgr">SDDGR</a> was selected as a CVPR 2024 Highlight.
                         Previously, I interned at <strong>NAVER AI Lab</strong> with
-                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, studying backbone architectures and the internal representations of large-scale models.
-                        I also serve as an <strong>NVIDIA AI Ambassador</strong> and enjoy taking vision models into the field, most recently with
-                        <a href="#project-beehunters">BeeHunters</a>, a solo entry that won 1st place in the ECCV 2026 BuzzSpot Challenge.
+                        <a href="https://sites.google.com/site/dyhan0920/" target="_blank" rel="noopener noreferrer">Dongyoon Han</a>, and I serve as an <strong>NVIDIA AI Ambassador</strong>.
                     </p>
                 </div>
                 <section class="hero-interests reveal reveal-delay-3" aria-labelledby="interests-title">
                     <h2 id="interests-title">Research Interests</h2>
-                    <ul class="interest-list">
-                        <li><strong>Continual Learning</strong><span>Learning new classes and tasks without forgetting old ones</span></li>
-                        <li><strong>Open-world Detection</strong><span>Finding novel, rare, and tiny objects in real scenes</span></li>
-                        <li><strong>Generative &amp; Vision-Language Models</strong><span>Diffusion models and VLMs as sources of data, labels, and features</span></li>
-                        <li><strong>Reliable Benchmarks</strong><span>Auditing evaluation protocols so results reflect real progress</span></li>
-                    </ul>
+                    <p class="hero-bio">
+                        I want to build AI that keeps learning after it is deployed. In the real world, new objects keep appearing,
+                        labels are scarce, and past training data is often gone. My work on <strong>continual and few-shot learning</strong>
+                        asks how a model can pick up new concepts from a few examples without overwriting what it already knows.
+                    </p>
+                    <p class="hero-bio">
+                        I see <strong>generative and vision-language models</strong> as teachers, not just bigger backbones:
+                        diffusion models can stand in for data we can no longer keep, and VLMs can label objects no one has annotated.
+                        Which parts of their knowledge actually transfer, and why, is the question I keep returning to.
+                    </p>
+                    <p class="hero-bio">
+                        I also want progress to be real. I audit <strong>benchmarks and evaluation protocols</strong> so that reported gains
+                        reflect genuine ability, and I test models in the field, from edge devices to tiny pollinators in real-world images.
+                    </p>
                 </section>
                 <div class="hero-links reveal reveal-delay-4">
                     <a href="mailto:jjunsssk@unist.ac.kr" class="hero-link"><svg class="icon" width="1em" height="1em" aria-hidden="true" focusable="false"><use href="#i-envelope"/></svg> Email</a>
