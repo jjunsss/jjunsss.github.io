@@ -258,7 +258,6 @@
         }
         .hero-photo-wrap {
             position: relative;
-            cursor: pointer;
             border-radius: 26px;
             overflow: hidden;
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
@@ -313,39 +312,6 @@
             line-height: 1.55;
             color: var(--text-secondary);
         }
-
-        /* Diffusion canvas overlay */
-        .diffusion-canvas {
-            position: absolute;
-            top: 3px; left: 3px;
-            width: calc(100% - 6px); height: calc(100% - 6px);
-            border-radius: calc(var(--radius) - 2px);
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .diffusion-step {
-            position: absolute;
-            bottom: 10px; right: 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.68rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.85);
-            background: rgba(0,0,0,0.55);
-            padding: 0.15rem 0.45rem;
-            border-radius: 4px;
-            z-index: 6;
-            letter-spacing: 0.04em;
-            transition: opacity 0.5s ease;
-        }
-
-        .diffusion-step.hidden { opacity: 0; }
-
-        .diffusion-hint {
-            display: none;
-        }
-        .diffusion-hint.visible { opacity: 1; }
-        .diffusion-hint:hover { color: var(--accent); }
 
         .hero-content {
             position: relative;
@@ -1808,7 +1774,6 @@
                 min-height: 42px;
             }
             .pub-summary-popup { display: none !important; }
-            .diffusion-hint { display: none !important; }
             /* Timeline mobile fixes */
             .timeline { padding-left: 1rem; }
             .timeline-item { padding-left: 1rem; }
@@ -2030,13 +1995,10 @@
             </div>
             <div class="hero-visual reveal reveal-delay-2">
                 <div class="hero-photo-card">
-                    <div class="hero-photo-wrap" id="diffusionWrap" title="Click to replay diffusion">
+                    <div class="hero-photo-wrap">
                         <img class="hero-photo" src="images/profile-riverside.jpeg" alt="Junsu Kim smiling by the river with a city skyline at night" width="1080" height="1440" loading="lazy" fetchpriority="high" decoding="async">
-                        <canvas id="diffusionCanvas" class="diffusion-canvas"></canvas>
-                        <div id="diffusionStep" class="diffusion-step">t=480</div>
                     </div>
                 </div>
-                <div class="diffusion-hint" id="diffusionHint" onclick="document.getElementById('diffusionWrap').click()">click to denoise</div>
             </div>
         </div>
     </section>
@@ -3205,175 +3167,6 @@
     });
     window.addEventListener('hashchange', () => revealWorkTarget(window.location.hash));
     revealWorkTarget(window.location.hash);
-
-    // === DIFFUSION DENOISING EFFECT ===
-    (function() {
-        const canvas = document.getElementById('diffusionCanvas');
-        const stepLabel = document.getElementById('diffusionStep');
-        const wrap = document.getElementById('diffusionWrap');
-        const hint = document.getElementById('diffusionHint');
-        if (!canvas || !stepLabel || !wrap) return;
-        if (motionReduced()) {
-            canvas.style.opacity = 0;
-            stepLabel.classList.add('hidden');
-            if (hint) hint.classList.remove('visible');
-            return;
-        }
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        let animId = null;
-        let startTime = null;
-        let hintTimerId = null;
-        let replayLabelTimerId = null;
-        let replayHideTimerId = null;
-        let initialAnimationPlayed = false;
-
-        function sizeCanvas() {
-            const rect = canvas.getBoundingClientRect();
-            const dpr = getRenderScale(0.85);
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            canvas.width = Math.max(1, Math.round(rect.width * dpr));
-            canvas.height = Math.max(1, Math.round(rect.height * dpr));
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        }
-        sizeCanvas();
-
-        const TOTAL_DURATION = 1650;
-        const TOTAL_STEPS = 480;
-        const HINT_REVEAL_DELAY = TOTAL_DURATION + 800;
-
-        function getNoiseTint() {
-            return { r: 129, g: 140, b: 248, mix: 0.15 };
-        }
-
-        function gaussRand() {
-            return (Math.random() - 0.5) * 2;
-        }
-
-        function drawNoise(intensity) {
-            const pixW = canvas.width;
-            const pixH = canvas.height;
-            const imgData = ctx.createImageData(pixW, pixH);
-            const data = imgData.data;
-            const tint = getNoiseTint();
-            const blockSize = intensity > 0.6 ? 3 : intensity > 0.3 ? 2 : 1;
-
-            for (let y = 0; y < pixH; y += blockSize) {
-                for (let x = 0; x < pixW; x += blockSize) {
-                    const variance = intensity * 128;
-                    const noise = 128 + gaussRand() * variance;
-                    const val = Math.max(0, Math.min(255, noise));
-                    const r = val * (1 - tint.mix) + tint.r * tint.mix;
-                    const g = val * (1 - tint.mix) + tint.g * tint.mix;
-                    const b = val * (1 - tint.mix) + tint.b * tint.mix;
-                    for (let dy = 0; dy < blockSize && (y + dy) < pixH; dy++) {
-                        for (let dx = 0; dx < blockSize && (x + dx) < pixW; dx++) {
-                            const idx = ((y + dy) * pixW + (x + dx)) * 4;
-                            data[idx] = r;
-                            data[idx + 1] = g;
-                            data[idx + 2] = b;
-                            data[idx + 3] = 255;
-                        }
-                    }
-                }
-            }
-
-            ctx.putImageData(imgData, 0, 0);
-        }
-
-        function clearDiffusionTimers() {
-            if (hintTimerId !== null) clearTimeout(hintTimerId);
-            if (replayLabelTimerId !== null) clearTimeout(replayLabelTimerId);
-            if (replayHideTimerId !== null) clearTimeout(replayHideTimerId);
-            hintTimerId = null;
-            replayLabelTimerId = null;
-            replayHideTimerId = null;
-        }
-
-        function scheduleHintReveal() {
-            if (!hint) return;
-            clearTimeout(hintTimerId);
-            hintTimerId = window.setTimeout(() => hint.classList.add('visible'), HINT_REVEAL_DELAY);
-        }
-
-        function animate(timestamp) {
-            if (!startTime) startTime = timestamp;
-            const elapsed = timestamp - startTime;
-            const progress = Math.min(elapsed / TOTAL_DURATION, 1);
-
-            const eased = progress < 0.5
-                ? 2 * progress * progress
-                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-            const noiseIntensity = 1.0 - eased;
-            const opacity = progress > 0.7
-                ? 1.0 - ((progress - 0.7) / 0.3)
-                : 1.0;
-
-            canvas.style.opacity = opacity;
-            drawNoise(noiseIntensity);
-            const currentStep = Math.round(TOTAL_STEPS * (1.0 - progress));
-            stepLabel.textContent = `t=${currentStep}`;
-
-            if (progress < 1) {
-                animId = requestAnimationFrame(animate);
-            } else {
-                animId = null;
-                canvas.style.opacity = 0;
-                stepLabel.classList.add('hidden');
-                replayLabelTimerId = window.setTimeout(() => {
-                    stepLabel.textContent = 'Click to replay';
-                    stepLabel.classList.remove('hidden');
-                    replayHideTimerId = window.setTimeout(() => stepLabel.classList.add('hidden'), 2000);
-                }, 500);
-            }
-        }
-
-        function startDiffusion() {
-            if (animId !== null) cancelAnimationFrame(animId);
-            clearDiffusionTimers();
-            initialAnimationPlayed = true;
-            startTime = null;
-            canvas.style.opacity = 1;
-            stepLabel.classList.remove('hidden');
-            stepLabel.textContent = `t=${TOTAL_STEPS}`;
-            animId = requestAnimationFrame(animate);
-        }
-
-        const scheduleInitialDiffusion = typeof window.requestIdleCallback === 'function'
-            ? (cb) => window.requestIdleCallback(cb, { timeout: 600 })
-            : (cb) => window.setTimeout(cb, 0);
-        scheduleInitialDiffusion(() => {
-            if (document.hidden || !wrap.offsetParent) return;
-            initialAnimationPlayed = true;
-            startDiffusion();
-            scheduleHintReveal();
-        });
-
-        wrap.addEventListener('click', () => {
-            if (hint) hint.classList.remove('visible');
-            startDiffusion();
-            scheduleHintReveal();
-        });
-
-        window.addEventListener('resize', createDebounce(sizeCanvas, 120));
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                clearDiffusionTimers();
-                if (animId !== null) {
-                    cancelAnimationFrame(animId);
-                    animId = null;
-                }
-                return;
-            }
-            if (!initialAnimationPlayed && wrap.offsetParent) {
-                initialAnimationPlayed = true;
-                startDiffusion();
-                scheduleHintReveal();
-            }
-        });
-    })();
-
 </script>
 
 <script src="starfield.js" defer></script>
