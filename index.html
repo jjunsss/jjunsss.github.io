@@ -1088,7 +1088,6 @@
             display: grid;
             grid-template-columns: 172px minmax(0, 1fr);
             grid-template-areas:
-                "thumb highlight"
                 "thumb meta"
                 "thumb title"
                 "thumb authors"
@@ -1150,9 +1149,9 @@
             border-radius: 999px;
             background: rgba(var(--gold-rgb), 0.14);
             font-size: 0.76rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.15rem;
+            letter-spacing: 0.08em; color: var(--gold);
         }
-        .pub-highlight-label { display: none; grid-area: highlight; }
+        .pub-highlight-label { display: none; }
 
         .pub-meta,
         .pub-title,
@@ -1739,7 +1738,6 @@
                 grid-template-columns: 1fr;
                 grid-template-areas:
                     "thumb"
-                    "highlight"
                     "meta"
                     "title"
                     "authors"
@@ -2149,7 +2147,6 @@
             <!-- HumanSkill-4D / ArXiv 2026 -->
             <div class="pub-card" id="paper-humanskill-4d" data-venue="arxiv" data-year="2026">
                 <div class="pub-thumb"><img src="images/papers/thumbs/humanskill-4d.jpg" alt="HumanSkill-4D pipeline figure" loading="lazy" decoding="async" width="840" height="474"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2026</span>
                 </div>
@@ -2171,8 +2168,8 @@
             <!-- BeeHunters / ECCV 2026 Challenge Technical Report -->
             <div class="pub-card highlight" data-venue="arxiv" data-year="2026">
                 <div class="pub-thumb"><img src="images/projects/beehunters.jpg" alt="BeeHunters tiny pollinator detection figure" loading="lazy" decoding="async" width="1200" height="630"></div>
-                <div class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> 1st Place</div>
                 <div class="pub-meta">
+                    <span class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> 1st Place</span>
                     <span class="pub-venue workshop">ECCV 2026 Challenge · Technical Report</span>
                 </div>
                 <div class="pub-title">Where Is the Bee? Detecting Tiny Pollinators with a Single Collaborative-Head Transformer</div>
@@ -2194,7 +2191,6 @@
             <!-- B-RIGHT ??BMVC 2025 -->
             <div class="pub-card" data-venue="main" data-year="2025">
                 <div class="pub-thumb"><img src="images/papers/thumbs/bright.jpg" alt="B-RIGHT figure" loading="lazy" decoding="async" width="513" height="380"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">BMVC 2025</span>
                 </div>
@@ -2215,7 +2211,6 @@
             <!-- FSCIL Synthetic ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
                 <div class="pub-thumb"><img src="images/papers/thumbs/fscil-synthetic.jpg" alt="FSCIL Synthetic figure" loading="lazy" decoding="async" width="560" height="336"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
                     <a class="pub-citations" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=16912030291094002228" target="_blank" rel="noopener noreferrer">4 citations</a>
@@ -2237,7 +2232,6 @@
             <!-- RPE ??ICCV-W 2025 -->
             <div class="pub-card" data-venue="workshop" data-year="2025">
                 <div class="pub-thumb"><img src="images/papers/thumbs/rpe.jpg" alt="RPE figure" loading="lazy" decoding="async" width="560" height="336"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">ICCV-W 2025</span>
                 </div>
@@ -2259,7 +2253,6 @@
             <!-- Diffusion FSCIL ??ArXiv -->
             <div class="pub-card" data-venue="arxiv" data-year="2025">
                 <div class="pub-thumb"><img src="images/papers/thumbs/diffusion-fscil.jpg" alt="Diffusion FSCIL figure" loading="lazy" decoding="async" width="560" height="355"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2025</span>
                     <a class="pub-citations" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=3619336397267996682" target="_blank" rel="noopener noreferrer">1 citation</a>
@@ -2281,8 +2274,8 @@
             <!-- SDDGR ??CVPR 2024 Highlight -->
             <div class="pub-card highlight" id="paper-sddgr" data-venue="main" data-year="2024">
                 <div class="pub-thumb"><img src="images/papers/thumbs/sddgr.jpg" alt="SDDGR figure" loading="lazy" decoding="async" width="560" height="376"></div>
-                <div class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-star"/></svg> CVPR Highlight &middot; Top 2.8%</div>
                 <div class="pub-meta">
+                    <span class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-star"/></svg> CVPR Highlight &middot; Top 2.8%</span>
                     <span class="pub-venue top">CVPR 2024</span>
                     <span class="pub-highlight-badge">&middot; Highlight</span>
                     <a class="pub-citations" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=15481743629583665368" target="_blank" rel="noopener noreferrer">107 citations</a>
@@ -2309,7 +2302,6 @@
             <!-- VLM-PL ??CVPR-W 2024 -->
             <div class="pub-card" data-venue="workshop" data-year="2024">
                 <div class="pub-thumb"><img src="images/papers/thumbs/vlmpl.jpg" alt="VLM-PL figure" loading="lazy" decoding="async" width="560" height="348"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue workshop">CVPR-W 2024</span>
                     <a class="pub-citations" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=570487461945413581" target="_blank" rel="noopener noreferrer">58 citations</a>
@@ -2331,7 +2323,6 @@
             <!-- ICASSP 2024 -->
             <div class="pub-card" data-venue="main" data-year="2024">
                 <div class="pub-thumb"><img src="images/papers/thumbs/icassp.jpg" alt="ICASSP figure" loading="lazy" decoding="async" width="560" height="343"></div>
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue top">ICASSP 2024</span>
                     <a class="pub-citations" href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cites=17717529706670168044" target="_blank" rel="noopener noreferrer">5 citations</a>
@@ -2354,7 +2345,6 @@
 
             <!-- IEIE Summer 2023 -->
             <div class="pub-card" data-venue="domestic" data-year="2023">
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue domestic">IEIE Summer 2023</span>
                 </div>
@@ -2365,7 +2355,6 @@
 
             <!-- JKAIA 2022 -->
             <div class="pub-card" data-venue="domestic" data-year="2022">
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue domestic">JKAIA 2022</span>
                 </div>
@@ -2376,8 +2365,8 @@
 
             <!-- IEIE Fall 2021 — Best Paper -->
             <div class="pub-card highlight" data-venue="domestic" data-year="2021">
-                <div class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</div>
                 <div class="pub-meta">
+                    <span class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</span>
                     <span class="pub-venue domestic">IEIE Fall 2021</span>
                 </div>
                 <div class="pub-title">Multi-Task Learning Approach to Autonomous Driving Techniques</div>
@@ -2387,8 +2376,8 @@
 
             <!-- KICS Summer 2021 — Best Paper -->
             <div class="pub-card highlight" data-venue="domestic" data-year="2021">
-                <div class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</div>
                 <div class="pub-meta">
+                    <span class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</span>
                     <span class="pub-venue domestic">KICS Summer 2021</span>
                 </div>
                 <div class="pub-title">Deep Learning-Based Self-Driving Systems for Swarm Vehicles</div>
@@ -2398,8 +2387,8 @@
 
             <!-- IEMEK ICT 2021 — Best Paper -->
             <div class="pub-card highlight" data-venue="domestic" data-year="2021">
-                <div class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</div>
                 <div class="pub-meta">
+                    <span class="pub-highlight-label"><svg class="icon" width="1.125em" height="1em" aria-hidden="true" focusable="false"><use href="#i-trophy"/></svg> Best Paper Award</span>
                     <span class="pub-venue domestic">IEMEK ICT 2021</span>
                 </div>
                 <div class="pub-title">AI Edge Server Design for Swarm Vehicular Networks</div>
@@ -2409,7 +2398,6 @@
 
             <!-- KICS Winter 2021 -->
             <div class="pub-card" data-venue="domestic" data-year="2021">
-                <div class="pub-highlight-label"></div>
                 <div class="pub-meta">
                     <span class="pub-venue domestic">KICS Winter 2021</span>
                 </div>
