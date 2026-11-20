@@ -75,12 +75,16 @@
             padding: 48px 0 36px; display: flex; flex-direction: column;
         }
         .rail-photo {
-            width: min(100%, max(150px, calc(100vh - 570px))); height: auto; aspect-ratio: 1;
+            width: min(100%, max(150px, calc(100vh - 610px))); height: auto; aspect-ratio: 1;
             object-fit: cover; object-position: 30% 78%; border-radius: 6px; background: #dfe2e6;
         }
         .rail h1 { font-size: 42px; line-height: 1; font-weight: 650; letter-spacing: -0.035em; color: var(--ink); margin-top: 24px; }
         .rail-role { color: var(--soft); font-size: 15.5px; line-height: 1.45; margin-top: 10px; max-width: 15em; }
-        .rail-status { font-size: 14.5px; font-weight: 500; color: var(--ink); margin-top: 16px; display: flex; align-items: center; gap: 9px; }
+        .rail-cite { font-size: 14.5px; color: var(--soft); margin-top: 18px; line-height: 1.2; }
+        .rail-cite a { color: var(--ink); font-weight: 500; text-decoration: none; }
+        .rail-cite a:hover { text-decoration: underline; }
+        .citation-number { font-size: 27px; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-right: 1px; }
+        .rail-status { font-size: 14.5px; font-weight: 500; color: var(--ink); margin-top: 12px; display: flex; align-items: center; gap: 9px; }
         .rail-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--open); flex: none; }
         .rail-status a { text-decoration: none; }
         .rail-status a:hover { text-decoration: underline; }
@@ -90,6 +94,11 @@
         .rail-nav a[aria-current="true"] { color: var(--ink); font-weight: 600; }
         .rail-links { margin-top: auto; padding-top: 20px; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14.5px; font-weight: 500; color: var(--ink); }
         .topbar { display: none; }
+        @media (max-height: 780px) and (min-width: 900px) {
+            .rail { padding: 32px 0 22px; }
+            .rail h1 { margin-top: 18px; }
+            .rail-nav { margin-top: 20px; gap: 2px; }
+        }
         @media (max-height: 660px) and (min-width: 900px) { .rail { position: static; height: auto; } }
 
         main { padding: 56px 0 64px; min-width: 0; }
@@ -239,7 +248,8 @@
             .rail-photo { width: 72px; object-position: center; }
             .rail h1 { font-size: 30px; margin-top: 0; align-self: end; }
             .rail-role { font-size: 14.5px; margin-top: 4px; max-width: none; align-self: start; }
-            .rail-status, .rail-links { grid-column: 1 / -1; }
+            .rail-cite, .rail-status, .rail-links { grid-column: 1 / -1; }
+            .rail-cite { margin-top: 14px; }
             .rail-nav { display: none; }
             .rail-links { margin-top: 14px; padding-top: 0; }
             .topbar {
@@ -291,6 +301,7 @@
     </picture>
     <h1>Junsu Kim</h1>
     <p class="rail-role">AI researcher at UNIST AI Graduate School</p>
+    <p class="rail-cite"><a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer"><span class="citation-number" data-target="183">183</span> citations</a> on Google Scholar</p>
     <p class="rail-status"><a href="mailto:jjunsssk@unist.ac.kr">Open to research internships</a></p>
     <nav class="rail-nav" aria-label="Sections"><a href="#about">About</a><a href="#publications">Publications</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#awards">Awards</a><a href="#press">Press</a><a href="#activities">Teaching</a><a href="#gallery">Gallery</a></nav>
     <p class="rail-links">
@@ -332,7 +343,7 @@
 <section class="section" id="publications">
     <div class="section-header">
         <h2>Publications</h2>
-        <p class="pub-cite"><span class="citation-number" data-target="183">183</span> citations on <a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+        <p class="pub-cite"><a href="https://scholar.google.com/citations?user=SMAhX9sAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
     </div>
 
     <!-- Filters -->
