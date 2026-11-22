@@ -140,6 +140,8 @@
         .pub-card:not(:has(.pub-thumb)) { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title title" "authors authors" "meta links"; }
         .pub-thumb { grid-area: thumb; width: 148px; aspect-ratio: 3 / 2; border-radius: 4px; overflow: hidden; background: #fff; }
         .pub-thumb img { width: 100%; height: 100%; object-fit: contain; }
+        .pub-thumb:has(video) { aspect-ratio: 2 / 1; background: #080810; }
+        .pub-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .pub-title { grid-area: title; font-size: 18.5px; line-height: 1.35; font-weight: 500; letter-spacing: -0.012em; color: var(--ink); }
         .pub-authors { grid-area: authors; font-size: 14.5px; color: var(--soft); margin-top: 5px; }
         .pub-authors .me { color: var(--ink); font-weight: 600; }
@@ -168,7 +170,7 @@
         .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 28px; margin-top: 14px; }
         .project-card[hidden] { display: none; }
         .project-media { display: block; border-radius: 5px; overflow: hidden; aspect-ratio: 1200 / 630; background: #e3e6e9; }
-        .project-media img { width: 100%; height: 100%; object-fit: cover; }
+        .project-media img, .project-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
         .project-body { padding-top: 13px; }
         .project-kicker { font-size: 13.5px; color: var(--faint); }
         .project-title { font-size: 18.5px; line-height: 1.35; font-weight: 500; letter-spacing: -0.012em; color: var(--ink); margin-top: 1px; }
@@ -384,7 +386,7 @@
 
             <!-- HumanSkill-4D / ArXiv 2026 -->
             <div class="pub-card" id="paper-humanskill-4d" data-venue="arxiv" data-year="2026">
-                <div class="pub-thumb"><img src="images/papers/thumbs/humanskill-4d.jpg" alt="HumanSkill-4D pipeline figure" loading="lazy" decoding="async" width="840" height="474"></div>
+                <div class="pub-thumb"><video class="loop-video" muted loop playsinline preload="none" poster="images/projects/humanskill-4d-poster.jpg" width="800" height="400" aria-label="Three avatars moving; the queried body part or garment lights up pink only while the described motion holds"><source src="images/projects/humanskill-4d.mp4" type="video/mp4"></video></div>
                 <div class="pub-meta">
                     <span class="pub-venue arxiv">ArXiv 2026</span>
                 </div>
@@ -663,7 +665,7 @@
     <div class="project-grid">
         <article class="project-card" id="project-humanskill-4d" data-project-kind="research" tabindex="-1">
             <a class="project-media" href="https://jjunsss.github.io/HumanSkill-4D/" target="_blank" rel="noopener noreferrer" aria-label="Open the HumanSkill-4D project page">
-                <img src="images/projects/humanskill-4d.jpg" alt="HumanSkill-4D highlighting an avatar's upper clothing while both arms lift outward" loading="lazy" decoding="async" width="1200" height="628">
+                <video class="loop-video" muted loop playsinline preload="none" poster="images/projects/humanskill-4d-poster.jpg" width="800" height="400" aria-label="Three avatars moving; the queried body part or garment lights up pink only while the described motion holds"><source src="images/projects/humanskill-4d.mp4" type="video/mp4"></video>
             </a>
             <div class="project-body">
                 <div class="project-kicker">4D referring segmentation</div>
@@ -1225,6 +1227,18 @@
         });
     }
     applyPublicationFilter('all');
+
+    // Result clips play only while on screen, and stay as a still when reduced motion is requested.
+    const loopVideos = Array.from(document.querySelectorAll('.loop-video'));
+    if (loopVideos.length && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const videoObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.play().catch(() => {});
+                else entry.target.pause();
+            });
+        }, { threshold: 0.25 });
+        loopVideos.forEach(video => videoObserver.observe(video));
+    }
 
     // Project filters
     const projectCards = Array.from(document.querySelectorAll('.project-card'));
