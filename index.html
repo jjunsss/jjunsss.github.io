@@ -1228,15 +1228,9 @@
     }
     applyPublicationFilter('all');
 
-    // Result clips play only while on screen. With reduced motion requested they stay still
-    // until the pointer is over them.
+    // Result clips play on their own, but only while they are on screen.
     const loopVideos = Array.from(document.querySelectorAll('.loop-video'));
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        loopVideos.forEach(video => {
-            video.addEventListener('pointerenter', () => video.play().catch(() => {}));
-            video.addEventListener('pointerleave', () => video.pause());
-        });
-    } else if ('IntersectionObserver' in window) {
+    if ('IntersectionObserver' in window) {
         const videoObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.play().catch(() => {});
@@ -1244,6 +1238,8 @@
             });
         }, { threshold: 0.25 });
         loopVideos.forEach(video => videoObserver.observe(video));
+    } else {
+        loopVideos.forEach(video => video.play().catch(() => {}));
     }
 
     // Project filters
