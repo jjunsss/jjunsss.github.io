@@ -288,8 +288,18 @@
         }
         @media (max-width: 520px) {
             .project-grid { grid-template-columns: 1fr; gap: 30px; }
-            .about-links { display: grid; grid-template-columns: repeat(3, max-content); gap: 12px 28px; }
+            .rail h1 { font-size: 26px; }
+            .lede { font-size: 20px; line-height: 1.35; }
+            .citation-number { font-size: 20px; }
+            .pub-title, .press-headline { font-size: 16px; }
+            .about-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 22px; font-size: 14.5px; }
+            .about-links a { justify-content: center; min-height: 44px; padding: 0 8px; border: 1px solid var(--rule); border-radius: 10px; background: rgba(255, 255, 255, 0.7); }
+            .about-links a:hover { text-decoration: none; }
+            .about-links a:active { background: var(--tint); }
             .pub-toolbar { align-items: flex-start; }
+        }
+        @media (max-width: 340px) {
+            .about-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media print {
             .rail { position: static; height: auto; }
